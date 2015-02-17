@@ -75,6 +75,8 @@ int main(void)
   //BSP_PB_Init(BUTTON_KEY, BUTTON_MODE_EXTI);
   
   BSP_AUDIO_OUT_Init(OUTPUT_DEVICE_AUTO, 70, 48000);
+  BSP_AUDIO_OUT_SetVolume(40);
+  
   BSP_AUDIO_OUT_Play((uint16_t*)&audiobuff[0], 2*BUFF_LEN);
   
   
@@ -97,9 +99,7 @@ void make_sound(uint16_t *buf , uint16_t length) // To be used with the Sequence
 
 	uint16_t 	pos;
 	uint16_t 	*outp;
-	float	 	y = 0;
 	float	 	yL, yR ;
-	float 		f1;
 	uint16_t 	valueL, valueR;
 
 	outp = buf;
@@ -136,7 +136,7 @@ void make_sound(uint16_t *buf , uint16_t length) // To be used with the Sequence
 }
 
 
-void BSP_AUDIO_OUT_TransferComplete_CallBack(void)
+extern "C" void BSP_AUDIO_OUT_TransferComplete_CallBack(void)
 {
 	BSP_LED_Off(LED4);
 	make_sound((uint16_t *)(audiobuff + BUFF_LEN_DIV2), BUFF_LEN_DIV4);
@@ -144,13 +144,13 @@ void BSP_AUDIO_OUT_TransferComplete_CallBack(void)
     //BSP_AUDIO_OUT_Play((uint16_t*)&audiobuff[0], 2*BUFF_LEN);
 }
 
-void BSP_AUDIO_OUT_HalfTransfer_CallBack(void)
+extern "C" void BSP_AUDIO_OUT_HalfTransfer_CallBack(void)
 {
 	BSP_LED_On(LED4);
 	make_sound((uint16_t *)audiobuff, BUFF_LEN_DIV4);
 }
 
-void BSP_AUDIO_OUT_Error_Callback(void)
+extern "C" void BSP_AUDIO_OUT_Error_Callback(void)
 {
     //while(1) {
         BSP_LED_On(LED6);
