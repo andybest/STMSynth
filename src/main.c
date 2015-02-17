@@ -138,17 +138,16 @@ void make_sound(uint16_t *buf , uint16_t length) // To be used with the Sequence
 
 void BSP_AUDIO_OUT_TransferComplete_CallBack(void)
 {
-	BSP_LED_Toggle(LED4);
+	BSP_LED_Off(LED4);
 	make_sound((uint16_t *)(audiobuff + BUFF_LEN_DIV2), BUFF_LEN_DIV4);
 	//BSP_LED_On(LED4);
-    BSP_AUDIO_OUT_Play((uint16_t*)&audiobuff[0], 2*BUFF_LEN);
+    //BSP_AUDIO_OUT_Play((uint16_t*)&audiobuff[0], 2*BUFF_LEN);
 }
 
 void BSP_AUDIO_OUT_HalfTransfer_CallBack(void)
 {
-	
+	BSP_LED_On(LED4);
 	make_sound((uint16_t *)audiobuff, BUFF_LEN_DIV4);
-	//BSP_LED_On(LED4);
 }
 
 void BSP_AUDIO_OUT_Error_Callback(void)
