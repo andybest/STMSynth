@@ -73,9 +73,14 @@ int main(void)
   
   while (1)
   {
-      BSP_LED_Off(LED4);
+      printf("Led Run! %u\r\n", HAL_GetTick());
+      BSP_LED_Toggle(LED3);
       HAL_Delay(200);
-      BSP_LED_On(LED4);
+      BSP_LED_Toggle(LED5);
+      HAL_Delay(200);
+      BSP_LED_Toggle(LED6);
+      HAL_Delay(200);
+      BSP_LED_Toggle(LED4);
       HAL_Delay(200);
   }
 }
