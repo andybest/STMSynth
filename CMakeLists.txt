@@ -17,7 +17,9 @@ include_directories(
 set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -T${CMAKE_SOURCE_DIR}/CMake/STM32F407VG_FLASH.ld")
 
 add_executable(${OUTPUT_NAME}.elf
-    Src/main.c
+    src/main.c
+    src/system_stm32f4xx.c
+    src/stm32f4xx_it.c
     ${STM32_SOURCES}
     ${STM32_STARTUP_SOURCE}
 )

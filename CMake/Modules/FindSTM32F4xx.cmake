@@ -25,7 +25,6 @@ set(STM32_INCLUDE_DIRS
 
 file(GLOB STM32_SOURCES 
     ${STM32_DRIVERS_ROOT_DIR}/STM32F4xx_HAL_Driver/src/*.c
-    ${STM32_DRIVERS_ROOT_DIR}/CMSIS/Device/ST/STM32F4xx/Source/Templates/*.c
     ${STM32_DRIVERS_ROOT_DIR}/BSP/Components/Common/*.c
     ${STM32_DRIVERS_ROOT_DIR}/BSP/Components/cs43l22/*.c
     ${STM32_DRIVERS_ROOT_DIR}/BSP/Components/lis3dsh/*.c
