@@ -1,5 +1,7 @@
 # Set up toolchain
 
+INCLUDE(CMakeForceCompiler)
+
 set(CMAKE_SYSTEM_NAME      Generic)
 set(CMAKE_SYSTEM_VERSION   1)
 set(CMAKE_SYSTEM_PROCESSOR arm-eabi)
@@ -9,6 +11,10 @@ set(CMAKE_CXX_COMPILER     arm-none-eabi-g++)
 set(CMAKE_ASM_COMPILER     arm-none-eabi-as)
 set(CMAKE_OBJCOPY     	   arm-none-eabi-objcopy)
 set(CMAKE_OBJDUMP     	   arm-none-eabi-objdump)
+
+# This is required to pass initial compiler test
+CMAKE_FORCE_C_COMPILER(arm-none-eabi-gcc GNU)
+CMAKE_FORCE_CXX_COMPILER(arm-none-eabi-g++ GNU)
 
 set(TOOLCHAIN_INC_DIR "/opt/gcc-arm-none-eabi/arm-none-eabi/include")
 set(TOOCHAIN_LIB_DIR "/opt/gcc-arm-none-eabi/arm-none-eabi/lib")
