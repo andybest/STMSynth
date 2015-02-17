@@ -16,9 +16,19 @@ set(STM32_INCLUDE_DIRS
     ${STM32_DRIVERS_ROOT_DIR}/CMSIS/Include
     ${STM32_DRIVERS_ROOT_DIR}/CMSIS/Device/ST/STM32F4xx/Include
     ${STM32_DRIVERS_ROOT_DIR}/STM32F4xx_HAL_Driver/Inc
+    ${STM32_DRIVERS_ROOT_DIR}/BSP/Components/Common
+    ${STM32_DRIVERS_ROOT_DIR}/BSP/Components/cs43l22
+    ${STM32_DRIVERS_ROOT_DIR}/BSP/Components/lis3dsh
+    ${STM32_DRIVERS_ROOT_DIR}/BSP/Components/lis302dl
+    ${STM32_DRIVERS_ROOT_DIR}/BSP/STM32F4-Discovery
 )
 
 file(GLOB STM32_SOURCES 
     ${STM32_DRIVERS_ROOT_DIR}/STM32F4xx_HAL_Driver/src/*.c
     ${STM32_DRIVERS_ROOT_DIR}/CMSIS/Device/ST/STM32F4xx/Source/Templates/*.c
+    ${STM32_DRIVERS_ROOT_DIR}/BSP/Components/Common/*.c
+    ${STM32_DRIVERS_ROOT_DIR}/BSP/Components/cs43l22/*.c
+    ${STM32_DRIVERS_ROOT_DIR}/BSP/Components/lis3dsh/*.c
+    ${STM32_DRIVERS_ROOT_DIR}/BSP/Components/lis302dl/*.c
+    ${STM32_DRIVERS_ROOT_DIR}/BSP/STM32F4-Discovery/*.c
 )
