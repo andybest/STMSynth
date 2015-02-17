@@ -30,6 +30,9 @@
 
 
 static void SystemClock_Config(void);
+void make_sound(uint16_t *buf , uint16_t length);
+
+uint16_t 			audiobuff[BUFF_LEN];
 
 /* Private functions ---------------------------------------------------------*/
 
@@ -64,25 +67,95 @@ int main(void)
   
   /* Turn ON LED4: start of application */
   BSP_LED_On(LED3);
-  BSP_LED_On(LED4);
-  BSP_LED_On(LED5);
-  BSP_LED_On(LED6);
+  //BSP_LED_On(LED4);
+  //BSP_LED_On(LED5);
+  //BSP_LED_On(LED6);
   
   /* Configure USER Button */
   //BSP_PB_Init(BUTTON_KEY, BUTTON_MODE_EXTI);
   
+  BSP_AUDIO_OUT_Init(OUTPUT_DEVICE_AUTO, 70, 48000);
+  BSP_AUDIO_OUT_Play((uint16_t*)&audiobuff[0], 2*BUFF_LEN);
+  
+  
   while (1)
   {
-      printf("Led Run! %u\r\n", HAL_GetTick());
+      //printf("Led Run! %u\r\n", HAL_GetTick());
       BSP_LED_Toggle(LED3);
       HAL_Delay(200);
-      BSP_LED_Toggle(LED5);
-      HAL_Delay(200);
-      BSP_LED_Toggle(LED6);
-      HAL_Delay(200);
-      BSP_LED_Toggle(LED4);
-      HAL_Delay(200);
+      //BSP_LED_Toggle(LED5);
+      //HAL_Delay(200);
+      //BSP_LED_Toggle(LED6);
+      //HAL_Delay(200);
+      //BSP_LED_Toggle(LED4);
+      //HAL_Delay(200);
   }
+}
+
+void make_sound(uint16_t *buf , uint16_t length) // To be used with the Sequencer
+{
+
+	uint16_t 	pos;
+	uint16_t 	*outp;
+	float	 	y = 0;
+	float	 	yL, yR ;
+	float 		f1;
+	uint16_t 	valueL, valueR;
+
+	outp = buf;
+    
+    int accum = 0;
+    int phase = 0;
+    
+	for (pos = 0; pos < length; pos++)
+	{
+        if(accum > 50) {
+            accum = 0;
+            if(phase)
+                phase = 0;
+            else
+                phase = 1;
+        }
+        accum += 1;
+        
+        if(phase) {
+            yL = 1.0f;
+            yR = 1.0f;
+        } else {
+            yL = -1.0f;
+            yR = -1.0f;
+        }
+
+		valueL = (uint16_t)((int16_t)((32767.0f) * yL)); // conversion float -> int
+		valueR = (uint16_t)((int16_t)((32767.0f) * yR));
+
+		*outp++ = valueL; // left channel sample
+		*outp++ = valueR; // right channel sample
+	}
+
+}
+
+
+void BSP_AUDIO_OUT_TransferComplete_CallBack(void)
+{
+	BSP_LED_Toggle(LED4);
+	make_sound((uint16_t *)(audiobuff + BUFF_LEN_DIV2), BUFF_LEN_DIV4);
+	//BSP_LED_On(LED4);
+    BSP_AUDIO_OUT_Play((uint16_t*)&audiobuff[0], 2*BUFF_LEN);
+}
+
+void BSP_AUDIO_OUT_HalfTransfer_CallBack(void)
+{
+	
+	make_sound((uint16_t *)audiobuff, BUFF_LEN_DIV4);
+	//BSP_LED_On(LED4);
+}
+
+void BSP_AUDIO_OUT_Error_Callback(void)
+{
+    //while(1) {
+        BSP_LED_On(LED6);
+        //}
 }
 
 
