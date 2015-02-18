@@ -10,6 +10,9 @@ include(CMake/STM32.cmake)
 set(SYNTHIA_INCLUDES ${CMAKE_SOURCE_DIR}/src/synthia)
 file(GLOB SYNTHIA_SOURCES ${CMAKE_SOURCE_DIR}/src/synthia/*.cc)
 
+#set(USB_CORE_INCLUDES ${CMAKE_SOURCE_DIR}/Middleware/STM32_USB_Device_Library/Core/Inc)
+#file(GLOB USB_CORE_SOURCES ${CMAKE_SOURCE_DIR}/Middleware/STM32_USB_Device_Library/Core/Src/*.c)
+
 include_directories(
     ${CMAKE_SOURCE_DIR}/Src
     ${SYNTHIA_INCLUDES}

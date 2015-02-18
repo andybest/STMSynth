@@ -3,18 +3,20 @@
 #include "main.h"
 
 #include "SynthContext.h"
-#include "SineOscillator.h"
+#include "PulseOscillator.h"
+#include "Lowpass.h"
 
 using namespace Synthia;
 
 static void SystemClock_Config(void);
 void make_sound(uint16_t *buf , uint16_t length);
 
-uint16_t 			audiobuff[BUFF_LEN];
+uint16_t audiobuff[BUFF_LEN];
 
 SynthContext synthContext(48000);
-SineOscillator osc1;
-SineOscillator lfo1;
+PulseOscillator osc1;
+PulseOscillator lfo1;
+Lowpass filt1;
 
 int main(void)
 {
@@ -31,6 +33,8 @@ int main(void)
   
   BSP_LED_On(LED3);
   
+  BSP_ACCELERO_Init();
+  
   /* Configure USER Button */
   //BSP_PB_Init(BUTTON_KEY, BUTTON_MODE_EXTI);
   
@@ -40,17 +44,24 @@ int main(void)
   lfo1.init(&synthContext);
   lfo1.setFrequency(2.0f);
   
+  filt1.init(&synthContext);
+  filt1.setResonance(0.8f);
+  filt1.setCutoff(22000.0f);
+  
   BSP_AUDIO_OUT_Init(OUTPUT_DEVICE_AUTO, 70, 48000);
-  BSP_AUDIO_OUT_SetVolume(60);
+  BSP_AUDIO_OUT_SetVolume(80);
   
   BSP_AUDIO_OUT_Play((uint16_t*)&audiobuff[0], 2*BUFF_LEN);
   
+  int16_t accelData[3];
   
   while (1)
   {
-      //printf("Led Run! %u\r\n", HAL_GetTick());
-      BSP_LED_Toggle(LED3);
-      HAL_Delay(200);
+      HAL_Delay(20);
+      BSP_ACCELERO_GetXYZ(accelData);
+      float val = accelData[0] / 2000.0f;
+      filt1.setCutoff(accelData[2]);
+      osc1.setFrequency(220.0f + (220.0f * val));
   }
 }
 
@@ -65,10 +76,10 @@ void make_sound(uint16_t *buf , uint16_t length)
     
 	for (pos = 0; pos < length; pos++)
 	{
-        float lfoSamp = lfo1.tick(0);
-        osc1.setFrequency(220.0f + (220.0f * lfoSamp));
+        //float lfoSamp = lfo1.tick(0);
+        //osc1.setFrequency(220.0f + (220.0f * lfoSamp));
         
-        float samp = osc1.tick(0);
+        float samp = filt1.tick(0, osc1.tick(0));
         yL = samp;
         yR = samp;
 

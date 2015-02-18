@@ -15,9 +15,9 @@ namespace Synthia
 
     void SoundLoop::loadFile(string filePath)
     {
-        _soundFile = new SoundFile();
-        _soundFile->loadWav(filePath);
-        sampIdx = new int[_soundFile->channels()];
+        //_soundFile = new SoundFile();
+        //_soundFile->loadWav(filePath);
+        //sampIdx = new int[_soundFile->channels()];
     }
 
     float SoundLoop::tick(int channel)

@@ -25,7 +25,7 @@ namespace Synthia {
     {
         if(!_soundFile)
         {
-            _soundFile = new SoundFile();
+            //_soundFile = new SoundFile();
         }
         
         _soundFile->loadWav(filename);
