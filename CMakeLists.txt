@@ -1,5 +1,3 @@
-
-
 project(STMSynth C CXX ASM)
 cmake_minimum_required(VERSION 2.8)
 
@@ -9,8 +7,12 @@ set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/CMake/Modules)
 
 include(CMake/STM32.cmake)
 
+set(SYNTHIA_INCLUDES ${CMAKE_SOURCE_DIR}/src/synthia)
+file(GLOB SYNTHIA_SOURCES ${CMAKE_SOURCE_DIR}/src/synthia/*.cc)
+
 include_directories(
     ${CMAKE_SOURCE_DIR}/Src
+    ${SYNTHIA_INCLUDES}
     ${STM32_INCLUDE_DIRS}
 )
 
@@ -18,8 +20,10 @@ set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -T${CMAKE_SOURCE_DIR}/CMak
 
 add_executable(${OUTPUT_NAME}.elf
     src/main.cc
+    src/syscalls.c
     src/system_stm32f4xx.c
     src/stm32f4xx_it.c
+    ${SYNTHIA_SOURCES}
     ${STM32_SOURCES}
     ${STM32_STARTUP_SOURCE}
 )

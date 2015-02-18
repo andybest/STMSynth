@@ -7,12 +7,8 @@
 #include "SObject.h"
 #include "SynthContext.h"
 
-#include <memory>
-
 #ifndef __Generator_H_
 #define __Generator_H_
-
-using std::shared_ptr;
 
 namespace Synthia
 {

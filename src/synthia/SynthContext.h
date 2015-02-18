@@ -15,6 +15,7 @@ namespace Synthia
     class SynthContext : public SObject
     {
     public:
+        SynthContext(float sampleRate) { setSampleRate(sampleRate); }
         float sampleRate() { return _sampleRate; }
         void setSampleRate(float sr) { _sampleRate = sr; }
     private:

@@ -51,10 +51,10 @@ namespace Synthia {
     {
         _interpolationType = interpType;
         
-        if(_interpolationType == kWavetableInterpolationNone)
+        /*if(_interpolationType == kWavetableInterpolationNone)
             cout << "No interpolation" << endl;
         else
-            cout << "Linear interpolation" << endl;
+            cout << "Linear interpolation" << endl;*/
     }
     
     void WavetableOscillator::retrigger()

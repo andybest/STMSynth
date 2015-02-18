@@ -1,81 +1,47 @@
-/**
-  ******************************************************************************
-  * @file    Audio/Audio_playback_and_record/Src/main.c 
-  * @author  MCD Application Team
-  * @version V1.2.0
-  * @date    26-December-2014
-  * @brief   Main program body.
-  ******************************************************************************
-  * @attention
-  *
-  * <h2><center>&copy; COPYRIGHT(c) 2014 STMicroelectronics</center></h2>
-  *
-  * Licensed under MCD-ST Liberty SW License Agreement V2, (the "License");
-  * You may not use this file except in compliance with the License.
-  * You may obtain a copy of the License at:
-  *
-  *        http://www.st.com/software_license_agreement_liberty_v2
-  *
-  * Unless required by applicable law or agreed to in writing, software 
-  * distributed under the License is distributed on an "AS IS" BASIS, 
-  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  * See the License for the specific language governing permissions and
-  * limitations under the License.
-  *
-  ******************************************************************************
-  */ 
-
+ 
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 
+#include "SynthContext.h"
+#include "SineOscillator.h"
+
+using namespace Synthia;
 
 static void SystemClock_Config(void);
 void make_sound(uint16_t *buf , uint16_t length);
 
 uint16_t 			audiobuff[BUFF_LEN];
 
-/* Private functions ---------------------------------------------------------*/
+SynthContext synthContext(48000);
+SineOscillator osc1;
+SineOscillator lfo1;
 
-/**
-  * @brief  Main program
-  * @param  None
-  * @retval None
-  */
 int main(void)
 {
-  /* STM32F4xx HAL library initialization:
-     - Configure the Flash prefetch, instruction and Data caches
-     - Configure the Systick to generate an interrupt each 1 msec
-     - Set NVIC Group Priority to 4
-     - Global MSP (MCU Support Package) initialization
-  */
   HAL_Init();
   
-  /* Configure LED3, LED4, LED5 and LED6 */
   BSP_LED_Init(LED3);
   BSP_LED_Init(LED4);
   BSP_LED_Init(LED5);
   BSP_LED_Init(LED6);
   
-  /* Configure the system clock to 168 MHz */
   SystemClock_Config();
-  
-  /* System interrupt init*/
-  /* Sets the priority grouping field */
   HAL_NVIC_SetPriorityGrouping(NVIC_PRIORITYGROUP_0);
   HAL_NVIC_SetPriority(SysTick_IRQn, 0, 0);
   
-  /* Turn ON LED4: start of application */
   BSP_LED_On(LED3);
-  //BSP_LED_On(LED4);
-  //BSP_LED_On(LED5);
-  //BSP_LED_On(LED6);
   
   /* Configure USER Button */
   //BSP_PB_Init(BUTTON_KEY, BUTTON_MODE_EXTI);
   
+  osc1.init(&synthContext);
+  osc1.setFrequency(440.0f);
+  
+  lfo1.init(&synthContext);
+  lfo1.setFrequency(2.0f);
+  
   BSP_AUDIO_OUT_Init(OUTPUT_DEVICE_AUTO, 70, 48000);
-  BSP_AUDIO_OUT_SetVolume(40);
+  BSP_AUDIO_OUT_SetVolume(60);
   
   BSP_AUDIO_OUT_Play((uint16_t*)&audiobuff[0], 2*BUFF_LEN);
   
@@ -85,18 +51,11 @@ int main(void)
       //printf("Led Run! %u\r\n", HAL_GetTick());
       BSP_LED_Toggle(LED3);
       HAL_Delay(200);
-      //BSP_LED_Toggle(LED5);
-      //HAL_Delay(200);
-      //BSP_LED_Toggle(LED6);
-      //HAL_Delay(200);
-      //BSP_LED_Toggle(LED4);
-      //HAL_Delay(200);
   }
 }
 
-void make_sound(uint16_t *buf , uint16_t length) // To be used with the Sequencer
+void make_sound(uint16_t *buf , uint16_t length)
 {
-
 	uint16_t 	pos;
 	uint16_t 	*outp;
 	float	 	yL, yR ;
@@ -104,27 +63,14 @@ void make_sound(uint16_t *buf , uint16_t length) // To be used with the Sequence
 
 	outp = buf;
     
-    int accum = 0;
-    int phase = 0;
-    
 	for (pos = 0; pos < length; pos++)
 	{
-        if(accum > 50) {
-            accum = 0;
-            if(phase)
-                phase = 0;
-            else
-                phase = 1;
-        }
-        accum += 1;
+        float lfoSamp = lfo1.tick(0);
+        osc1.setFrequency(220.0f + (220.0f * lfoSamp));
         
-        if(phase) {
-            yL = 1.0f;
-            yR = 1.0f;
-        } else {
-            yL = -1.0f;
-            yR = -1.0f;
-        }
+        float samp = osc1.tick(0);
+        yL = samp;
+        yR = samp;
 
 		valueL = (uint16_t)((int16_t)((32767.0f) * yL)); // conversion float -> int
 		valueR = (uint16_t)((int16_t)((32767.0f) * yR));
@@ -140,8 +86,6 @@ extern "C" void BSP_AUDIO_OUT_TransferComplete_CallBack(void)
 {
 	BSP_LED_Off(LED4);
 	make_sound((uint16_t *)(audiobuff + BUFF_LEN_DIV2), BUFF_LEN_DIV4);
-	//BSP_LED_On(LED4);
-    //BSP_AUDIO_OUT_Play((uint16_t*)&audiobuff[0], 2*BUFF_LEN);
 }
 
 extern "C" void BSP_AUDIO_OUT_HalfTransfer_CallBack(void)
@@ -222,13 +166,6 @@ void Error_Handler(void)
 
 #ifdef USE_FULL_ASSERT
 
-/**
-  * @brief  Reports the name of the source file and the source line number
-  *         where the assert_param error has occurred.
-  * @param  file: pointer to the source file name
-  * @param  line: assert_param error line source number
-  * @retval None
-  */
 void assert_failed(uint8_t* file, uint32_t line)
 { 
   /* User can add his own implementation to report the file name and line number,
@@ -240,9 +177,3 @@ void assert_failed(uint8_t* file, uint32_t line)
   }
 }
 #endif
-
-/**
-  * @}
-  */ 
-  
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

@@ -1,30 +1,4 @@
-/**
-  ******************************************************************************
-  * @file    Audio/Audio_playback_and_record/Inc/main.h
-  * @author  MCD Application Team
-  * @version V1.2.0
-  * @date    26-December-2014
-  * @brief   Header for main.c module.
-  ******************************************************************************
-  * @attention
-  *
-  * <h2><center>&copy; COPYRIGHT(c) 2014 STMicroelectronics</center></h2>
-  *
-  * Licensed under MCD-ST Liberty SW License Agreement V2, (the "License");
-  * You may not use this file except in compliance with the License.
-  * You may obtain a copy of the License at:
-  *
-  *        http://www.st.com/software_license_agreement_liberty_v2
-  *
-  * Unless required by applicable law or agreed to in writing, software 
-  * distributed under the License is distributed on an "AS IS" BASIS, 
-  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  * See the License for the specific language governing permissions and
-  * limitations under the License.
-  *
-  ******************************************************************************
-  */ 
-  
+
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __MAIN_H
 #define __MAIN_H
@@ -36,11 +10,6 @@
 #include "stm32f4_discovery_accelerometer.h"
 #include <stdio.h>
 #include "stm32f4xx_it.h"
-
-/* Exported types ------------------------------------------------------------*/
-/* Exported constants --------------------------------------------------------*/
-/* Uncomment this define to disable repeat feature */
-/* #define PLAY_REPEAT_DISABLED */
 
 typedef enum
 {
@@ -69,6 +38,7 @@ void Error_Handler(void);
 #define BUFF_LEN_DIV4           500 // number of samples in the audiobuffer for each channel <==> XX ms latency at 48kHz
 #define BUFF_LEN_DIV2           (2*BUFF_LEN_DIV4)
 #define BUFF_LEN                (4*BUFF_LEN_DIV4)  // Audio buffer length :
+
 
 #endif /* __MAIN_H */
 

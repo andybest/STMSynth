@@ -5,10 +5,10 @@
 
 #include "SoundFile.h"
 
-#include <fstream>
-#include <iostream>
+//#include <fstream>
+//#include <iostream>
 
-#include "SEndian.h"
+//#include "SEndian.h"
 
 
 using namespace std;
@@ -35,6 +35,7 @@ namespace Synthia
     
     void SoundFile::loadWav(string path)
     {
+#if 0
         ifstream wavFile;
 
         try
@@ -156,5 +157,7 @@ namespace Synthia
         }
 
         delete[] fileBuffer;
+#endif
     }
+        
 }
