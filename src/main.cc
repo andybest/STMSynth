@@ -9,6 +9,7 @@
 using namespace Synthia;
 
 static void SystemClock_Config(void);
+void initUSB(void);
 void make_sound(uint16_t *buf , uint16_t length);
 
 uint16_t audiobuff[BUFF_LEN];
@@ -17,6 +18,9 @@ SynthContext synthContext(48000);
 PulseOscillator osc1;
 PulseOscillator lfo1;
 Lowpass filt1;
+
+/* Variables used for USB */
+USBD_HandleTypeDef  hUSBDDevice;
 
 int main(void)
 {
@@ -30,6 +34,8 @@ int main(void)
   SystemClock_Config();
   HAL_NVIC_SetPriorityGrouping(NVIC_PRIORITYGROUP_0);
   HAL_NVIC_SetPriority(SysTick_IRQn, 0, 0);
+  
+  initUSB();
   
   BSP_LED_On(LED3);
   
@@ -63,6 +69,18 @@ int main(void)
       filt1.setCutoff(accelData[2]);
       osc1.setFrequency(220.0f + (220.0f * val));
   }
+}
+
+void initUSB(void)
+{
+    /* Init Device Library */
+    USBD_Init(&hUSBDDevice, &MIDI_Desc, 0);
+  
+    /* Add Supported Class */
+    USBD_RegisterClass(&hUSBDDevice, USBD_MIDI_CLASS);
+  
+    /* Start Device Process */
+    USBD_Start(&hUSBDDevice);
 }
 
 void make_sound(uint16_t *buf , uint16_t length)

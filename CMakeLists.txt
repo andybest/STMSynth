@@ -10,12 +10,20 @@ include(CMake/STM32.cmake)
 set(SYNTHIA_INCLUDES ${CMAKE_SOURCE_DIR}/src/synthia)
 file(GLOB SYNTHIA_SOURCES ${CMAKE_SOURCE_DIR}/src/synthia/*.cc)
 
-#set(USB_CORE_INCLUDES ${CMAKE_SOURCE_DIR}/Middleware/STM32_USB_Device_Library/Core/Inc)
-#file(GLOB USB_CORE_SOURCES ${CMAKE_SOURCE_DIR}/Middleware/STM32_USB_Device_Library/Core/Src/*.c)
+set(USB_CORE_INCLUDES ${CMAKE_SOURCE_DIR}/Middleware/STM32_USB_Device_Library/Core/Inc)
+file(GLOB USB_CORE_SOURCES
+    ${CMAKE_SOURCE_DIR}/Middleware/STM32_USB_Device_Library/Core/Src/*.c
+)
+
+set(USB_OTG_INCLUDES ${CMAKE_SOURCE_DIR}/Middleware/STM32_USB_OTG_Driver/inc)
+file(GLOB USB_OTG_SOURCES ${CMAKE_SOURCE_DIR}/Middleware/STM32_USB_OTG_Driver/src/*.c)
 
 include_directories(
-    ${CMAKE_SOURCE_DIR}/Src
+    ${CMAKE_SOURCE_DIR}/src
+    ${CMAKE_SOURCE_DIR}/src/usb
     ${SYNTHIA_INCLUDES}
+    ${USB_CORE_INCLUDES}
+    #${USB_OTG_INCLUDES}
     ${STM32_INCLUDE_DIRS}
 )
 
@@ -26,6 +34,12 @@ add_executable(${OUTPUT_NAME}.elf
     src/syscalls.c
     src/system_stm32f4xx.c
     src/stm32f4xx_it.c
+    src/usb/usbd_conf.c
+    src/usb/usbd_desc.c
+    src/usb/usbd_midi.c
+    src/usb/usbd_hid.c
+    
+    ${USB_CORE_SOURCES}
     ${SYNTHIA_SOURCES}
     ${STM32_SOURCES}
     ${STM32_STARTUP_SOURCE}

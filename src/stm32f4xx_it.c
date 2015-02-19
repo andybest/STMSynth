@@ -29,6 +29,7 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "stm32f4xx_it.h"
 
 /** @addtogroup STM32F4-Discovery_Audio_Player_Recorder
   * @{
@@ -44,7 +45,8 @@ extern I2S_HandleTypeDef       hAudioOutI2s;
 
 extern I2S_HandleTypeDef       hAudioInI2s;
  __IO uint32_t TimeRecBase = 0;  /* Time Recording base variable */
- extern HCD_HandleTypeDef hHCD;
+// extern HCD_HandleTypeDef hHCD;
+ extern PCD_HandleTypeDef hpcd;
 
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
@@ -218,6 +220,7 @@ void TIM4_IRQHandler(void)
 void OTG_FS_IRQHandler(void)
 {
   //HAL_HCD_IRQHandler(&hHCD);
+    HAL_PCD_IRQHandler(&hpcd);
 }
 
 /**

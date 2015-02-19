@@ -11,6 +11,11 @@
 #include <stdio.h>
 #include "stm32f4xx_it.h"
 
+#include "usbd_core.h"
+#include "usbd_desc.h"
+#include "usbd_midi.h"
+#include "usbd_hid.h"
+
 typedef enum
 {
   APPLICATION_IDLE = 0,  
