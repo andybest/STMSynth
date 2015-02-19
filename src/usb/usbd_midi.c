@@ -48,6 +48,8 @@
 #include "usbd_desc.h"
 #include "usbd_ctlreq.h"
 
+#include <stdio.h>
+
 
 /** @addtogroup STM32_USB_DEVICE_LIBRARY
 * @{
@@ -319,7 +321,7 @@ static uint8_t  USBD_MIDI_Init (USBD_HandleTypeDef *pdev,
 uint8_t cfgidx)
 {
     uint8_t ret = 0;
-  
+    printf("USBD_MIDI_Init\r\n");
 
     return ret;
 }
@@ -334,7 +336,7 @@ uint8_t cfgidx)
 static uint8_t  USBD_MIDI_DeInit (USBD_HandleTypeDef *pdev, 
 uint8_t cfgidx)
 {
-
+    printf("USBD_MIDI_DeInit\r\n");
     return USBD_OK;
 }
 
@@ -348,7 +350,7 @@ uint8_t cfgidx)
 static uint8_t  USBD_MIDI_Setup (USBD_HandleTypeDef *pdev, 
 USBD_SetupReqTypedef *req)
 {
- 
+     printf("USBD_MIDI_Setup\r\n");
     switch (req->bmRequest & USB_REQ_TYPE_MASK)
     {
         case USB_REQ_TYPE_CLASS :  

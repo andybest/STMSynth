@@ -73,8 +73,6 @@ int main(void)
       filt1.setCutoff(accelData[2]);
       osc1.setFrequency(220.0f + (220.0f * val));*/
       
-      printf("Hello, world! %lu\r\n", HAL_GetTick());
-      
       HAL_Delay(500);
   }
 }
