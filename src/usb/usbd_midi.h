@@ -52,7 +52,7 @@
 #define MIDI_EPIN_ADDR                 0x81
 #define MIDI_EPIN_SIZE                 0x10
 
-#define USB_MIDI_CONFIG_DESC_SIZ       86
+#define USB_MIDI_CONFIG_DESC_SIZ       101
 
 // Descriptor types
 #define MS_DESCRIPTOR_UNDEFINED_DESCRIPTOR_TYPE     0x00

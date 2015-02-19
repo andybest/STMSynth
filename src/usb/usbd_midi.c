@@ -152,15 +152,15 @@ USBD_ClassTypeDef  USBD_MIDI_ClassDriver =
 static uint8_t USBD_MIDI_CfgDesc[USB_MIDI_CONFIG_DESC_SIZ] =
 {
     // CONFIGURATION DESCRIPTOR (9)
-    0x09, /* bLength: Configuation Descriptor size */
-    USB_DESC_TYPE_OTHER_SPEED_CONFIGURATION, /* bDescriptorType: Configuration */
-    USB_MIDI_CONFIG_DESC_SIZ, /* wTotalLength: Bytes returned */
-    0x00,                           //Size padding
-    0x02,         //bNumInterfaces: 2 interfaces (Standard AC Int., MIDI Streaming Int.)
-    0x01,         //bConfigurationValue: Configuration value
-    0x00,         //iConfiguration: Unused
-    0x80,         //bmAttributes: bus powered and does not support remote wakeup
-    0x32,         //MaxPower 100 mA: this current is used for detecting Vbus
+    0x09,                                   // bLength: Configuation Descriptor size */
+    USB_DESC_TYPE_OTHER_SPEED_CONFIGURATION,// bDescriptorType: Configuration */
+    USB_MIDI_CONFIG_DESC_SIZ,               // wTotalLength: Bytes returned 
+    0x00,                                   //          Second byte of above
+    0x02,                                   // bNumInterfaces: 2 interfaces (Standard AC Int., MIDI Streaming Int.)
+    0x01,                                   // bConfigurationValue: Configuration value
+    0x00,                                   // iConfiguration: Unused
+    0x80,                                   // bmAttributes: bus powered and does not support remote wakeup
+    0x32,                                   // MaxPower 100 mA: this current is used for detecting Vbus
     /* 09 */
   
     // AUDIO CONTROL INTERFACE DESCRIPTOR (9)
@@ -188,7 +188,7 @@ static uint8_t USBD_MIDI_CfgDesc[USB_MIDI_CONFIG_DESC_SIZ] =
     
     // STANDARD MIDI STREAMING INTERFACE DESCRIPTOR (9)
     0x09,                       // bLength
-    USB_DESC_TYPE_INTERFACE,    // bDescriptorType
+    0x04,                       // bDescriptorType
     0x01,                       // bInterfaceNumber: Index of this interface
     0x00,                       // bAlternateSetting: Index of this alt. setting
     0x02,                       // bNumEndpoints: 2 endpoints (bulk in, bulk out)
@@ -199,27 +199,46 @@ static uint8_t USBD_MIDI_CfgDesc[USB_MIDI_CONFIG_DESC_SIZ] =
     
     // CLASS SPECIFIC MIDI STREAMING INTERFACE DESCRIPTOR (7)
     0x07,                       // bLength
-    USB_DESC_TYPE_INTERFACE,    // bDescriptorType
-    MS_HEADER_DESCRIPTOR_TYPE, // bDescriptorSubType
+    0x24,                       // bDescriptorType
+    0x01,                       // bDescriptorSubType: MS_HEADER
     0x00,                       // BcdADC: Revision of class spec.
     0x10,                       //          second byte of above
-    0x32,                       // wTotalLength: Total length of class-specific descriptors
+    0x41,                       // wTotalLength: Total length of class-specific descriptors
     0x00,                       //          second byte of above
     
     // MIDI IN JACK DESCRIPTOR (6)
     0x06,                           // bLength
-    USB_DESC_TYPE_INTERFACE,        // bDescriptorType
-    MIDI_IN_JACK_DESCRIPTOR_TYPE,   // bDescriptorSubtype
-    MIDI_JACK_TYPE_EMBEDDED,        // bJackType
+    0x24,                           // bDescriptorType
+    0x02,                           // bDescriptorSubtype: Midi in jack
+    0x01,                           // bJackType: Embedded
     0x01,                           // bJackID: ID of this jack
+    0x00,                           // iJack: Unused
+    
+    // MIDI IN JACK DESCRIPTOR (6)
+    0x06,                           // bLength
+    0x24,                           // bDescriptorType
+    0x02,                           // bDescriptorSubtype: Midi in jack
+    0x02,                           // bJackType: External
+    0x02,                           // bJackID: ID of this jack
     0x00,                           // iJack: Unused
     
     // MIDI OUT JACK DESCRIPTOR (9)
     0x09,                           // bLength
-    USB_DESC_TYPE_INTERFACE,        // bDescriptorType
-    MIDI_OUT_JACK_DESCRIPTOR_TYPE,  // bDescriptorSubtype
-    MIDI_JACK_TYPE_EMBEDDED,        // bJackType
-    0x02,                           // bJackID: ID of this jack
+    0x24,                           // bDescriptorType
+    0x03,                           // bDescriptorSubtype: Midi out
+    0x01,                           // bJackType: Embedded
+    0x03,                           // bJackID: ID of this jack
+    0x01,                           // bNrInputPins
+    0x02,                           // BaSourceID
+    0x01,                           // BaSourcePin
+    0x00,                           // iJack: Unused
+    
+    // MIDI OUT JACK DESCRIPTOR (9)
+    0x09,                           // bLength
+    0x24,                           // bDescriptorType
+    0x03,                           // bDescriptorSubtype: Midi out
+    0x02,                           // bJackType: External
+    0x04,                           // bJackID: ID of this jack
     0x01,                           // bNrInputPins
     0x01,                           // BaSourceID
     0x01,                           // BaSourcePin
@@ -238,7 +257,7 @@ static uint8_t USBD_MIDI_CfgDesc[USB_MIDI_CONFIG_DESC_SIZ] =
     
     // CLASS SPECIFIC MIDI STREAMING BULK OUT ENDPOINT DESCRIPTOR (5)
     0x05,                           // bLength
-    USB_DESC_TYPE_ENDPOINT,         // bDescriptorType
+    0x25,                           // bDescriptorType
     MS_GENERAL_DESCRIPTOR_SUBTYPE,  // bDescriptorSubtype
     0x01,                           // bNumEmbMIDIJack: Num embedded jacks
     0x01,                           // BaAssocJackID: ID of embedded jack
@@ -256,7 +275,7 @@ static uint8_t USBD_MIDI_CfgDesc[USB_MIDI_CONFIG_DESC_SIZ] =
     
     // CLASS SPECIFIC MIDI STREAMING BULK IN ENDPOINT DESCRIPTOR (5)
     0x05,                           // bLength
-    USB_DESC_TYPE_ENDPOINT,         // bDescriptorType
+    0x25,                           // bDescriptorType
     MS_GENERAL_DESCRIPTOR_SUBTYPE,  // bDescriptorSubtype
     0x01,                           // bNumEmbMIDIJack: Num embedded jacks
     0x03,                           // BaAssocJackID: ID of embedded jack
