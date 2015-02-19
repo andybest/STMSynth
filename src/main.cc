@@ -9,6 +9,7 @@
 using namespace Synthia;
 
 static void SystemClock_Config(void);
+void initUART(void);
 void initUSB(void);
 void make_sound(uint16_t *buf , uint16_t length);
 
@@ -21,6 +22,8 @@ Lowpass filt1;
 
 /* Variables used for USB */
 USBD_HandleTypeDef  hUSBDDevice;
+
+UART_HandleTypeDef UartHandle;
 
 int main(void)
 {
@@ -35,6 +38,7 @@ int main(void)
   HAL_NVIC_SetPriorityGrouping(NVIC_PRIORITYGROUP_0);
   HAL_NVIC_SetPriority(SysTick_IRQn, 0, 0);
   
+  initUART();
   initUSB();
   
   BSP_LED_On(LED3);
@@ -63,11 +67,15 @@ int main(void)
   
   while (1)
   {
-      HAL_Delay(20);
+      /*HAL_Delay(20);
       BSP_ACCELERO_GetXYZ(accelData);
       float val = accelData[0] / 2000.0f;
       filt1.setCutoff(accelData[2]);
-      osc1.setFrequency(220.0f + (220.0f * val));
+      osc1.setFrequency(220.0f + (220.0f * val));*/
+      
+      printf("Hello, world! %lu\r\n", HAL_GetTick());
+      
+      HAL_Delay(500);
   }
 }
 
@@ -81,6 +89,24 @@ void initUSB(void)
   
     /* Start Device Process */
     USBD_Start(&hUSBDDevice);
+}
+
+void initUART(void)
+{
+    UartHandle.Instance          = USARTx;
+  
+    UartHandle.Init.BaudRate     = 9600;
+    UartHandle.Init.WordLength   = UART_WORDLENGTH_8B;
+    UartHandle.Init.StopBits     = UART_STOPBITS_1;
+    UartHandle.Init.Parity       = UART_PARITY_NONE;
+    UartHandle.Init.HwFlowCtl    = UART_HWCONTROL_NONE;
+    UartHandle.Init.Mode         = UART_MODE_TX_RX;
+    UartHandle.Init.OverSampling = UART_OVERSAMPLING_16;
+  
+    if(HAL_UART_Init(&UartHandle) != HAL_OK)
+    {
+        BSP_LED_On(LED6);
+    }
 }
 
 void make_sound(uint16_t *buf , uint16_t length)
@@ -176,6 +202,19 @@ static void SystemClock_Config(void)
     /* Enable the Flash prefetch */
     __HAL_FLASH_PREFETCH_BUFFER_ENABLE();
   }  
+}
+
+/**
+  * @brief  UART error callbacks
+  * @param  UartHandle: UART handle
+  * @note   This example shows a simple way to report transfer error, and you can
+  *         add your own implementation.
+  * @retval None
+  */
+void HAL_UART_ErrorCallback(UART_HandleTypeDef *UartHandle)
+{
+  /* Turn LED3 on: Transfer error in reception/transmission process */
+  BSP_LED_On(LED3); 
 }
 
 /**

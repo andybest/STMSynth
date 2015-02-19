@@ -34,6 +34,7 @@ add_executable(${OUTPUT_NAME}.elf
     src/syscalls.c
     src/system_stm32f4xx.c
     src/stm32f4xx_it.c
+    src/stm32f4xx_hal_msp.c
     src/usb/usbd_conf.c
     src/usb/usbd_desc.c
     src/usb/usbd_midi.c
