@@ -30,7 +30,7 @@
 #define __USB_MIDI_CORE_H
 
 #ifdef __cplusplus
- extern "C" {
+extern "C" {
 #endif
 
 /* Includes ------------------------------------------------------------------*/
@@ -79,14 +79,13 @@
   */ 
 
 
-/** @defgroup USBD_CORE_Exported_TypesDefinitions
-  * @{
-  */
-
-/**
-  * @}
-  */ 
-
+typedef struct {
+    uint8_t cableNumber:4;
+    uint8_t codeIndexNumber:4;
+    uint8_t midi0;
+    uint8_t midi1;
+    uint8_t midi2;
+} USB_MIDI_Event_Packet_TypeDef;
 
 
 /** @defgroup USBD_CORE_Exported_Macros

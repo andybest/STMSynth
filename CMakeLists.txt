@@ -4,6 +4,7 @@ cmake_minimum_required(VERSION 2.8)
 set(OUTPUT_NAME STMSynth)
 
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/CMake/Modules)
+set(CMAKE_EXPORT_COMPILE_COMMANDS "ON")
 
 include(CMake/STM32.cmake)
 

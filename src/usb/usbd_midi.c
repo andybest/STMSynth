@@ -411,7 +411,14 @@ uint8_t  *USBD_MIDI_DeviceQualifierDescriptor (uint16_t *length)
 static uint8_t  USBD_MIDI_DataIn (USBD_HandleTypeDef *pdev, 
 uint8_t epnum)
 {
+    printf("Got %lu bytes of data: ", pdev->ep0_data_len);
+    int i;
+    uint8_t *data = (uint8_t*)pdev->pData;
 
+    for(i=0; i < pdev->ep0_data_len; i++) {
+        printf("%X", data);
+    }
+    printf("\n");
     return USBD_OK;
 }
 
@@ -496,6 +503,12 @@ uint8_t  *USBD_MIDI_GetDeviceQualifierDesc (uint16_t *length)
 {
     *length = sizeof (USBD_MIDI_DeviceQualifierDesc);
     return USBD_MIDI_DeviceQualifierDesc;
+}
+
+void USB_MIDI_DecodeMidiMessage(uint8_t *data, uint32_t len)
+{
+
+
 }
 
 /**
