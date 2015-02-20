@@ -60,7 +60,7 @@ int main(void)
   
   initHardware();
   
-  osKernelStart();
+  //osKernelStart();
   
   osc1.init(&synthContext);
   osc1.setFrequency(440.0f);
