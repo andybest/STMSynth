@@ -73,6 +73,15 @@ extern "C" {
      // Control selectors
 #define MIDI_EP_CONTROL_UNDEFINED                   0x00
 #define MIDI_ASSOCIATION_CONTROL                    0x01
+     
+#define MIDI_DATA_OUT_EP                            0x01
+#define MIDI_DATA_IN_EP                             0x81
+     
+#define MIDI_DATA_IN_SIZE                           64
+#define MIDI_DATA_OUT_SIZE                          64
+     
+#define MIDI_TX_BUFFER_SIZE                         64
+#define MIDI_RX_BUFFER_SIZE                         64
 
 /**
   * @}
@@ -80,8 +89,8 @@ extern "C" {
 
 
 typedef struct {
-    uint8_t cableNumber:4;
     uint8_t codeIndexNumber:4;
+    uint8_t cableNumber:4;
     uint8_t midi0;
     uint8_t midi1;
     uint8_t midi2;

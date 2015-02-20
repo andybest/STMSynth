@@ -48,8 +48,7 @@
 #include "usbd_desc.h"
 #include "usbd_ctlreq.h"
 
-#include <stdio.h>
-
+#include "stm32f4_discovery.h"
 
 /** @addtogroup STM32_USB_DEVICE_LIBRARY
 * @{
@@ -176,18 +175,6 @@ static uint8_t USBD_MIDI_CfgDesc[USB_MIDI_CONFIG_DESC_SIZ] =
     0x00,                       // bInterfaceProtocol: unused
     0x00,                       // iInterface: unused
     
-    // CLASS SPECIFIC AUDIO CONTROL INTERFACE DESCRIPTOR (9)
-    0x09,                       // bLength
-    0x24,                       // bDescriptorType: CS_INTERFACE
-    0x01,                       // bDescriptorSubtype: Header subtype
-    0x00,                       // bcdADC: Revision of class spec.- 1.0
-    0x01,                       //          second byte of above
-    0x09,                       // wTotalLength: Total size of class specific desc.
-    0x00,                       //          second byte of above
-    0x01,                       // bInCollection: No. of streaming interfaces
-    0x01,                       // baInterfaceNr(1): MIDI Streaming interface belongs
-                                // to this control interface. 
-    
     // STANDARD MIDI STREAMING INTERFACE DESCRIPTOR (9)
     0x09,                       // bLength
     0x04,                       // bDescriptorType
@@ -198,6 +185,19 @@ static uint8_t USBD_MIDI_CfgDesc[USB_MIDI_CONFIG_DESC_SIZ] =
     0x03,                       // bInterfaceSubclass: MIDI Streaming
     0x00,                       // bInterfaceProtocol: Unused
     0x00,                       // iInterface: Unused
+    
+    // CLASS SPECIFIC AUDIO CONTROL INTERFACE DESCRIPTOR (9)
+    0x09,                       // bLength
+    0x24,                       // bDescriptorType: CS_INTERFACE
+    0x01,                       // bDescriptorSubtype: Header subtype
+    0x00,                       // bcdADC: Revision of class spec.- 1.0
+    0x01,                       //          second byte of above
+    0x09,                       // wTotalLength: Total size of class specific desc.
+    0x00,                       //          second byte of above
+    0x01,                       // bInCollection: No. of streaming interfaces
+    0x01,                       // baInterfaceNr(1): MIDI Streaming interface belongs
+                                // to this control interface.
+    
     
     // CLASS SPECIFIC MIDI STREAMING INTERFACE DESCRIPTOR (7)
     0x07,                       // bLength
@@ -317,12 +317,24 @@ static uint8_t USBD_MIDI_DeviceQualifierDesc[USB_LEN_DEV_QUALIFIER_DESC] =
 * @param  cfgidx: Configuration index
 * @retval status
 */
+
+uint8_t midiOutBuf[64];
+
 static uint8_t  USBD_MIDI_Init (USBD_HandleTypeDef *pdev, 
 uint8_t cfgidx)
 {
     uint8_t ret = 0;
     printf("USBD_MIDI_Init\r\n");
 
+    // Open in and out endpoints
+    USBD_LL_OpenEP(pdev, MIDI_DATA_OUT_EP, USBD_EP_TYPE_BULK, MIDI_DATA_OUT_SIZE);
+    USBD_LL_OpenEP(pdev, MIDI_DATA_IN_EP, USBD_EP_TYPE_BULK, MIDI_DATA_IN_SIZE);
+    
+    /* Prepare Out endpoint to receive 1st packet */ 
+    USBD_LL_PrepareReceive(pdev,
+                           MIDI_DATA_OUT_EP,
+                           &midiOutBuf[0],                        
+                           MIDI_DATA_OUT_SIZE);
     return ret;
 }
 
@@ -337,6 +349,10 @@ static uint8_t  USBD_MIDI_DeInit (USBD_HandleTypeDef *pdev,
 uint8_t cfgidx)
 {
     printf("USBD_MIDI_DeInit\r\n");
+
+    // Close endpoints
+    USBD_LL_CloseEP(pdev, MIDI_DATA_OUT_EP);
+    USBD_LL_CloseEP(pdev, MIDI_DATA_IN_EP);
     return USBD_OK;
 }
 
@@ -351,27 +367,6 @@ static uint8_t  USBD_MIDI_Setup (USBD_HandleTypeDef *pdev,
 USBD_SetupReqTypedef *req)
 {
      printf("USBD_MIDI_Setup\r\n");
-    switch (req->bmRequest & USB_REQ_TYPE_MASK)
-    {
-        case USB_REQ_TYPE_CLASS :  
-        switch (req->bRequest)
-        {
-      
-            default:
-            USBD_CtlError (pdev, req);
-            return USBD_FAIL; 
-        }
-        break;
-    
-        case USB_REQ_TYPE_STANDARD:
-        switch (req->bRequest)
-        {
-    
-            default:
-            USBD_CtlError (pdev, req);
-            return USBD_FAIL;     
-        }
-    }
     return USBD_OK;
 }
 
@@ -411,14 +406,8 @@ uint8_t  *USBD_MIDI_DeviceQualifierDescriptor (uint16_t *length)
 static uint8_t  USBD_MIDI_DataIn (USBD_HandleTypeDef *pdev, 
 uint8_t epnum)
 {
-    printf("Got %lu bytes of data: ", pdev->ep0_data_len);
-    int i;
-    uint8_t *data = (uint8_t*)pdev->pData;
+    BSP_LED_Toggle(LED5);
 
-    for(i=0; i < pdev->ep0_data_len; i++) {
-        printf("%X", data);
-    }
-    printf("\n");
     return USBD_OK;
 }
 
@@ -430,7 +419,7 @@ uint8_t epnum)
 */
 static uint8_t  USBD_MIDI_EP0_RxReady (USBD_HandleTypeDef *pdev)
 {
-
+    // Don't need anything here
     return USBD_OK;
 }
 /**
@@ -441,7 +430,6 @@ static uint8_t  USBD_MIDI_EP0_RxReady (USBD_HandleTypeDef *pdev)
 */
 static uint8_t  USBD_MIDI_EP0_TxReady (USBD_HandleTypeDef *pdev)
 {
-
     return USBD_OK;
 }
 /**
@@ -452,7 +440,6 @@ static uint8_t  USBD_MIDI_EP0_TxReady (USBD_HandleTypeDef *pdev)
 */
 static uint8_t  USBD_MIDI_SOF (USBD_HandleTypeDef *pdev)
 {
-
     return USBD_OK;
 }
 /**
@@ -464,7 +451,6 @@ static uint8_t  USBD_MIDI_SOF (USBD_HandleTypeDef *pdev)
 */
 static uint8_t  USBD_MIDI_IsoINIncomplete (USBD_HandleTypeDef *pdev, uint8_t epnum)
 {
-
     return USBD_OK;
 }
 /**
@@ -476,7 +462,6 @@ static uint8_t  USBD_MIDI_IsoINIncomplete (USBD_HandleTypeDef *pdev, uint8_t epn
 */
 static uint8_t  USBD_MIDI_IsoOutIncomplete (USBD_HandleTypeDef *pdev, uint8_t epnum)
 {
-
     return USBD_OK;
 }
 /**
@@ -486,10 +471,36 @@ static uint8_t  USBD_MIDI_IsoOutIncomplete (USBD_HandleTypeDef *pdev, uint8_t ep
 * @param  epnum: endpoint index
 * @retval status
 */
-static uint8_t  USBD_MIDI_DataOut (USBD_HandleTypeDef *pdev, 
-uint8_t epnum)
+static uint8_t  USBD_MIDI_DataOut (USBD_HandleTypeDef *pdev, uint8_t epnum)
 {
+    BSP_LED_Toggle(LED5);
+    
+    uint32_t dataLength = USBD_LL_GetRxDataSize (pdev, epnum);
 
+    if(dataLength % 4 != 0) {
+        printf("MIDI Data is not a multiple of 4 bytes!!!");
+    } else {
+        int i;
+        for(i = 0; i < dataLength; i += 4) {
+            USB_MIDI_Event_Packet_TypeDef *packet =
+                (USB_MIDI_Event_Packet_TypeDef *)&midiOutBuf[i];
+
+            if(packet->codeIndexNumber == 0x9) {
+                // Note On
+                printf("MIDI Note On- key: %u vel %u\r\n", (unsigned int)packet->midi1, (unsigned int)packet->midi2);
+            } else if(packet->codeIndexNumber == 0x8) {
+                // Note Off
+                printf("MIDI Note Off- key: %u vel %u\r\n", (unsigned int)packet->midi1, (unsigned int)packet->midi2);
+            }
+        }
+    }
+
+    /* Prepare Out endpoint to receive next packet */ 
+    USBD_LL_PrepareReceive(pdev,
+                           MIDI_DATA_OUT_EP,
+                           &midiOutBuf[0],                        
+                           MIDI_DATA_OUT_SIZE);
+                           
     return USBD_OK;
 }
 
