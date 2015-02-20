@@ -10,7 +10,6 @@
 #include "SError.h"
 
 #include <string>
-#include <exception>
 
 using std::string;
 
@@ -20,7 +19,7 @@ namespace Synthia
     {
         std::string s;
         SoundFileException(std::string ss) : s(ss) {}
-        ~SoundFileException() throw () {}
+        //~SoundFileException() throw () {}
         const char* what() const throw() { return s.c_str(); }
     };
 

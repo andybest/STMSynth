@@ -27,6 +27,29 @@ USBD_HandleTypeDef  hUSBDDevice;
 
 UART_HandleTypeDef UartHandle;
 
+
+/*
+ * Implement C++ new/delete operators using the heap
+ */
+ 
+void *operator new(size_t size) {
+  return malloc(size);
+}
+ 
+void *operator new[](size_t size) {
+  return malloc(size);
+}
+ 
+void operator delete(void *p) {
+  free(p);
+}
+ 
+void operator delete[](void *p) {
+  free(p);
+}
+
+
+
 int main(void)
 {
   HAL_Init();
@@ -36,6 +59,8 @@ int main(void)
   HAL_NVIC_SetPriority(SysTick_IRQn, 0, 0);
   
   initHardware();
+  
+  osKernelStart();
   
   osc1.init(&synthContext);
   osc1.setFrequency(440.0f);

@@ -13,6 +13,8 @@
 #include "usbd_midi.h"
 #include "usbd_hid.h"
 
+#include "cmsis_os.h"
+
 typedef enum
 {
   APPLICATION_IDLE = 0,  

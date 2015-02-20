@@ -9,7 +9,7 @@
 #ifndef __Callisto__WavetableOscillator__
 #define __Callisto__WavetableOscillator__
 
-#include <iostream>
+//#include <iostream>
 
 #include "Generator.h"
 #include "SoundFile.h"
