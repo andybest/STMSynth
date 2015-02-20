@@ -1,9 +1,6 @@
-
-/* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __MAIN_H
 #define __MAIN_H
 
-/* Includes ------------------------------------------------------------------*/
 #include "stm32f4xx_hal.h"
 #include "stm32f4_discovery.h"
 #include "stm32f4_discovery_audio.h"
@@ -34,11 +31,6 @@ MSC_ApplicationTypeDef;
 /* Defines for MEMS Acclerometer ID Types */
 #define MEMS_LIS3DSH     0x3F /* LIS3DSH MEMS Acclerometer ID */
 #define MEMS_LIS302DL    0x3B /* LIS302DL MEMS Acclerometer ID */
-                                                                                    
-/* Exported macro ------------------------------------------------------------*/
-/* Exported functions ------------------------------------------------------- */
-void Error_Handler(void);
-
 
 #define BUFF_LEN_DIV4           512 // number of samples in the audiobuffer for each channel <==> XX ms latency at 48kHz
 #define BUFF_LEN_DIV2           (2*BUFF_LEN_DIV4)
@@ -61,14 +53,10 @@ void Error_Handler(void);
 #define USARTx_RX_GPIO_PORT              GPIOD 
 #define USARTx_RX_AF                     GPIO_AF7_USART3
 
-/* Size of Transmission buffer */
 #define TXBUFFERSIZE                      (COUNTOF(aTxBuffer) - 1)
-/* Size of Reception buffer */
 #define RXBUFFERSIZE                      TXBUFFERSIZE
-  
-/* Exported macro ------------------------------------------------------------*/
 #define COUNTOF(__BUFFER__)   (sizeof(__BUFFER__) / sizeof(*(__BUFFER__)))
 
-#endif /* __MAIN_H */
+void Error_Handler(void);
 
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
+#endif /* __MAIN_H */

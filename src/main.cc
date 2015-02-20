@@ -9,8 +9,10 @@
 using namespace Synthia;
 
 static void SystemClock_Config(void);
+void initHardware(void);
 void initUART(void);
 void initUSB(void);
+void initAudio(void);
 void make_sound(uint16_t *buf , uint16_t length);
 
 uint16_t audiobuff[BUFF_LEN];
@@ -29,24 +31,11 @@ int main(void)
 {
   HAL_Init();
   
-  BSP_LED_Init(LED3);
-  BSP_LED_Init(LED4);
-  BSP_LED_Init(LED5);
-  BSP_LED_Init(LED6);
-  
   SystemClock_Config();
   HAL_NVIC_SetPriorityGrouping(NVIC_PRIORITYGROUP_0);
   HAL_NVIC_SetPriority(SysTick_IRQn, 0, 0);
   
-  initUART();
-  initUSB();
-  
-  BSP_LED_On(LED3);
-  
-  BSP_ACCELERO_Init();
-  
-  /* Configure USER Button */
-  //BSP_PB_Init(BUTTON_KEY, BUTTON_MODE_EXTI);
+  initHardware();
   
   osc1.init(&synthContext);
   osc1.setFrequency(440.0f);
@@ -58,41 +47,36 @@ int main(void)
   filt1.setResonance(0.8f);
   filt1.setCutoff(22000.0f);
   
-  BSP_AUDIO_OUT_Init(OUTPUT_DEVICE_AUTO, 70, 48000);
-  BSP_AUDIO_OUT_SetVolume(80);
-  
-  BSP_AUDIO_OUT_Play((uint16_t*)&audiobuff[0], 2*BUFF_LEN);
-  
-  int16_t accelData[3];
-  
   while (1)
   {
-      /*HAL_Delay(20);
-      BSP_ACCELERO_GetXYZ(accelData);
-      float val = accelData[0] / 2000.0f;
-      filt1.setCutoff(accelData[2]);
-      osc1.setFrequency(220.0f + (220.0f * val));*/
-      
       HAL_Delay(500);
   }
 }
 
+void initHardware(void)
+{
+    BSP_LED_Init(LED3);
+    BSP_LED_Init(LED4);
+    BSP_LED_Init(LED5);
+    BSP_LED_Init(LED6);
+    
+    initUART();
+    initUSB();
+    BSP_ACCELERO_Init();
+    
+    initAudio();
+}
+
 void initUSB(void)
 {
-    /* Init Device Library */
     USBD_Init(&hUSBDDevice, &MIDI_Desc, 0);
-  
-    /* Add Supported Class */
     USBD_RegisterClass(&hUSBDDevice, USBD_MIDI_CLASS);
-  
-    /* Start Device Process */
     USBD_Start(&hUSBDDevice);
 }
 
 void initUART(void)
 {
     UartHandle.Instance          = USARTx;
-  
     UartHandle.Init.BaudRate     = 9600;
     UartHandle.Init.WordLength   = UART_WORDLENGTH_8B;
     UartHandle.Init.StopBits     = UART_STOPBITS_1;
@@ -103,8 +87,15 @@ void initUART(void)
   
     if(HAL_UART_Init(&UartHandle) != HAL_OK)
     {
-        BSP_LED_On(LED6);
+        Error_Handler();
     }
+}
+
+void initAudio(void)
+{
+    BSP_AUDIO_OUT_Init(OUTPUT_DEVICE_AUTO, 70, 48000);
+    BSP_AUDIO_OUT_SetVolume(80);
+    BSP_AUDIO_OUT_Play((uint16_t*)&audiobuff[0], 2*BUFF_LEN);
 }
 
 void make_sound(uint16_t *buf , uint16_t length)
@@ -202,24 +193,12 @@ static void SystemClock_Config(void)
   }  
 }
 
-/**
-  * @brief  UART error callbacks
-  * @param  UartHandle: UART handle
-  * @note   This example shows a simple way to report transfer error, and you can
-  *         add your own implementation.
-  * @retval None
-  */
 void HAL_UART_ErrorCallback(UART_HandleTypeDef *UartHandle)
 {
   /* Turn LED3 on: Transfer error in reception/transmission process */
   BSP_LED_On(LED3); 
 }
 
-/**
-  * @brief  This function is executed in case of error occurrence.
-  * @param  None
-  * @retval None
-  */
 void Error_Handler(void)
 {
   /* Turn LED3 on */
@@ -234,10 +213,6 @@ void Error_Handler(void)
 
 void assert_failed(uint8_t* file, uint32_t line)
 { 
-  /* User can add his own implementation to report the file name and line number,
-     ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
-
-  /* Infinite loop */
   while (1)
   {
   }
