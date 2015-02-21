@@ -3,6 +3,8 @@ cmake_minimum_required(VERSION 2.8)
 
 set(OUTPUT_NAME STMSynth)
 
+set(CMAKE_TOOLCHAIN_FILE ${CMAKE_SOURCE_DIR}/CMake/arm-none-eabi-gcc.cmake)
+
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/CMake/Modules)
 set(CMAKE_EXPORT_COMPILE_COMMANDS "ON")
 
@@ -49,6 +51,7 @@ set(FREERTOS_SOURCES
 include_directories(
     ${CMAKE_SOURCE_DIR}/src
     ${CMAKE_SOURCE_DIR}/src/usb
+    ${CMAKE_SOURCE_DIR}/src/config
     ${SYNTHIA_INCLUDES}
     ${USB_CORE_INCLUDES}
     ${STM32_INCLUDE_DIRS}
