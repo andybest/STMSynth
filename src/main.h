@@ -3,7 +3,7 @@
 
 #include "stm32f4xx_hal.h"
 #include "stm32f4_discovery.h"
-#include "stm32f4_discovery_audio.h"
+
 #include "stm32f4_discovery_accelerometer.h"
 #include <stdio.h>
 #include "stm32f4xx_it.h"
@@ -33,11 +33,6 @@ MSC_ApplicationTypeDef;
 /* Defines for MEMS Acclerometer ID Types */
 #define MEMS_LIS3DSH     0x3F /* LIS3DSH MEMS Acclerometer ID */
 #define MEMS_LIS302DL    0x3B /* LIS302DL MEMS Acclerometer ID */
-
-#define BUFF_LEN_DIV4           512 // number of samples in the audiobuffer for each channel <==> XX ms latency at 48kHz
-#define BUFF_LEN_DIV2           (2*BUFF_LEN_DIV4)
-#define BUFF_LEN                (4*BUFF_LEN_DIV4)  // Audio buffer length :
-
 
 #define USARTx                           USART3
 #define USARTx_CLK_ENABLE()              __HAL_RCC_USART3_CLK_ENABLE();
