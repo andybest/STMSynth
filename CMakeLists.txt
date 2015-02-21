@@ -64,6 +64,7 @@ add_executable(${OUTPUT_NAME}.elf
     src/main.cc
     src/Audio.cc
     src/syscalls.c
+    src/cppcalls.cc
     src/system_stm32f4xx.c
     src/stm32f4xx_it.c
     src/stm32f4xx_hal_msp.c
