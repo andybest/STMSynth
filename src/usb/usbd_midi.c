@@ -480,19 +480,7 @@ static uint8_t  USBD_MIDI_DataOut (USBD_HandleTypeDef *pdev, uint8_t epnum)
     if(dataLength % 4 != 0) {
         printf("MIDI Data is not a multiple of 4 bytes!!!");
     } else {
-        int i;
-        for(i = 0; i < dataLength; i += 4) {
-            USB_MIDI_Event_Packet_TypeDef *packet =
-                (USB_MIDI_Event_Packet_TypeDef *)&midiOutBuf[i];
-
-            if(packet->codeIndexNumber == 0x9) {
-                // Note On
-                printf("MIDI Note On- key: %u vel %u\r\n", (unsigned int)packet->midi1, (unsigned int)packet->midi2);
-            } else if(packet->codeIndexNumber == 0x8) {
-                // Note Off
-                printf("MIDI Note Off- key: %u vel %u\r\n", (unsigned int)packet->midi1, (unsigned int)packet->midi2);
-            }
-        }
+        USBD_MIDI_GotMessageCallback((USB_MIDI_Event_Packet_TypeDef *)&midiOutBuf[0], dataLength / 4);
     }
 
     /* Prepare Out endpoint to receive next packet */ 

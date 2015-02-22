@@ -3,8 +3,11 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 
+#include "portmacro.h"
+
 #include "Audio.h"
 #include "TestTask.h"
+#include "MidiTask.h"
 
 #include "SynthContext.h"
 #include "PulseOscillator.h"
@@ -16,6 +19,7 @@ static void SystemClock_Config(void);
 void initHardware(void);
 void initUART(void);
 void initUSB(void);
+void initTasks(void);
 
 void initSynth();
 void audioCallback(uint16_t *buf , uint16_t length);
@@ -27,11 +31,15 @@ PulseOscillator lfo1;
 Lowpass filt1;
 
 TestTask testTask;
+MidiTask midiTask;
 
 /* Variables used for USB */
 USBD_HandleTypeDef  hUSBDDevice;
-
 UART_HandleTypeDef UartHandle;
+
+// MIDI message queue
+QueueHandle_t midiQueueHandle;
+
 
 extern "C" void vLEDFlashTask(void *pvParameters)
 {
@@ -40,8 +48,20 @@ extern "C" void vLEDFlashTask(void *pvParameters)
     xLastWakeTime=xTaskGetTickCount();
     for( ;; )
     {
-        BSP_LED_Toggle(LED5);
-        vTaskDelayUntil(&xLastWakeTime,xFrequency);
+        USB_MIDI_Event_Packet_TypeDef packet;
+
+    // Wait for a MIDI message.
+    if (xQueueReceive(midiQueueHandle, &packet, portMAX_DELAY)) {
+        if (packet.codeIndexNumber == 0x9) {
+            // Note On
+            printf("MIDI Note On- key: %u vel %u\r\n", (unsigned int) packet.midi1, (unsigned int) packet.midi2);
+        } else if (packet.codeIndexNumber == 0x8) {
+            // Note Off
+            printf("MIDI Note Off- key: %u vel %u\r\n", (unsigned int) packet.midi1, (unsigned int) packet.midi2);
+        }
+    }
+        //BSP_LED_Toggle(LED5);
+        //vTaskDelayUntil(&xLastWakeTime,xFrequency);
     }
 }
 
@@ -50,21 +70,13 @@ int main(void)
     HAL_Init();
 
     SystemClock_Config();
-    //HAL_NVIC_SetPriorityGrouping(NVIC_PRIORITYGROUP_0);
-    //HAL_NVIC_SetPriority(SysTick_IRQn, 0, 0);
 
     initHardware();
-
-    printf("Starting tasks\r\n");
-
-    xTaskCreate( vLEDFlashTask, "LED", configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY, NULL );
-
-    testTask.start(osPriorityIdle);
+    initTasks();
 
     printf("Starting OS Kernel \r\n");
-
     osKernelStart();
-    //vTaskStartScheduler();
+    
     while (1)
     {
         HAL_Delay(500);
@@ -83,6 +95,19 @@ void initHardware(void)
     BSP_ACCELERO_Init();
 
     initAudio();
+}
+
+void initTasks(void)
+{
+	midiQueueHandle = xQueueCreate(32, sizeof(USB_MIDI_Event_Packet_TypeDef));
+
+    printf("Starting tasks\r\n");
+    testTask.start(osPriorityIdle);
+    
+    xTaskCreate(vLEDFlashTask, "Blink", 255, NULL, tskIDLE_PRIORITY, NULL);
+    
+    // Midi Task
+    //midiTask.start(osPriorityIdle);
 }
 
 void initUSB(void)
@@ -143,6 +168,22 @@ void make_sound(uint16_t *buf , uint16_t length)
 
 }
 
+extern "C" void USBD_MIDI_GotMessageCallback(USB_MIDI_Event_Packet_TypeDef *packets, uint32_t len)
+{
+    uint32_t i;
+    BaseType_t xHigherPriorityTaskWoken = pdFALSE;
+    
+    for(i = 0; i < len; i++) {
+        // Put the MIDI messages on the queue to be picked up by the MIDI
+        // task.
+        //printf("Got message\r\n");
+        xQueueSendToBackFromISR(midiQueueHandle, (const void*)&packets[i], &xHigherPriorityTaskWoken);
+    }
+    
+    if(xHigherPriorityTaskWoken) {
+        portYIELD_FROM_ISR(1);
+    }
+}
 
 extern "C" void BSP_AUDIO_OUT_TransferComplete_CallBack(void)
 {
@@ -223,6 +264,15 @@ void Error_Handler(void)
     while(1)
     {
     }
+}
+
+extern "C" void vApplicationStackOverflowHook( xTaskHandle *pxTask, signed char *pcTaskName )
+{
+    ( void ) pxTask;
+    ( void ) pcTaskName;
+    
+    BSP_LED_On(LED6);
+    for( ;; );
 }
 
 

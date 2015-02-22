@@ -230,7 +230,7 @@ uint8_t BSP_AUDIO_OUT_Init(uint16_t OutputDevice, uint8_t Volume, uint32_t Audio
   if ((freqindex & 0x7) == 0)
   {
     /* I2S clock config 
-    PLLI2S_VCO = f(VCO clock) = f(PLLI2S clock input) × (PLLI2SN/PLLM)
+    PLLI2S_VCO = f(VCO clock) = f(PLLI2S clock input) ï¿½ (PLLI2SN/PLLM)
     I2SCLK = f(PLLI2S clock output) = f(VCO clock) / PLLI2SR */
     rccclkinit.PeriphClockSelection = RCC_PERIPHCLK_I2S;
     rccclkinit.PLLI2S.PLLI2SN = I2SPLLN[freqindex];
@@ -240,7 +240,7 @@ uint8_t BSP_AUDIO_OUT_Init(uint16_t OutputDevice, uint8_t Volume, uint32_t Audio
   else 
   {
     /* I2S clock config 
-    PLLI2S_VCO = f(VCO clock) = f(PLLI2S clock input) × (PLLI2SN/PLLM)
+    PLLI2S_VCO = f(VCO clock) = f(PLLI2S clock input) ï¿½ (PLLI2SN/PLLM)
     I2SCLK = f(PLLI2S clock output) = f(VCO clock) / PLLI2SR */
     rccclkinit.PeriphClockSelection = RCC_PERIPHCLK_I2S;
     rccclkinit.PLLI2S.PLLI2SN = 258;

@@ -105,7 +105,7 @@
 #define I2S3_IRQHandler                 DMA1_Stream7_IRQHandler
 
 /* Select the interrupt preemption priority and subpriority for the DMA interrupt */
-#define AUDIO_OUT_IRQ_PREPRIO           5   /* Select the preemption priority level(0 is the highest) */
+#define AUDIO_OUT_IRQ_PREPRIO           6   /* Select the preemption priority level(0 is the highest) */
 
 /*------------------------------------------------------------------------------
                           AUDIO IN CONFIGURATION

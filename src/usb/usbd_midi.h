@@ -118,6 +118,10 @@ extern USBD_ClassTypeDef  USBD_MIDI_ClassDriver;
 /** @defgroup USB_CORE_Exported_Functions
   * @{
   */ 
+
+// This callback must be implemented by the user.
+extern void USBD_MIDI_GotMessageCallback(USB_MIDI_Event_Packet_TypeDef *packets, uint32_t len);
+
 /**
   * @}
   */ 

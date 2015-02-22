@@ -71,6 +71,7 @@ add_executable(${OUTPUT_NAME}.elf
     src/stm32f4xx_hal_msp.c
     src/tasks/cpp_task.cc
     src/tasks/TestTask.cc
+    src/tasks/MidiTask.cc
     src/usb/usbd_conf.c
     src/usb/usbd_desc.c
     src/usb/usbd_midi.c
