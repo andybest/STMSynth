@@ -62,7 +62,7 @@ set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -T${CMAKE_SOURCE_DIR}/CMak
 
 add_executable(${OUTPUT_NAME}.elf
     src/main.cc
-    src/Audio.cc
+    #src/Audio.cc
     src/syscalls.c
     src/cppcalls.cc
     src/system_stm32f4xx.c

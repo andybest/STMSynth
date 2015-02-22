@@ -3,11 +3,25 @@
 #include "main.h"
 
 #include "Audio.h"
+#include "SynthContext.h"
+#include "PulseOscillator.h"
+#include "Lowpass.h"
+
+using namespace Synthia;
 
 static void SystemClock_Config(void);
 void initHardware(void);
 void initUART(void);
 void initUSB(void);
+
+void initSynth();
+void audioCallback(uint16_t *buf , uint16_t length);
+uint16_t audiobuff[BUFF_LEN];
+
+SynthContext synthContext(AUDIO_SAMPLE_RATE);
+PulseOscillator osc1;
+PulseOscillator lfo1;
+Lowpass filt1;
 
 /* Variables used for USB */
 USBD_HandleTypeDef  hUSBDDevice;
@@ -68,6 +82,60 @@ void initUART(void)
     {
         Error_Handler();
     }
+}
+
+void initAudio(void)
+{
+    BSP_AUDIO_OUT_Init(OUTPUT_DEVICE_AUTO, 70, 48000);
+    BSP_AUDIO_OUT_SetVolume(80);
+    BSP_AUDIO_OUT_Play((uint16_t*)&audiobuff[0], 2*BUFF_LEN);
+}
+
+void make_sound(uint16_t *buf , uint16_t length)
+{
+    uint16_t 	pos;
+    uint16_t 	*outp;
+    float	 	yL, yR ;
+    uint16_t 	valueL, valueR;
+
+    outp = buf;
+
+    for (pos = 0; pos < length; pos++)
+    {
+        //float lfoSamp = lfo1.tick(0);
+        //osc1.setFrequency(220.0f + (220.0f * lfoSamp));
+
+        float samp = filt1.tick(0, osc1.tick(0));
+        yL = samp;
+        yR = samp;
+
+        valueL = (uint16_t)((int16_t)((32767.0f) * yL)); // conversion float -> int
+        valueR = (uint16_t)((int16_t)((32767.0f) * yR));
+
+        *outp++ = valueL; // left channel sample
+        *outp++ = valueR; // right channel sample
+    }
+
+}
+
+
+extern "C" void BSP_AUDIO_OUT_TransferComplete_CallBack(void)
+{
+    BSP_LED_Off(LED4);
+    make_sound((uint16_t *)(audiobuff + BUFF_LEN_DIV2), BUFF_LEN_DIV4);
+}
+
+extern "C" void BSP_AUDIO_OUT_HalfTransfer_CallBack(void)
+{
+    BSP_LED_On(LED4);
+    make_sound((uint16_t *)audiobuff, BUFF_LEN_DIV4);
+}
+
+extern "C" void BSP_AUDIO_OUT_Error_Callback(void)
+{
+    //while(1) {
+    BSP_LED_On(LED6);
+    //}
 }
 
 static void SystemClock_Config(void)

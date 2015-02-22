@@ -3,6 +3,7 @@
 
 #include "stm32f4xx_hal.h"
 #include "stm32f4_discovery.h"
+#include "stm32f4_discovery_audio.h"
 
 #include "stm32f4_discovery_accelerometer.h"
 #include <stdio.h>
@@ -53,6 +54,8 @@ MSC_ApplicationTypeDef;
 #define TXBUFFERSIZE                      (COUNTOF(aTxBuffer) - 1)
 #define RXBUFFERSIZE                      TXBUFFERSIZE
 #define COUNTOF(__BUFFER__)   (sizeof(__BUFFER__) / sizeof(*(__BUFFER__)))
+
+#define AUDIO_SAMPLE_RATE       48000
 
 void Error_Handler(void);
 
