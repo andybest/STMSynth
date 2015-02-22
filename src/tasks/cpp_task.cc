@@ -4,22 +4,25 @@
 #include <string.h>
 #include <stdlib.h>
 
-Task::Task(const char *name) : _taskHandle(NULL)
+Task::Task() : _taskHandle(NULL)
 {
-    _taskName = (char *)malloc(sizeof(strlen(name)) + 1);
-    _taskName = strcpy(_taskName, name);
 }
 
 Task::~Task()
 {
-    if(_taskName != NULL){
-        free(_taskName);
-    }
 }
 
 void Task::start(osPriority priority)
 {
-    xTaskCreate(_taskRunner, "Test", configMINIMAL_STACK_SIZE, static_cast<void *>(this), tskIDLE_PRIORITY, &_taskHandle);
+    // Copy name into a temporary var on the heap so that FreeRTOS can
+    // access it.
+    std::string taskName = getName();
+    char *name = new char[taskName.length()];
+    strcpy(name, taskName.c_str());
+    
+    xTaskCreate(_taskRunner, name, configMINIMAL_STACK_SIZE, static_cast<void *>(this), tskIDLE_PRIORITY, &_taskHandle);
+    
+    delete[] name;
 }
 
 void Task::_taskRunner(void *args)
@@ -34,11 +37,6 @@ void Task::_taskHandler()
     while(run()) {
     }
 
-    printf("Task %s failed!\r\n", getName());
+    printf("Task %s failed!\r\n", getName().c_str());
 
-}
-
-char *Task::getName()
-{
-    return _taskName;
 }

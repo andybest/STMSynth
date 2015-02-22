@@ -5,9 +5,10 @@
 class TestTask : public Task
 {
 public:
-    TestTask(const char *name);
+    TestTask();
     ~TestTask();
-
+    
+    std::string getName();
     void init();
     bool run();
 };

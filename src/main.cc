@@ -26,7 +26,7 @@ PulseOscillator osc1;
 PulseOscillator lfo1;
 Lowpass filt1;
 
-TestTask testTask("Test Task");
+TestTask testTask;
 
 /* Variables used for USB */
 USBD_HandleTypeDef  hUSBDDevice;
