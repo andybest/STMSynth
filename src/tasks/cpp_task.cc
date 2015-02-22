@@ -6,7 +6,7 @@
 
 Task::Task(const char *name) : _taskHandle(NULL)
 {
-    //_taskName = strcpy(_taskName, name);
+    _taskName = strcpy(_taskName, name);
 }
 
 Task::~Task()
@@ -15,9 +15,7 @@ Task::~Task()
 
 void Task::start(osPriority priority)
 {
-    printf("Attempting to start thread\r\n");
-    
-    xTaskCreate(_taskRunner, "Test", configMINIMAL_STACK_SIZE, static_cast<void *>(this), tskIDLE_PRIORITY, NULL);
+    xTaskCreate(_taskRunner, "Test", configMINIMAL_STACK_SIZE, static_cast<void *>(this), tskIDLE_PRIORITY, &_taskHandle);
 }
 
 void Task::_taskRunner(void *args)
