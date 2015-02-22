@@ -1,8 +1,11 @@
  
+
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 
 #include "Audio.h"
+#include "TestTask.h"
+
 #include "SynthContext.h"
 #include "PulseOscillator.h"
 #include "Lowpass.h"
@@ -28,22 +31,42 @@ USBD_HandleTypeDef  hUSBDDevice;
 
 UART_HandleTypeDef UartHandle;
 
+extern "C" void vLEDFlashTask(void *pvParameters)
+{
+    portTickType xLastWakeTime;
+    const portTickType xFrequency = 1000;
+    xLastWakeTime=xTaskGetTickCount();
+    for( ;; )
+    {
+        BSP_LED_Toggle(LED5);
+        vTaskDelayUntil(&xLastWakeTime,xFrequency);
+    }
+}
+
 int main(void)
 {
-  HAL_Init();
-  
-  SystemClock_Config();
-  HAL_NVIC_SetPriorityGrouping(NVIC_PRIORITYGROUP_0);
-  HAL_NVIC_SetPriority(SysTick_IRQn, 0, 0);
-  
-  initHardware();
-  
-  //osKernelStart();
-  
-  while (1)
-  {
-      HAL_Delay(500);
-  }
+    HAL_Init();
+
+    SystemClock_Config();
+    //HAL_NVIC_SetPriorityGrouping(NVIC_PRIORITYGROUP_0);
+    //HAL_NVIC_SetPriority(SysTick_IRQn, 0, 0);
+
+    initHardware();
+
+    printf("Starting tasks\r\n");
+
+    xTaskCreate( vLEDFlashTask, "LED", configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY, NULL );
+    //TestTask testTask("Test Task");
+    //testTask.start(osPriorityNormal);
+
+    printf("Starting OS Kernel \r\n");
+
+    osKernelStart();
+    //vTaskStartScheduler();
+    while (1)
+    {
+        HAL_Delay(500);
+    }
 }
 
 void initHardware(void)
@@ -52,11 +75,11 @@ void initHardware(void)
     BSP_LED_Init(LED4);
     BSP_LED_Init(LED5);
     BSP_LED_Init(LED6);
-    
+
     initUART();
     initUSB();
     BSP_ACCELERO_Init();
-    
+
     initAudio();
 }
 
@@ -77,7 +100,7 @@ void initUART(void)
     UartHandle.Init.HwFlowCtl    = UART_HWCONTROL_NONE;
     UartHandle.Init.Mode         = UART_MODE_TX_RX;
     UartHandle.Init.OverSampling = UART_OVERSAMPLING_16;
-  
+
     if(HAL_UART_Init(&UartHandle) != HAL_OK)
     {
         Error_Handler();
@@ -140,64 +163,64 @@ extern "C" void BSP_AUDIO_OUT_Error_Callback(void)
 
 static void SystemClock_Config(void)
 {
-  RCC_ClkInitTypeDef RCC_ClkInitStruct;
-  RCC_OscInitTypeDef RCC_OscInitStruct;
+    RCC_ClkInitTypeDef RCC_ClkInitStruct;
+    RCC_OscInitTypeDef RCC_OscInitStruct;
 
-  /* Enable Power Control clock */
-  __HAL_RCC_PWR_CLK_ENABLE();
-  
-  /* The voltage scaling allows optimizing the power consumption when the device is 
-     clocked below the maximum system frequency, to update the voltage scaling value 
-     regarding system frequency refer to product datasheet.  */
-  __HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE1);
-  
-  /* Enable HSE Oscillator and activate PLL with HSE as source */
-  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
-  RCC_OscInitStruct.HSEState = RCC_HSE_ON;
-  RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
-  RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
-  RCC_OscInitStruct.PLL.PLLM = 8;
-  RCC_OscInitStruct.PLL.PLLN = 336;
-  RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV2;
-  RCC_OscInitStruct.PLL.PLLQ = 7;
-  if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
-  {
-    Error_Handler();
-  }
+    /* Enable Power Control clock */
+    __HAL_RCC_PWR_CLK_ENABLE();
 
-  /* Select PLL as system clock source and configure the HCLK, PCLK1 and PCLK2 
-     clocks dividers */
-  RCC_ClkInitStruct.ClockType = (RCC_CLOCKTYPE_SYSCLK | RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2);
-  RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
-  RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
-  RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV4;  
-  RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV2;  
-  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_5) != HAL_OK)
-  {
-    Error_Handler();
-  }
+    /* The voltage scaling allows optimizing the power consumption when the device is
+       clocked below the maximum system frequency, to update the voltage scaling value
+       regarding system frequency refer to product datasheet.  */
+    __HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE1);
 
-  /* STM32F405x/407x/415x/417x Revision Z devices: prefetch is supported  */
-  if (HAL_GetREVID() == 0x1001)
-  {
-    /* Enable the Flash prefetch */
-    __HAL_FLASH_PREFETCH_BUFFER_ENABLE();
-  }  
+    /* Enable HSE Oscillator and activate PLL with HSE as source */
+    RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
+    RCC_OscInitStruct.HSEState = RCC_HSE_ON;
+    RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
+    RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
+    RCC_OscInitStruct.PLL.PLLM = 8;
+    RCC_OscInitStruct.PLL.PLLN = 336;
+    RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV2;
+    RCC_OscInitStruct.PLL.PLLQ = 7;
+    if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
+    {
+        Error_Handler();
+    }
+
+    /* Select PLL as system clock source and configure the HCLK, PCLK1 and PCLK2
+       clocks dividers */
+    RCC_ClkInitStruct.ClockType = (RCC_CLOCKTYPE_SYSCLK | RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2);
+    RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
+    RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
+    RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV4;
+    RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV2;
+    if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_5) != HAL_OK)
+    {
+        Error_Handler();
+    }
+
+    /* STM32F405x/407x/415x/417x Revision Z devices: prefetch is supported  */
+    if (HAL_GetREVID() == 0x1001)
+    {
+        /* Enable the Flash prefetch */
+        __HAL_FLASH_PREFETCH_BUFFER_ENABLE();
+    }
 }
 
 void HAL_UART_ErrorCallback(UART_HandleTypeDef *UartHandle)
 {
-  /* Turn LED3 on: Transfer error in reception/transmission process */
-  BSP_LED_On(LED3); 
+    /* Turn LED3 on: Transfer error in reception/transmission process */
+    BSP_LED_On(LED3);
 }
 
 void Error_Handler(void)
 {
-  /* Turn LED3 on */
-  BSP_LED_On(LED3);
-  while(1)
-  {
-  }
+    /* Turn LED3 on */
+    BSP_LED_On(LED3);
+    while(1)
+    {
+    }
 }
 
 

@@ -30,6 +30,8 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "stm32f4xx_it.h"
+#include "cmsis_os.h"
+#include "stm32f4_discovery.h"
 
 /** @addtogroup STM32F4-Discovery_Audio_Player_Recorder
   * @{
@@ -71,6 +73,7 @@ void NMI_Handler(void)
   */
 void HardFault_Handler(void)
 {
+  BSP_LED_On(LED6);
   /* Go to infinite loop when Hard Fault exception occurs */
   while (1)
   {
@@ -85,6 +88,7 @@ void HardFault_Handler(void)
 void MemManage_Handler(void)
 {
   /* Go to infinite loop when Memory Manage exception occurs */
+  //BSP_LED_On(LED6);
   while (1)
   {
   }
@@ -98,6 +102,7 @@ void MemManage_Handler(void)
 void BusFault_Handler(void)
 {
   /* Go to infinite loop when Bus Fault exception occurs */
+ //BSP_LED_On(LED6);
   while (1)
   {
   }
@@ -111,6 +116,7 @@ void BusFault_Handler(void)
 void UsageFault_Handler(void)
 {
   /* Go to infinite loop when Usage Fault exception occurs */
+  //BSP_LED_On(LED6);
   while (1)
   {
   }
@@ -144,7 +150,7 @@ void DebugMon_Handler(void)
 void SysTick_Handler(void)
 {
   HAL_IncTick();
-
+  osSystickHandler();
   //HAL_SYSTICK_IRQHandler();
 }
 
@@ -200,10 +206,7 @@ void I2S2_IRQHandler(void)
   * @param  None
   * @retval None
   */
-void TIM4_IRQHandler(void)
-{
-  //HAL_TIM_IRQHandler(&hTimLed);
-}
+
 
 /**
   * @brief  This function handles USB-On-The-Go FS global interrupt request.
@@ -212,7 +215,6 @@ void TIM4_IRQHandler(void)
   */
 void OTG_FS_IRQHandler(void)
 {
-  //HAL_HCD_IRQHandler(&hHCD);
     HAL_PCD_IRQHandler(&hpcd);
 }
 
