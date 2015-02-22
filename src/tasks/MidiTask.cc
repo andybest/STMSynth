@@ -9,11 +9,6 @@
 #include "usbd_midi.h"
 #include "cmsis_os.h"
 
-#include "SineOscillator.h"
-#include "Lowpass.h"
-#include "Envelope.h"
-#include <math.h>
-
 
 MidiTask::MidiTask() {
 }
