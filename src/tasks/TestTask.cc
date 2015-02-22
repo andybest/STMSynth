@@ -27,7 +27,7 @@ void TestTask::init()
 bool TestTask::run()
 {
     BSP_LED_Toggle(LED3);
-    printf("Thread '%s' running. %lu\r\n", getName().c_str(), osKernelSysTick());
+    //printf("Thread '%s' running. %lu\r\n", getName().c_str(), osKernelSysTick());
     osDelay(1000);
     return true;
 }

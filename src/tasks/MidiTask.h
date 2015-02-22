@@ -7,6 +7,7 @@
 
 #pragma once
 #include "cpp_task.h"
+#include "midi.h"
 
 extern QueueHandle_t midiQueueHandle;
 

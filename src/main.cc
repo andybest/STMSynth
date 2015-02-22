@@ -10,8 +10,9 @@
 #include "MidiTask.h"
 
 #include "SynthContext.h"
-#include "PulseOscillator.h"
+#include "SineOscillator.h"
 #include "Lowpass.h"
+#include "Envelope.h"
 
 using namespace Synthia;
 
@@ -26,9 +27,10 @@ void audioCallback(uint16_t *buf , uint16_t length);
 uint16_t audiobuff[BUFF_LEN];
 
 SynthContext synthContext(AUDIO_SAMPLE_RATE);
-PulseOscillator osc1;
-PulseOscillator lfo1;
+SineOscillator osc1;
+SineOscillator lfo1;
 Lowpass filt1;
+Envelope adsr1;
 
 TestTask testTask;
 MidiTask midiTask;
@@ -104,10 +106,10 @@ void initTasks(void)
     printf("Starting tasks\r\n");
     testTask.start(osPriorityIdle);
     
-    xTaskCreate(vLEDFlashTask, "Blink", 255, NULL, tskIDLE_PRIORITY, NULL);
+    //xTaskCreate(vLEDFlashTask, "Blink", 255, NULL, tskIDLE_PRIORITY, NULL);
     
     // Midi Task
-    //midiTask.start(osPriorityIdle);
+    midiTask.start(osPriorityIdle);
 }
 
 void initUSB(void)
@@ -136,8 +138,22 @@ void initUART(void)
 
 void initAudio(void)
 {
+	osc1.init(&synthContext);
+	osc1.setFrequency(440.0f);
+
+	lfo1.init(&synthContext);
+	lfo1.setFrequency(1.0f);
+
+	filt1.init(&synthContext);
+	filt1.setResonance(0.5f);
+
+	adsr1.init(&synthContext);
+	adsr1.setAttackTime(0.2f);
+	adsr1.setDecayTime(0.0f);
+	adsr1.setReleaseTime(0.5f);
+
     BSP_AUDIO_OUT_Init(OUTPUT_DEVICE_AUTO, 70, 48000);
-    BSP_AUDIO_OUT_SetVolume(80);
+    BSP_AUDIO_OUT_SetVolume(60);
     BSP_AUDIO_OUT_Play((uint16_t*)&audiobuff[0], 2*BUFF_LEN);
 }
 
@@ -152,10 +168,10 @@ void make_sound(uint16_t *buf , uint16_t length)
 
     for (pos = 0; pos < length; pos++)
     {
-        //float lfoSamp = lfo1.tick(0);
-        //osc1.setFrequency(220.0f + (220.0f * lfoSamp));
+        float lfoSamp = lfo1.tick(0);
+        filt1.setCutoff(lfoSamp);
 
-        float samp = filt1.tick(0, osc1.tick(0));
+        float samp = osc1.tick(0) * adsr1.tick(0);
         yL = samp;
         yR = samp;
 
