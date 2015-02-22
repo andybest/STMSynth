@@ -26,6 +26,8 @@ PulseOscillator osc1;
 PulseOscillator lfo1;
 Lowpass filt1;
 
+TestTask testTask("Test Task");
+
 /* Variables used for USB */
 USBD_HandleTypeDef  hUSBDDevice;
 
@@ -56,8 +58,8 @@ int main(void)
     printf("Starting tasks\r\n");
 
     xTaskCreate( vLEDFlashTask, "LED", configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY, NULL );
-    //TestTask testTask("Test Task");
-    //testTask.start(osPriorityNormal);
+
+    testTask.start(osPriorityIdle);
 
     printf("Starting OS Kernel \r\n");
 

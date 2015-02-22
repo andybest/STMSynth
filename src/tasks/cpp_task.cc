@@ -2,35 +2,28 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
-Task::Task(const char *name)
+Task::Task(const char *name) : _taskHandle(NULL)
 {
-    _taskName = strcpy(_taskName, name);
+    //_taskName = strcpy(_taskName, name);
 }
 
 Task::~Task()
 {
-
 }
 
 void Task::start(osPriority priority)
 {
-    osThreadDef_t threadDef;
-
-    threadDef.name = _taskName;
-    threadDef.pthread = (os_pthread)&_taskRunner;
-    threadDef.tpriority = priority;
-    threadDef.instances = 1;
-    threadDef.stacksize = 0;
-
-    _taskArgs.task = this;
-    osThreadCreate(&threadDef, (void *)&_taskArgs);
+    printf("Attempting to start thread\r\n");
+    
+    xTaskCreate(_taskRunner, "Test", configMINIMAL_STACK_SIZE, static_cast<void *>(this), tskIDLE_PRIORITY, NULL);
 }
 
-void Task::_taskRunner(const void *args)
+void Task::_taskRunner(void *args)
 {
-    const TaskArgs_t *tArgs = (const TaskArgs_t*)args;
-    tArgs->task->_taskHandler();
+    Task *t = static_cast<Task *>(args);
+    t->_taskHandler();
 }
 
 void Task::_taskHandler()
