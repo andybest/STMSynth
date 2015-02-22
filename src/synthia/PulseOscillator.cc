@@ -39,7 +39,7 @@ namespace Synthia
         if(_phase >= _pulseWidth)
             samp = 1.0f;
         else
-            samp = 0.0f;
+            samp = -1.0f;
         
         _phase += _tickStep;
         

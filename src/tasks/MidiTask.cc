@@ -89,6 +89,8 @@ bool MidiTask::run() {
                         msg.PitchBend.pitchBendValue);
                 break;  
         }
+        
+        xQueueSendToBack(synthMidiQueueHandle, &msg, portMAX_DELAY);
         /*if (packet.codeIndexNumber == 0x9) {
             // Note On
             printf("MIDI Note On- key: %u vel %u\r\n", (unsigned int) packet.midi1, (unsigned int) packet.midi2);

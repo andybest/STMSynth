@@ -10,6 +10,7 @@
 #include "midi.h"
 
 extern QueueHandle_t midiQueueHandle;
+extern QueueHandle_t synthMidiQueueHandle;
 
 class MidiTask : public Task
 {

@@ -9,10 +9,9 @@
 #include "TestTask.h"
 #include "MidiTask.h"
 
-#include "SynthContext.h"
-#include "SineOscillator.h"
-#include "Lowpass.h"
-#include "Envelope.h"
+#include "synthesizer.h"
+#include "midi.h"
+#include "synthesizer/Synthesizer.h"
 
 using namespace Synthia;
 
@@ -26,14 +25,10 @@ void initSynth();
 void audioCallback(uint16_t *buf , uint16_t length);
 uint16_t audiobuff[BUFF_LEN];
 
-SynthContext synthContext(AUDIO_SAMPLE_RATE);
-SineOscillator osc1;
-SineOscillator lfo1;
-Lowpass filt1;
-Envelope adsr1;
-
 TestTask testTask;
 MidiTask midiTask;
+
+Synthesizer synth(AUDIO_SAMPLE_RATE);
 
 /* Variables used for USB */
 USBD_HandleTypeDef  hUSBDDevice;
@@ -41,6 +36,7 @@ UART_HandleTypeDef UartHandle;
 
 // MIDI message queue
 QueueHandle_t midiQueueHandle;
+QueueHandle_t synthMidiQueueHandle;
 
 
 extern "C" void vLEDFlashTask(void *pvParameters)
@@ -101,8 +97,9 @@ void initHardware(void)
 
 void initTasks(void)
 {
-	midiQueueHandle = xQueueCreate(32, sizeof(USB_MIDI_Event_Packet_TypeDef));
-
+    midiQueueHandle = xQueueCreate(32, sizeof(USB_MIDI_Event_Packet_TypeDef));
+    synthMidiQueueHandle = xQueueCreate(32, sizeof(MidiMessage_t));
+    
     printf("Starting tasks\r\n");
     testTask.start(osPriorityIdle);
     
@@ -138,20 +135,6 @@ void initUART(void)
 
 void initAudio(void)
 {
-	osc1.init(&synthContext);
-	osc1.setFrequency(440.0f);
-
-	lfo1.init(&synthContext);
-	lfo1.setFrequency(1.0f);
-
-	filt1.init(&synthContext);
-	filt1.setResonance(0.5f);
-
-	adsr1.init(&synthContext);
-	adsr1.setAttackTime(0.2f);
-	adsr1.setDecayTime(0.0f);
-	adsr1.setReleaseTime(0.5f);
-
     BSP_AUDIO_OUT_Init(OUTPUT_DEVICE_AUTO, 70, 48000);
     BSP_AUDIO_OUT_SetVolume(60);
     BSP_AUDIO_OUT_Play((uint16_t*)&audiobuff[0], 2*BUFF_LEN);
@@ -159,6 +142,13 @@ void initAudio(void)
 
 void make_sound(uint16_t *buf , uint16_t length)
 {
+    MidiMessage_t msg;
+    BaseType_t xTaskWokenByReceive = pdFALSE;
+    
+    while(xQueueReceiveFromISR(synthMidiQueueHandle, &msg, &xTaskWokenByReceive)) {
+        synth.processMidiMessage(&msg);
+    }
+    
     uint16_t 	pos;
     uint16_t 	*outp;
     float	 	yL, yR ;
@@ -168,10 +158,7 @@ void make_sound(uint16_t *buf , uint16_t length)
 
     for (pos = 0; pos < length; pos++)
     {
-        float lfoSamp = lfo1.tick(0);
-        filt1.setCutoff(lfoSamp);
-
-        float samp = osc1.tick(0) * adsr1.tick(0);
+        float samp = synth.tick();
         yL = samp;
         yR = samp;
 

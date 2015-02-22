@@ -53,6 +53,7 @@ include_directories(
     ${CMAKE_SOURCE_DIR}/src/usb
     ${CMAKE_SOURCE_DIR}/src/config
     ${CMAKE_SOURCE_DIR}/src/tasks
+    ${CMAKE_SOURCE_DIR}/src/synthesizer
     ${SYNTHIA_INCLUDES}
     ${USB_CORE_INCLUDES}
     ${STM32_INCLUDE_DIRS}
@@ -72,6 +73,7 @@ add_executable(${OUTPUT_NAME}.elf
     src/tasks/cpp_task.cc
     src/tasks/TestTask.cc
     src/tasks/MidiTask.cc
+    src/synthesizer/synthesizer.cc
     src/usb/usbd_conf.c
     src/usb/usbd_desc.c
     src/usb/usbd_midi.c
