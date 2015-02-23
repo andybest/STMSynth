@@ -1,0 +1,4 @@
+/Users/andybest/dev/stm/stmsynth/build/CMakeFiles/STMSynth.bin.dir
+/Users/andybest/dev/stm/stmsynth/build/CMakeFiles/STMSynth.elf.dir
+/Users/andybest/dev/stm/stmsynth/build/CMakeFiles/STMSynth.hex.dir
+/Users/andybest/dev/stm/stmsynth/build/CMakeFiles/program-flash.dir
