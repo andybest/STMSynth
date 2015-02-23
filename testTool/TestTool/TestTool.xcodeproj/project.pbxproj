@@ -7,11 +7,31 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		A5E578671A9B414100A49999 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A5E578661A9B414100A49999 /* AppDelegate.m */; };
+		A59805281A9B49EB00C36C3A /* CoreMIDI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A59805271A9B49EB00C36C3A /* CoreMIDI.framework */; };
+		A5E578671A9B414100A49999 /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = A5E578661A9B414100A49999 /* AppDelegate.mm */; };
 		A5E578691A9B414100A49999 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A5E578681A9B414100A49999 /* main.m */; };
 		A5E5786B1A9B414100A49999 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A5E5786A1A9B414100A49999 /* Images.xcassets */; };
 		A5E5786E1A9B414100A49999 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = A5E5786C1A9B414100A49999 /* MainMenu.xib */; };
 		A5E5787A1A9B414100A49999 /* TestToolTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A5E578791A9B414100A49999 /* TestToolTests.m */; };
+		A5E578871A9B440400A49999 /* ABAudioManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = A5E578861A9B440400A49999 /* ABAudioManager.mm */; };
+		A5F28F221A9B535B00D970A6 /* RtMidi.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A5F28F201A9B535B00D970A6 /* RtMidi.cpp */; };
+		A5F28F241A9B551600D970A6 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A5F28F231A9B551600D970A6 /* CoreAudio.framework */; };
+		A5F28F651A9B621000D970A6 /* AudioFileReader.mm in Sources */ = {isa = PBXBuildFile; fileRef = A5F28F5E1A9B621000D970A6 /* AudioFileReader.mm */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		A5F28F661A9B621000D970A6 /* AudioFileWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = A5F28F601A9B621000D970A6 /* AudioFileWriter.m */; };
+		A5F28F671A9B621000D970A6 /* Novocaine.m in Sources */ = {isa = PBXBuildFile; fileRef = A5F28F621A9B621000D970A6 /* Novocaine.m */; };
+		A5F28F681A9B621000D970A6 /* RingBuffer.mm in Sources */ = {isa = PBXBuildFile; fileRef = A5F28F641A9B621000D970A6 /* RingBuffer.mm */; };
+		A5F28F851A9B649A00D970A6 /* Synthesizer.cc in Sources */ = {isa = PBXBuildFile; fileRef = A5F28F6A1A9B649A00D970A6 /* Synthesizer.cc */; };
+		A5F28F861A9B649A00D970A6 /* Envelope.cc in Sources */ = {isa = PBXBuildFile; fileRef = A5F28F6E1A9B649A00D970A6 /* Envelope.cc */; };
+		A5F28F871A9B649A00D970A6 /* Generator.cc in Sources */ = {isa = PBXBuildFile; fileRef = A5F28F701A9B649A00D970A6 /* Generator.cc */; };
+		A5F28F881A9B649A00D970A6 /* Lowpass.cc in Sources */ = {isa = PBXBuildFile; fileRef = A5F28F721A9B649A00D970A6 /* Lowpass.cc */; };
+		A5F28F891A9B649A00D970A6 /* PulseOscillator.cc in Sources */ = {isa = PBXBuildFile; fileRef = A5F28F741A9B649A00D970A6 /* PulseOscillator.cc */; };
+		A5F28F8A1A9B649A00D970A6 /* SError.cc in Sources */ = {isa = PBXBuildFile; fileRef = A5F28F771A9B649A00D970A6 /* SError.cc */; };
+		A5F28F8B1A9B649A00D970A6 /* SineOscillator.cc in Sources */ = {isa = PBXBuildFile; fileRef = A5F28F791A9B649A00D970A6 /* SineOscillator.cc */; };
+		A5F28F8C1A9B649A00D970A6 /* SObject.cc in Sources */ = {isa = PBXBuildFile; fileRef = A5F28F7B1A9B649A00D970A6 /* SObject.cc */; };
+		A5F28F8D1A9B649A00D970A6 /* SoundFile.cc in Sources */ = {isa = PBXBuildFile; fileRef = A5F28F7D1A9B649A00D970A6 /* SoundFile.cc */; };
+		A5F28F8E1A9B649A00D970A6 /* SoundLoop.cc in Sources */ = {isa = PBXBuildFile; fileRef = A5F28F7F1A9B649A00D970A6 /* SoundLoop.cc */; };
+		A5F28F8F1A9B649A00D970A6 /* SynthContext.cc in Sources */ = {isa = PBXBuildFile; fileRef = A5F28F811A9B649A00D970A6 /* SynthContext.cc */; };
+		A5F28F901A9B649A00D970A6 /* WavetableOscillator.cc in Sources */ = {isa = PBXBuildFile; fileRef = A5F28F831A9B649A00D970A6 /* WavetableOscillator.cc */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -25,16 +45,57 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		A59805271A9B49EB00C36C3A /* CoreMIDI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMIDI.framework; path = System/Library/Frameworks/CoreMIDI.framework; sourceTree = SDKROOT; };
 		A5E578601A9B414100A49999 /* TestTool.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TestTool.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A5E578641A9B414100A49999 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A5E578651A9B414100A49999 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
-		A5E578661A9B414100A49999 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		A5E578661A9B414100A49999 /* AppDelegate.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = AppDelegate.mm; sourceTree = "<group>"; };
 		A5E578681A9B414100A49999 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		A5E5786A1A9B414100A49999 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		A5E5786D1A9B414100A49999 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		A5E578731A9B414100A49999 /* TestToolTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TestToolTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A5E578781A9B414100A49999 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A5E578791A9B414100A49999 /* TestToolTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TestToolTests.m; sourceTree = "<group>"; };
+		A5E578851A9B440400A49999 /* ABAudioManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABAudioManager.h; sourceTree = "<group>"; };
+		A5E578861A9B440400A49999 /* ABAudioManager.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ABAudioManager.mm; sourceTree = "<group>"; };
+		A5E578881A9B454900A49999 /* midi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = midi.h; path = ../../../src/midi.h; sourceTree = "<group>"; };
+		A5F28F201A9B535B00D970A6 /* RtMidi.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RtMidi.cpp; sourceTree = "<group>"; };
+		A5F28F211A9B535B00D970A6 /* RtMidi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RtMidi.h; sourceTree = "<group>"; };
+		A5F28F231A9B551600D970A6 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
+		A5F28F5D1A9B621000D970A6 /* AudioFileReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AudioFileReader.h; sourceTree = "<group>"; };
+		A5F28F5E1A9B621000D970A6 /* AudioFileReader.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AudioFileReader.mm; sourceTree = "<group>"; };
+		A5F28F5F1A9B621000D970A6 /* AudioFileWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AudioFileWriter.h; sourceTree = "<group>"; };
+		A5F28F601A9B621000D970A6 /* AudioFileWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AudioFileWriter.m; sourceTree = "<group>"; };
+		A5F28F611A9B621000D970A6 /* Novocaine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Novocaine.h; sourceTree = "<group>"; };
+		A5F28F621A9B621000D970A6 /* Novocaine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Novocaine.m; sourceTree = "<group>"; };
+		A5F28F631A9B621000D970A6 /* RingBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RingBuffer.h; sourceTree = "<group>"; };
+		A5F28F641A9B621000D970A6 /* RingBuffer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RingBuffer.mm; sourceTree = "<group>"; };
+		A5F28F6A1A9B649A00D970A6 /* Synthesizer.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Synthesizer.cc; sourceTree = "<group>"; };
+		A5F28F6B1A9B649A00D970A6 /* Synthesizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Synthesizer.h; sourceTree = "<group>"; };
+		A5F28F6D1A9B649A00D970A6 /* Effect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Effect.h; sourceTree = "<group>"; };
+		A5F28F6E1A9B649A00D970A6 /* Envelope.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Envelope.cc; sourceTree = "<group>"; };
+		A5F28F6F1A9B649A00D970A6 /* Envelope.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Envelope.h; sourceTree = "<group>"; };
+		A5F28F701A9B649A00D970A6 /* Generator.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Generator.cc; sourceTree = "<group>"; };
+		A5F28F711A9B649A00D970A6 /* Generator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Generator.h; sourceTree = "<group>"; };
+		A5F28F721A9B649A00D970A6 /* Lowpass.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Lowpass.cc; sourceTree = "<group>"; };
+		A5F28F731A9B649A00D970A6 /* Lowpass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Lowpass.h; sourceTree = "<group>"; };
+		A5F28F741A9B649A00D970A6 /* PulseOscillator.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PulseOscillator.cc; sourceTree = "<group>"; };
+		A5F28F751A9B649A00D970A6 /* PulseOscillator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PulseOscillator.h; sourceTree = "<group>"; };
+		A5F28F761A9B649A00D970A6 /* SEndian.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEndian.h; sourceTree = "<group>"; };
+		A5F28F771A9B649A00D970A6 /* SError.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SError.cc; sourceTree = "<group>"; };
+		A5F28F781A9B649A00D970A6 /* SError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SError.h; sourceTree = "<group>"; };
+		A5F28F791A9B649A00D970A6 /* SineOscillator.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SineOscillator.cc; sourceTree = "<group>"; };
+		A5F28F7A1A9B649A00D970A6 /* SineOscillator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SineOscillator.h; sourceTree = "<group>"; };
+		A5F28F7B1A9B649A00D970A6 /* SObject.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SObject.cc; sourceTree = "<group>"; };
+		A5F28F7C1A9B649A00D970A6 /* SObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SObject.h; sourceTree = "<group>"; };
+		A5F28F7D1A9B649A00D970A6 /* SoundFile.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SoundFile.cc; sourceTree = "<group>"; };
+		A5F28F7E1A9B649A00D970A6 /* SoundFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SoundFile.h; sourceTree = "<group>"; };
+		A5F28F7F1A9B649A00D970A6 /* SoundLoop.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SoundLoop.cc; sourceTree = "<group>"; };
+		A5F28F801A9B649A00D970A6 /* SoundLoop.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SoundLoop.h; sourceTree = "<group>"; };
+		A5F28F811A9B649A00D970A6 /* SynthContext.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SynthContext.cc; sourceTree = "<group>"; };
+		A5F28F821A9B649A00D970A6 /* SynthContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SynthContext.h; sourceTree = "<group>"; };
+		A5F28F831A9B649A00D970A6 /* WavetableOscillator.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WavetableOscillator.cc; sourceTree = "<group>"; };
+		A5F28F841A9B649A00D970A6 /* WavetableOscillator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WavetableOscillator.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -42,6 +103,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A5F28F241A9B551600D970A6 /* CoreAudio.framework in Frameworks */,
+				A59805281A9B49EB00C36C3A /* CoreMIDI.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -55,12 +118,25 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		49F0FAFA27349AFAEDD651FD /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				A5F28F231A9B551600D970A6 /* CoreAudio.framework */,
+				A59805271A9B49EB00C36C3A /* CoreMIDI.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		A5E578571A9B414100A49999 = {
 			isa = PBXGroup;
 			children = (
+				A5F28F691A9B649A00D970A6 /* synthesizer */,
+				A5F28F6C1A9B649A00D970A6 /* synthia */,
+				A5F28F5C1A9B621000D970A6 /* Novocaine */,
 				A5E578621A9B414100A49999 /* TestTool */,
 				A5E578761A9B414100A49999 /* TestToolTests */,
 				A5E578611A9B414100A49999 /* Products */,
+				49F0FAFA27349AFAEDD651FD /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -76,11 +152,16 @@
 		A5E578621A9B414100A49999 /* TestTool */ = {
 			isa = PBXGroup;
 			children = (
+				A5F28F201A9B535B00D970A6 /* RtMidi.cpp */,
+				A5F28F211A9B535B00D970A6 /* RtMidi.h */,
+				A5E578881A9B454900A49999 /* midi.h */,
 				A5E578651A9B414100A49999 /* AppDelegate.h */,
-				A5E578661A9B414100A49999 /* AppDelegate.m */,
+				A5E578661A9B414100A49999 /* AppDelegate.mm */,
 				A5E5786A1A9B414100A49999 /* Images.xcassets */,
 				A5E5786C1A9B414100A49999 /* MainMenu.xib */,
 				A5E578631A9B414100A49999 /* Supporting Files */,
+				A5E578851A9B440400A49999 /* ABAudioManager.h */,
+				A5E578861A9B440400A49999 /* ABAudioManager.mm */,
 			);
 			path = TestTool;
 			sourceTree = "<group>";
@@ -109,6 +190,63 @@
 				A5E578781A9B414100A49999 /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		A5F28F5C1A9B621000D970A6 /* Novocaine */ = {
+			isa = PBXGroup;
+			children = (
+				A5F28F5D1A9B621000D970A6 /* AudioFileReader.h */,
+				A5F28F5E1A9B621000D970A6 /* AudioFileReader.mm */,
+				A5F28F5F1A9B621000D970A6 /* AudioFileWriter.h */,
+				A5F28F601A9B621000D970A6 /* AudioFileWriter.m */,
+				A5F28F611A9B621000D970A6 /* Novocaine.h */,
+				A5F28F621A9B621000D970A6 /* Novocaine.m */,
+				A5F28F631A9B621000D970A6 /* RingBuffer.h */,
+				A5F28F641A9B621000D970A6 /* RingBuffer.mm */,
+			);
+			path = Novocaine;
+			sourceTree = "<group>";
+		};
+		A5F28F691A9B649A00D970A6 /* synthesizer */ = {
+			isa = PBXGroup;
+			children = (
+				A5F28F6A1A9B649A00D970A6 /* Synthesizer.cc */,
+				A5F28F6B1A9B649A00D970A6 /* Synthesizer.h */,
+			);
+			name = synthesizer;
+			path = ../../src/synthesizer;
+			sourceTree = "<group>";
+		};
+		A5F28F6C1A9B649A00D970A6 /* synthia */ = {
+			isa = PBXGroup;
+			children = (
+				A5F28F6D1A9B649A00D970A6 /* Effect.h */,
+				A5F28F6E1A9B649A00D970A6 /* Envelope.cc */,
+				A5F28F6F1A9B649A00D970A6 /* Envelope.h */,
+				A5F28F701A9B649A00D970A6 /* Generator.cc */,
+				A5F28F711A9B649A00D970A6 /* Generator.h */,
+				A5F28F721A9B649A00D970A6 /* Lowpass.cc */,
+				A5F28F731A9B649A00D970A6 /* Lowpass.h */,
+				A5F28F741A9B649A00D970A6 /* PulseOscillator.cc */,
+				A5F28F751A9B649A00D970A6 /* PulseOscillator.h */,
+				A5F28F761A9B649A00D970A6 /* SEndian.h */,
+				A5F28F771A9B649A00D970A6 /* SError.cc */,
+				A5F28F781A9B649A00D970A6 /* SError.h */,
+				A5F28F791A9B649A00D970A6 /* SineOscillator.cc */,
+				A5F28F7A1A9B649A00D970A6 /* SineOscillator.h */,
+				A5F28F7B1A9B649A00D970A6 /* SObject.cc */,
+				A5F28F7C1A9B649A00D970A6 /* SObject.h */,
+				A5F28F7D1A9B649A00D970A6 /* SoundFile.cc */,
+				A5F28F7E1A9B649A00D970A6 /* SoundFile.h */,
+				A5F28F7F1A9B649A00D970A6 /* SoundLoop.cc */,
+				A5F28F801A9B649A00D970A6 /* SoundLoop.h */,
+				A5F28F811A9B649A00D970A6 /* SynthContext.cc */,
+				A5F28F821A9B649A00D970A6 /* SynthContext.h */,
+				A5F28F831A9B649A00D970A6 /* WavetableOscillator.cc */,
+				A5F28F841A9B649A00D970A6 /* WavetableOscillator.h */,
+			);
+			name = synthia;
+			path = ../../src/synthia;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -210,8 +348,26 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A5F28F221A9B535B00D970A6 /* RtMidi.cpp in Sources */,
+				A5F28F851A9B649A00D970A6 /* Synthesizer.cc in Sources */,
+				A5F28F8A1A9B649A00D970A6 /* SError.cc in Sources */,
+				A5F28F8F1A9B649A00D970A6 /* SynthContext.cc in Sources */,
+				A5F28F8E1A9B649A00D970A6 /* SoundLoop.cc in Sources */,
+				A5F28F891A9B649A00D970A6 /* PulseOscillator.cc in Sources */,
+				A5E578871A9B440400A49999 /* ABAudioManager.mm in Sources */,
+				A5F28F881A9B649A00D970A6 /* Lowpass.cc in Sources */,
 				A5E578691A9B414100A49999 /* main.m in Sources */,
-				A5E578671A9B414100A49999 /* AppDelegate.m in Sources */,
+				A5F28F901A9B649A00D970A6 /* WavetableOscillator.cc in Sources */,
+				A5F28F671A9B621000D970A6 /* Novocaine.m in Sources */,
+				A5F28F8C1A9B649A00D970A6 /* SObject.cc in Sources */,
+				A5F28F8B1A9B649A00D970A6 /* SineOscillator.cc in Sources */,
+				A5F28F651A9B621000D970A6 /* AudioFileReader.mm in Sources */,
+				A5F28F8D1A9B649A00D970A6 /* SoundFile.cc in Sources */,
+				A5F28F871A9B649A00D970A6 /* Generator.cc in Sources */,
+				A5E578671A9B414100A49999 /* AppDelegate.mm in Sources */,
+				A5F28F661A9B621000D970A6 /* AudioFileWriter.m in Sources */,
+				A5F28F681A9B621000D970A6 /* RingBuffer.mm in Sources */,
+				A5F28F861A9B649A00D970A6 /* Envelope.cc in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -328,7 +484,12 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = TestTool/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				OTHER_CPLUSPLUSFLAGS = (
+					"$(OTHER_CFLAGS)",
+					"-D__MACOSX_CORE__",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				USER_HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/../../src/synthia $(PROJECT_DIR)/../../src/synthesizer";
 			};
 			name = Debug;
 		};
@@ -339,7 +500,12 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = TestTool/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				OTHER_CPLUSPLUSFLAGS = (
+					"$(OTHER_CFLAGS)",
+					"-D__MACOSX_CORE__",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				USER_HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/../../src/synthia $(PROJECT_DIR)/../../src/synthesizer";
 			};
 			name = Release;
 		};
@@ -398,6 +564,7 @@
 				A5E5787F1A9B414100A49999 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		A5E578801A9B414100A49999 /* Build configuration list for PBXNativeTarget "TestToolTests" */ = {
 			isa = XCConfigurationList;
@@ -406,6 +573,7 @@
 				A5E578821A9B414100A49999 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

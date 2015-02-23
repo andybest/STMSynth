@@ -17,6 +17,7 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
     // Insert code here to initialize your application
+    self.audioManager = [[ABAudioManager alloc] init];
 }
 
 - (void)applicationWillTerminate:(NSNotification *)aNotification {

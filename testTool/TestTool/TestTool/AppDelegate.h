@@ -7,9 +7,12 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "ABAudioManager.h"
 
 @interface AppDelegate : NSObject <NSApplicationDelegate>
 
+
+@property (nonatomic, strong) ABAudioManager *audioManager;
 
 @end
 
