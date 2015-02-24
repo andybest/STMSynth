@@ -1,4 +1,0 @@
-# Hashes of file build rules.
-101ca3ec03b0462cf3f17f3faaf34bfe CMakeFiles/STMSynth.bin
-4be66247705073f46797e78299b7ad89 CMakeFiles/STMSynth.hex
-6d7196e3a515029436ec34a4ec1b133f CMakeFiles/program-flash

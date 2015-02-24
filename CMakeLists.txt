@@ -11,8 +11,12 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS "ON")
 include(CMake/STM32.cmake)
 
 # SYNTHIA
-set(SYNTHIA_INCLUDES ${CMAKE_SOURCE_DIR}/src/synthia)
-file(GLOB SYNTHIA_SOURCES ${CMAKE_SOURCE_DIR}/src/synthia/*.cc)
+set(SYNTHIA_INCLUDES 
+    ${CMAKE_SOURCE_DIR}/src/synthia
+    ${CMAKE_SOURCE_DIR}/src/synthia/wavetables)
+file(GLOB SYNTHIA_SOURCES 
+    ${CMAKE_SOURCE_DIR}/src/synthia/*.cc
+    ${CMAKE_SOURCE_DIR}/src/synthia/wavetables/*.cc)
 
 # USB CORE
 set(USB_CORE_INCLUDES ${CMAKE_SOURCE_DIR}/Middleware/STM32_USB_Device_Library/Core/Inc)
