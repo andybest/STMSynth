@@ -28,12 +28,18 @@ namespace Synthia {
         void setFrequency(float freq);
         void setInterpolationType(WavetableInterpolationType interpType);
         float tick(int channel);
+        void doPrecalculation(bool isSingleCycle);
         void loadWavetable(string filename, bool isSingleCycle);
+        void loadWavetableFromArray(float *wtArray, int len, bool isSingleCycle);
         void retrigger();
     private:
         void calculatePhaseStep();
         
         SoundFile *_soundFile;
+        
+        float *_sampleArray;
+        int _numSamples;
+        
         float _baseFrequency;
         float _freq;
         double _freqScale;

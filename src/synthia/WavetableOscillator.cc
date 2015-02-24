@@ -21,15 +21,9 @@ namespace Synthia {
         _interpolationType = kWavetableInterpolationLinear;
     }
     
-    void WavetableOscillator::loadWavetable(string filename, bool isSingleCycle)
+    void WavetableOscillator::doPrecalculation(bool isSingleCycle)
     {
-        if(!_soundFile)
-        {
-            //_soundFile = new SoundFile();
-        }
-        
-        _soundFile->loadWav(filename);
-        _baseFrequency = _ctx->sampleRate() / _soundFile->length();
+        _baseFrequency = _ctx->sampleRate() / _numSamples;
         if(isSingleCycle)
         {
             // Is single cycle, so we don't need to scale anything
@@ -41,6 +35,30 @@ namespace Synthia {
         calculatePhaseStep();
     }
     
+    void WavetableOscillator::loadWavetable(string filename, bool isSingleCycle)
+    {
+        if(!_soundFile)
+        {
+            //_soundFile = new SoundFile();
+        }
+        
+        _soundFile->loadWav(filename);
+        
+        _numSamples = _soundFile->length();
+        
+        // Just use the left channel for now
+        _sampleArray = _soundFile->samples()[0];
+        
+        doPrecalculation(isSingleCycle);
+    }
+    
+    void WavetableOscillator::loadWavetableFromArray(float *wtArray, int len, bool isSingleCycle)
+    {
+        _sampleArray = wtArray;
+        _numSamples = len;
+        doPrecalculation(isSingleCycle);
+    }
+    
     void WavetableOscillator::setFrequency(float freq)
     {
         _freq = freq;
@@ -50,11 +68,6 @@ namespace Synthia {
     void WavetableOscillator::setInterpolationType(WavetableInterpolationType interpType)
     {
         _interpolationType = interpType;
-        
-        /*if(_interpolationType == kWavetableInterpolationNone)
-            cout << "No interpolation" << endl;
-        else
-            cout << "Linear interpolation" << endl;*/
     }
     
     void WavetableOscillator::retrigger()
@@ -71,7 +84,7 @@ namespace Synthia {
     {
         float samp;
         
-        float *samples = _soundFile->samples()[channel];
+        float *samples = _sampleArray;
         
         if(_interpolationType == kWavetableInterpolationNone)
         {
@@ -85,7 +98,7 @@ namespace Synthia {
             // Get floor and ceil values
             float val = samples[idxBase];
             int idx2 = idxBase + 1;
-            if(idx2 >= _soundFile->length())
+            if(idx2 >= _numSamples)
                 idx2 = 0;
             float val2 = samples[idx2];
             
@@ -94,8 +107,8 @@ namespace Synthia {
        
         _accumulator += _phaseStep;
         
-        if(_accumulator > _soundFile->length()) {
-            _accumulator -= _soundFile->length();
+        if(_accumulator > _numSamples) {
+            _accumulator -= _numSamples;
         }
         return samp;
     }

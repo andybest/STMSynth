@@ -12,7 +12,8 @@
 #include "stdint.h"
 
 #include "SynthContext.h"
-#include "PulseOscillator.h"
+#include "WavetableOscillator.h"
+#include "wavetable_samples.h"
 #include "Envelope.h"
 #include "midi.h"
 
@@ -28,7 +29,7 @@ public:
     float tick();
 private:
     SynthContext synthContext;
-    PulseOscillator osc1;
+    WavetableOscillator osc1;
     Envelope envelope;
     
     std::vector<uint8_t> keyStack;

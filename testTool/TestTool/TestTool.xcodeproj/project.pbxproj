@@ -32,6 +32,10 @@
 		A5F28F8E1A9B649A00D970A6 /* SoundLoop.cc in Sources */ = {isa = PBXBuildFile; fileRef = A5F28F7F1A9B649A00D970A6 /* SoundLoop.cc */; };
 		A5F28F8F1A9B649A00D970A6 /* SynthContext.cc in Sources */ = {isa = PBXBuildFile; fileRef = A5F28F811A9B649A00D970A6 /* SynthContext.cc */; };
 		A5F28F901A9B649A00D970A6 /* WavetableOscillator.cc in Sources */ = {isa = PBXBuildFile; fileRef = A5F28F831A9B649A00D970A6 /* WavetableOscillator.cc */; };
+		A5F28FA21A9CE10900D970A6 /* wavetable_pulse.cc in Sources */ = {isa = PBXBuildFile; fileRef = A5F28F9D1A9CE10900D970A6 /* wavetable_pulse.cc */; };
+		A5F28FA31A9CE10900D970A6 /* wavetable_ramp.cc in Sources */ = {isa = PBXBuildFile; fileRef = A5F28F9E1A9CE10900D970A6 /* wavetable_ramp.cc */; };
+		A5F28FA41A9CE10900D970A6 /* wavetable_sine.cc in Sources */ = {isa = PBXBuildFile; fileRef = A5F28FA01A9CE10900D970A6 /* wavetable_sine.cc */; };
+		A5F28FA51A9CE10900D970A6 /* wavetable_triangle.cc in Sources */ = {isa = PBXBuildFile; fileRef = A5F28FA11A9CE10900D970A6 /* wavetable_triangle.cc */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -96,6 +100,11 @@
 		A5F28F821A9B649A00D970A6 /* SynthContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SynthContext.h; sourceTree = "<group>"; };
 		A5F28F831A9B649A00D970A6 /* WavetableOscillator.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WavetableOscillator.cc; sourceTree = "<group>"; };
 		A5F28F841A9B649A00D970A6 /* WavetableOscillator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WavetableOscillator.h; sourceTree = "<group>"; };
+		A5F28F9D1A9CE10900D970A6 /* wavetable_pulse.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = wavetable_pulse.cc; path = wavetables/wavetable_pulse.cc; sourceTree = "<group>"; };
+		A5F28F9E1A9CE10900D970A6 /* wavetable_ramp.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = wavetable_ramp.cc; path = wavetables/wavetable_ramp.cc; sourceTree = "<group>"; };
+		A5F28F9F1A9CE10900D970A6 /* wavetable_samples.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = wavetable_samples.h; path = wavetables/wavetable_samples.h; sourceTree = "<group>"; };
+		A5F28FA01A9CE10900D970A6 /* wavetable_sine.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = wavetable_sine.cc; path = wavetables/wavetable_sine.cc; sourceTree = "<group>"; };
+		A5F28FA11A9CE10900D970A6 /* wavetable_triangle.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = wavetable_triangle.cc; path = wavetables/wavetable_triangle.cc; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -220,6 +229,11 @@
 		A5F28F6C1A9B649A00D970A6 /* synthia */ = {
 			isa = PBXGroup;
 			children = (
+				A5F28F9D1A9CE10900D970A6 /* wavetable_pulse.cc */,
+				A5F28F9E1A9CE10900D970A6 /* wavetable_ramp.cc */,
+				A5F28F9F1A9CE10900D970A6 /* wavetable_samples.h */,
+				A5F28FA01A9CE10900D970A6 /* wavetable_sine.cc */,
+				A5F28FA11A9CE10900D970A6 /* wavetable_triangle.cc */,
 				A5F28F6D1A9B649A00D970A6 /* Effect.h */,
 				A5F28F6E1A9B649A00D970A6 /* Envelope.cc */,
 				A5F28F6F1A9B649A00D970A6 /* Envelope.h */,
@@ -349,6 +363,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A5F28F221A9B535B00D970A6 /* RtMidi.cpp in Sources */,
+				A5F28FA51A9CE10900D970A6 /* wavetable_triangle.cc in Sources */,
 				A5F28F851A9B649A00D970A6 /* Synthesizer.cc in Sources */,
 				A5F28F8A1A9B649A00D970A6 /* SError.cc in Sources */,
 				A5F28F8F1A9B649A00D970A6 /* SynthContext.cc in Sources */,
@@ -357,6 +372,7 @@
 				A5E578871A9B440400A49999 /* ABAudioManager.mm in Sources */,
 				A5F28F881A9B649A00D970A6 /* Lowpass.cc in Sources */,
 				A5E578691A9B414100A49999 /* main.m in Sources */,
+				A5F28FA31A9CE10900D970A6 /* wavetable_ramp.cc in Sources */,
 				A5F28F901A9B649A00D970A6 /* WavetableOscillator.cc in Sources */,
 				A5F28F671A9B621000D970A6 /* Novocaine.m in Sources */,
 				A5F28F8C1A9B649A00D970A6 /* SObject.cc in Sources */,
@@ -366,7 +382,9 @@
 				A5F28F871A9B649A00D970A6 /* Generator.cc in Sources */,
 				A5E578671A9B414100A49999 /* AppDelegate.mm in Sources */,
 				A5F28F661A9B621000D970A6 /* AudioFileWriter.m in Sources */,
+				A5F28FA41A9CE10900D970A6 /* wavetable_sine.cc in Sources */,
 				A5F28F681A9B621000D970A6 /* RingBuffer.mm in Sources */,
+				A5F28FA21A9CE10900D970A6 /* wavetable_pulse.cc in Sources */,
 				A5F28F861A9B649A00D970A6 /* Envelope.cc in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

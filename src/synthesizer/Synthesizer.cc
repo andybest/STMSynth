@@ -10,6 +10,7 @@
 
 Synthesizer::Synthesizer(uint32_t sampleRate) : synthContext(sampleRate) {
     osc1.init(&synthContext);
+    osc1.loadWavetableFromArray(wavetable_triangle, wavetable_triangle_len, true);
     envelope.init(&synthContext);
     
     envelope.setAttackTime(0.08f);
