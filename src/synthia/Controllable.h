@@ -41,7 +41,7 @@ namespace Synthia
         bool setControlWithMidiCCValue(ControlEntryId id, unsigned char val);
         float convertFromMidiCCValue(unsigned char value, ControlEntry entry);
         
-        virtual void changeValueForEntry(ControlEntry entry, float value) = 0;
+        virtual void changeValueForControlId(ControlEntryId id, float value) = 0;
         
     protected:
         map<ControlEntryId, ControlEntry> _controlEntries;

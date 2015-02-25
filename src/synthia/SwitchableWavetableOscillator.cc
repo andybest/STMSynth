@@ -23,20 +23,17 @@ namespace Synthia
         
         for(auto it = _wavetableOscillators.begin(); it != _wavetableOscillators.end(); ++it)
         {
-            it->setFrequency(_frequency);
+            (*it)->setFrequency(_frequency);
         }
     }
     
     int SwitchableWavetableOscillator::addWavetable(float *sampleArray, int len)
     {
-        _wavetableOscillators.push_back(WavetableOscillator());
-        WavetableOscillator *osc = &_wavetableOscillators.back();
+        _wavetableOscillators.push_back(new WavetableOscillator());
+        WavetableOscillator *osc = _wavetableOscillators.back();
         
         osc->init(_ctx);
         osc->loadWavetableFromArray(sampleArray, len, true);
-        
-        if(_selectedOscillator == NULL)
-            _selectedOscillator = osc;
         
         return 0;
     }
@@ -51,7 +48,7 @@ namespace Synthia
         if(wavetableIdx >= _wavetableOscillators.size())
             return;
         
-        _selectedOscillator = &_wavetableOscillators.at(wavetableIdx);
+        _selectedOscillator = wavetableIdx;
     }
     
     void SwitchableWavetableOscillator::selectWavetableFloat(float value)
@@ -67,10 +64,10 @@ namespace Synthia
     
     float SwitchableWavetableOscillator::tick(int channel)
     {
-        if (!_selectedOscillator) {
+        if (channel >= _wavetableOscillators.size()) {
             return 0.0f;
         }
         
-        return _selectedOscillator->tick(channel);
+        return _wavetableOscillators[_selectedOscillator]->tick(channel);
     }
 }

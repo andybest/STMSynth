@@ -14,6 +14,7 @@ namespace Synthia
 {
     class Generator : public SObject
     {
+    public:
         virtual void init(SynthContext *ctx) = 0;
         virtual float tick(int channel) = 0;
 

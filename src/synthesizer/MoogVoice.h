@@ -36,17 +36,9 @@ namespace Synthia
         kMoogVoiceParameter_Envelope_Decay,
         kMoogVoiceParameter_Envelope_Sustain,
         kMoogVoiceParameter_Envelope_Release,
-        
-        kMoogVoiceParameter_Filter_Cutoff,
-        kMoogVoiceParameter_Filter_Resonance,
-        
-        kMoogVoiceParameter_FilterEnvelope_Attack,
-        kMoogVoiceParameter_FilterEnvelope_Decay,
-        kMoogVoiceParameter_FilterEnvelope_Sustain,
-        kMoogVoiceParameter_FilterEnvelope_Release
     };
     
-    class MoogVoice : public SynthVoice, public Controllable
+    class MoogVoice : public SynthVoice
     {
     public:
         void init(SynthContext *ctx);
@@ -57,7 +49,7 @@ namespace Synthia
         void keyOn();
         void keyOff();
         
-        void changeValueForEntry(ControlEntry entry, float value);
+        void changeValueForControlId(ControlEntryId id, float value);
         void setupControlEntries();
         
     private:
@@ -78,8 +70,6 @@ namespace Synthia
         float _osc3FineTune;
         
         Envelope _envelope;
-        Envelope _filterEnvelope;
         
-        Lowpass _lowpassFilter;
     };
 }

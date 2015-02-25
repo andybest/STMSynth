@@ -32,9 +32,19 @@ namespace Synthia {
         _osc2.addWavetable(wavetable_pulse, wavetable_pulse_len);
         _osc3.addWavetable(wavetable_pulse, wavetable_pulse_len);
         
+        _osc1.selectWavetable(1);
+        _osc2.selectWavetable(1);
+        _osc3.selectWavetable(1);
+        
         _envelope.init(_ctx);
-        _filterEnvelope.init(_ctx);
-        _lowpassFilter.init(_ctx);
+        _envelope.setAttackTime(0.2);
+        _envelope.setReleaseTime(1.0);
+        _envelope.setSustainLevel(1.0);
+        
+        _osc1Volume = 0.66f;
+        _osc2Volume = 0.66f;
+        _osc3Volume = 0.66f;
+        
     }
     
     void MoogVoice::setupControlEntries()
@@ -58,19 +68,11 @@ namespace Synthia {
         addControlEntry(kMoogVoiceParameter_Envelope_Decay, "Envelope Decay", kControlTypeFloatCustomRange, 0.0f, 2.0f);
         addControlEntry(kMoogVoiceParameter_Envelope_Sustain, "Envelope Sustain", kControlTypeFloatZeroOne);
         addControlEntry(kMoogVoiceParameter_Envelope_Release, "Envelope Release", kControlTypeFloatCustomRange, 0.0f, 2.0f);
-        
-        addControlEntry(kMoogVoiceParameter_Filter_Cutoff, "Filter Cutoff", kControlTypeFloatZeroOne);
-        addControlEntry(kMoogVoiceParameter_Filter_Resonance, "Filter Resonance", kControlTypeFloatZeroOne);
-        
-        addControlEntry(kMoogVoiceParameter_FilterEnvelope_Attack, "Filter Envelope Attack", kControlTypeFloatCustomRange, 0.0f, 2.0f);
-        addControlEntry(kMoogVoiceParameter_FilterEnvelope_Decay, "Filter Envelope Decay", kControlTypeFloatCustomRange, 0.0f, 2.0f);
-        addControlEntry(kMoogVoiceParameter_FilterEnvelope_Sustain, "Filter Envelope Sustain", kControlTypeFloatZeroOne);
-        addControlEntry(kMoogVoiceParameter_FilterEnvelope_Release, "Filter Envelope Release", kControlTypeFloatCustomRange, 0.0f, 2.0f);
     }
     
-    void MoogVoice::changeValueForEntry(ControlEntry entry, float value)
+    void MoogVoice::changeValueForControlId(ControlEntryId id, float value)
     {
-        switch(entry.id) {
+        switch(id) {
                 
                 /* OSC 1 */
             case kMoogVoiceParameter_OSC1_Waveform:
@@ -139,59 +141,31 @@ namespace Synthia {
             case kMoogVoiceParameter_Envelope_Release:
                 _envelope.setReleaseTime(value);
                 break;
-            
-                /* FILTER*/
-            case kMoogVoiceParameter_Filter_Cutoff:
-                _lowpassFilter.setCutoff(value);
-                break;
-                
-            case kMoogVoiceParameter_Filter_Resonance:
-                _lowpassFilter.setResonance(value);
-                break;
-                
-                /* FILTER ENVELOPE */
-            case kMoogVoiceParameter_FilterEnvelope_Attack:
-                _filterEnvelope.setAttackTime(value);
-                break;
-                
-            case kMoogVoiceParameter_FilterEnvelope_Decay:
-                _filterEnvelope.setDecayTime(value);
-                break;
-                
-            case kMoogVoiceParameter_FilterEnvelope_Sustain:
-                _filterEnvelope.setSustainLevel(value);
-                break;
-                
-            case kMoogVoiceParameter_FilterEnvelope_Release:
-                _filterEnvelope.setReleaseTime(value);
-                break;
         }
     }
     
     void MoogVoice::setFrequency(float freq)
     {
         _frequency = freq;
+        _osc1.setFrequency(freq);
+        _osc2.setFrequency(freq * 1.001);
+        _osc3.setFrequency(freq * 0.999);
     }
     
     void MoogVoice::keyOn()
     {
         _envelope.keyOn();
-        _filterEnvelope.keyOn();
     }
     
     void MoogVoice::keyOff()
     {
         _envelope.keyOff();
-        _filterEnvelope.keyOff();
     }
     
     float MoogVoice::tick(int channel)
     {
-        float oscSamp = _osc1.tick(channel) + _osc2.tick(channel) + _osc3.tick(channel);
-        
-        float filteredSamp = _lowpassFilter.tick(channel, oscSamp);
-        
-        float envelopeSamp = filteredSamp * _envelope.tick(channel);
+        float oscSamp = (_osc1.tick(channel) * _osc1Volume) + (_osc2.tick(channel) * _osc2Volume) + (_osc3.tick(channel) * _osc3Volume);
+        float envelopeSamp = oscSamp * _envelope.tick(channel);
         
         return envelopeSamp;
     }

@@ -12,6 +12,7 @@ namespace Synthia
 {
     class Triggerable
     {
+    public:
         virtual void keyOn() = 0;
         virtual void keyOff() = 0;
     };

@@ -32,8 +32,8 @@ namespace Synthia
         float tick(int channel);
         
     private:
-        WavetableOscillator *_selectedOscillator;
-        std::vector<WavetableOscillator> _wavetableOscillators;
+        unsigned int _selectedOscillator;
+        std::vector<WavetableOscillator *> _wavetableOscillators;
         
     };
 }

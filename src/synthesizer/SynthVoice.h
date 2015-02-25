@@ -12,10 +12,11 @@
 
 #include "Generator.h"
 #include "Triggerable.h"
+#include "Controllable.h"
 
 namespace Synthia
 {
-    class SynthVoice : public PitchedGenerator, public Triggerable
+    class SynthVoice : public PitchedGenerator, public Triggerable, public Controllable
     {
 
     };
