@@ -25,7 +25,15 @@ namespace Synthia
         
         void keyOn();
         void keyOff();
-
         
+    private:
+        SwitchableWavetableOscillator _osc1;
+        SwitchableWavetableOscillator _osc2;
+        SwitchableWavetableOscillator _osc3;
+        
+        Envelope _envelope;
+        Envelope _filterEnvelope;
+        
+        Lowpass _lowpassFilter;
     };
 }
