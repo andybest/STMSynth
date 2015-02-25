@@ -41,6 +41,11 @@ namespace Synthia
     {
         _releaseRate = 1.0f / (releaseTime / _timePerTick);
     }
+    
+    void Envelope::setSustainLevel(float sustainLevel)
+    {
+        _sustainLevel = sustainLevel;
+    }
 
     float Envelope::tick(int channel) {
         switch(_state)

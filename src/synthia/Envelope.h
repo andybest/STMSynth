@@ -28,6 +28,7 @@ namespace Synthia
         void setAttackTime(float attackTime);
         void setDecayTime(float decayTime);
         void setReleaseTime(float releaseTime);
+        void setSustainLevel(float sustainLevel);
         void keyOn();
         void keyOff();
         void setRetriggerTime(float retriggerTime);

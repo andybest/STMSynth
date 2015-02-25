@@ -11,6 +11,7 @@
 		A5DE36231A9DE0A900F6A45D /* SynthVoice.cc in Sources */ = {isa = PBXBuildFile; fileRef = A5DE36211A9DE0A900F6A45D /* SynthVoice.cc */; };
 		A5DE36261A9DE34600F6A45D /* MoogVoice.cc in Sources */ = {isa = PBXBuildFile; fileRef = A5DE36241A9DE34600F6A45D /* MoogVoice.cc */; };
 		A5DE362B1A9DE90F00F6A45D /* SwitchableWavetableOscillator.cc in Sources */ = {isa = PBXBuildFile; fileRef = A5DE36291A9DE90F00F6A45D /* SwitchableWavetableOscillator.cc */; };
+		A5DE362E1A9DF40F00F6A45D /* Controllable.cc in Sources */ = {isa = PBXBuildFile; fileRef = A5DE362C1A9DF40F00F6A45D /* Controllable.cc */; };
 		A5E578671A9B414100A49999 /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = A5E578661A9B414100A49999 /* AppDelegate.mm */; };
 		A5E578691A9B414100A49999 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A5E578681A9B414100A49999 /* main.m */; };
 		A5E5786B1A9B414100A49999 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A5E5786A1A9B414100A49999 /* Images.xcassets */; };
@@ -61,6 +62,8 @@
 		A5DE36281A9DE4A700F6A45D /* Triggerable.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Triggerable.h; sourceTree = "<group>"; };
 		A5DE36291A9DE90F00F6A45D /* SwitchableWavetableOscillator.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SwitchableWavetableOscillator.cc; sourceTree = "<group>"; };
 		A5DE362A1A9DE90F00F6A45D /* SwitchableWavetableOscillator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SwitchableWavetableOscillator.h; sourceTree = "<group>"; };
+		A5DE362C1A9DF40F00F6A45D /* Controllable.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Controllable.cc; sourceTree = "<group>"; };
+		A5DE362D1A9DF40F00F6A45D /* Controllable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Controllable.h; sourceTree = "<group>"; };
 		A5E578601A9B414100A49999 /* TestTool.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TestTool.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A5E578641A9B414100A49999 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A5E578651A9B414100A49999 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -277,6 +280,8 @@
 				A5DE36281A9DE4A700F6A45D /* Triggerable.h */,
 				A5DE36291A9DE90F00F6A45D /* SwitchableWavetableOscillator.cc */,
 				A5DE362A1A9DE90F00F6A45D /* SwitchableWavetableOscillator.h */,
+				A5DE362C1A9DF40F00F6A45D /* Controllable.cc */,
+				A5DE362D1A9DF40F00F6A45D /* Controllable.h */,
 			);
 			name = synthia;
 			path = ../../src/synthia;
@@ -403,6 +408,7 @@
 				A5E578671A9B414100A49999 /* AppDelegate.mm in Sources */,
 				A5F28F661A9B621000D970A6 /* AudioFileWriter.m in Sources */,
 				A5F28FA41A9CE10900D970A6 /* wavetable_sine.cc in Sources */,
+				A5DE362E1A9DF40F00F6A45D /* Controllable.cc in Sources */,
 				A5DE36231A9DE0A900F6A45D /* SynthVoice.cc in Sources */,
 				A5DE362B1A9DE90F00F6A45D /* SwitchableWavetableOscillator.cc in Sources */,
 				A5F28F681A9B621000D970A6 /* RingBuffer.mm in Sources */,

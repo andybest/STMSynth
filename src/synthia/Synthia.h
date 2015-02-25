@@ -23,6 +23,7 @@
 #include "WavetableOscillator.h"
 #include "Triggerable.h"
 #include "SwitchableWavetableOscillator.h"
+#include "Controllable.h"
 
 #include "Synthesizer.h"
 #include "SynthVoice.h"

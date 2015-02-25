@@ -25,6 +25,7 @@ namespace Synthia
         
         int addWavetable(float *sampleArray, int len);
         void selectWavetable(int wavetableIdx);
+        void selectWavetableFloat(float value);
         
         unsigned int numWavetables();
         
