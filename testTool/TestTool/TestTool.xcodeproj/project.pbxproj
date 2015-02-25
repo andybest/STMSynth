@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		A59805281A9B49EB00C36C3A /* CoreMIDI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A59805271A9B49EB00C36C3A /* CoreMIDI.framework */; };
+		A5DE36231A9DE0A900F6A45D /* SynthVoice.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A5DE36211A9DE0A900F6A45D /* SynthVoice.cpp */; };
 		A5E578671A9B414100A49999 /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = A5E578661A9B414100A49999 /* AppDelegate.mm */; };
 		A5E578691A9B414100A49999 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A5E578681A9B414100A49999 /* main.m */; };
 		A5E5786B1A9B414100A49999 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A5E5786A1A9B414100A49999 /* Images.xcassets */; };
@@ -50,6 +51,8 @@
 
 /* Begin PBXFileReference section */
 		A59805271A9B49EB00C36C3A /* CoreMIDI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMIDI.framework; path = System/Library/Frameworks/CoreMIDI.framework; sourceTree = SDKROOT; };
+		A5DE36211A9DE0A900F6A45D /* SynthVoice.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SynthVoice.cpp; sourceTree = "<group>"; };
+		A5DE36221A9DE0A900F6A45D /* SynthVoice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SynthVoice.h; sourceTree = "<group>"; };
 		A5E578601A9B414100A49999 /* TestTool.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TestTool.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A5E578641A9B414100A49999 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A5E578651A9B414100A49999 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -221,6 +224,8 @@
 			children = (
 				A5F28F6A1A9B649A00D970A6 /* Synthesizer.cc */,
 				A5F28F6B1A9B649A00D970A6 /* Synthesizer.h */,
+				A5DE36211A9DE0A900F6A45D /* SynthVoice.cpp */,
+				A5DE36221A9DE0A900F6A45D /* SynthVoice.h */,
 			);
 			name = synthesizer;
 			path = ../../src/synthesizer;
@@ -383,6 +388,7 @@
 				A5E578671A9B414100A49999 /* AppDelegate.mm in Sources */,
 				A5F28F661A9B621000D970A6 /* AudioFileWriter.m in Sources */,
 				A5F28FA41A9CE10900D970A6 /* wavetable_sine.cc in Sources */,
+				A5DE36231A9DE0A900F6A45D /* SynthVoice.cpp in Sources */,
 				A5F28F681A9B621000D970A6 /* RingBuffer.mm in Sources */,
 				A5F28FA21A9CE10900D970A6 /* wavetable_pulse.cc in Sources */,
 				A5F28F861A9B649A00D970A6 /* Envelope.cc in Sources */,

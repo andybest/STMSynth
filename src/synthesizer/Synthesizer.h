@@ -11,6 +11,7 @@
 #include <vector>
 #include "stdint.h"
 
+#include "SynthVoice.h"
 #include "SynthContext.h"
 #include "WavetableOscillator.h"
 #include "wavetable_samples.h"
@@ -19,20 +20,32 @@
 
 using namespace Synthia;
 
+typedef enum {
+    kKeyTransitionTypeLegatoLastPlayed,
+    kKeyTransitionTypePolyphonic
+}KeyTransitionType_t;
+
 class Synthesizer {
 public:
     Synthesizer(uint32_t sampleRate);
     ~Synthesizer();
     
+    KeyTransitionType_t keyTransitionType();
+    
     float midiNoteToFrequency(uint32_t note);
     void processMidiMessage(MidiMessage_t *msg);
     float tick();
+    
+    
 private:
     SynthContext synthContext;
     WavetableOscillator osc1;
     Envelope envelope;
     
-    std::vector<uint8_t> keyStack;
+    std::vector<uint8_t> _keyStack;
+    std::vector<SynthVoice *> _voices;
+    
+    KeyTransitionType_t _keyTransitionType;
 
 };
 
