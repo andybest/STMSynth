@@ -6,8 +6,7 @@
 //  Copyright (c) 2014 Andy Best. All rights reserved.
 //
 
-#ifndef __Callisto__PulseOscillator__
-#define __Callisto__PulseOscillator__
+#pragma once
 
 #include "Generator.h"
 
@@ -27,5 +26,3 @@ namespace Synthia {
 
     };
 }
-
-#endif /* defined(__Callisto__PulseOscillator__) */

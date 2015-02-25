@@ -5,17 +5,16 @@
  * Created on 22 February 2015, 21:22
  */
 
-#ifndef SYNTHESIZER_H
-#define	SYNTHESIZER_H
+#pragma once
 
 #include <vector>
 #include "stdint.h"
 
-#include "SynthVoice.h"
 #include "SynthContext.h"
+#include "SynthVoice.h"
 #include "WavetableOscillator.h"
-#include "wavetable_samples.h"
 #include "Envelope.h"
+#include "wavetable_samples.h"
 #include "midi.h"
 
 using namespace Synthia;
@@ -43,11 +42,13 @@ private:
     Envelope envelope;
     
     std::vector<uint8_t> _keyStack;
+    
     std::vector<SynthVoice *> _voices;
+    std::vector<SynthVoice *> _availbleVoices;
+    // Voices that are currently being played (keyon)
+    std::vector<SynthVoice *> _playingVoices;
     
     KeyTransitionType_t _keyTransitionType;
 
 };
-
-#endif	/* SYNTHESIZER_H */
 

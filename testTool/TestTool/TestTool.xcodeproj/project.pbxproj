@@ -8,7 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		A59805281A9B49EB00C36C3A /* CoreMIDI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A59805271A9B49EB00C36C3A /* CoreMIDI.framework */; };
-		A5DE36231A9DE0A900F6A45D /* SynthVoice.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A5DE36211A9DE0A900F6A45D /* SynthVoice.cpp */; };
+		A5DE36231A9DE0A900F6A45D /* SynthVoice.cc in Sources */ = {isa = PBXBuildFile; fileRef = A5DE36211A9DE0A900F6A45D /* SynthVoice.cc */; };
+		A5DE36261A9DE34600F6A45D /* MoogVoice.cc in Sources */ = {isa = PBXBuildFile; fileRef = A5DE36241A9DE34600F6A45D /* MoogVoice.cc */; };
+		A5DE362B1A9DE90F00F6A45D /* SwitchableWavetableOscillator.cc in Sources */ = {isa = PBXBuildFile; fileRef = A5DE36291A9DE90F00F6A45D /* SwitchableWavetableOscillator.cc */; };
 		A5E578671A9B414100A49999 /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = A5E578661A9B414100A49999 /* AppDelegate.mm */; };
 		A5E578691A9B414100A49999 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A5E578681A9B414100A49999 /* main.m */; };
 		A5E5786B1A9B414100A49999 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A5E5786A1A9B414100A49999 /* Images.xcassets */; };
@@ -51,8 +53,14 @@
 
 /* Begin PBXFileReference section */
 		A59805271A9B49EB00C36C3A /* CoreMIDI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMIDI.framework; path = System/Library/Frameworks/CoreMIDI.framework; sourceTree = SDKROOT; };
-		A5DE36211A9DE0A900F6A45D /* SynthVoice.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SynthVoice.cpp; sourceTree = "<group>"; };
+		A5DE36211A9DE0A900F6A45D /* SynthVoice.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SynthVoice.cc; sourceTree = "<group>"; };
 		A5DE36221A9DE0A900F6A45D /* SynthVoice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SynthVoice.h; sourceTree = "<group>"; };
+		A5DE36241A9DE34600F6A45D /* MoogVoice.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MoogVoice.cc; sourceTree = "<group>"; };
+		A5DE36251A9DE34600F6A45D /* MoogVoice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoogVoice.h; sourceTree = "<group>"; };
+		A5DE36271A9DE36D00F6A45D /* Synthia.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Synthia.h; sourceTree = "<group>"; };
+		A5DE36281A9DE4A700F6A45D /* Triggerable.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Triggerable.h; sourceTree = "<group>"; };
+		A5DE36291A9DE90F00F6A45D /* SwitchableWavetableOscillator.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SwitchableWavetableOscillator.cc; sourceTree = "<group>"; };
+		A5DE362A1A9DE90F00F6A45D /* SwitchableWavetableOscillator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SwitchableWavetableOscillator.h; sourceTree = "<group>"; };
 		A5E578601A9B414100A49999 /* TestTool.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TestTool.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A5E578641A9B414100A49999 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A5E578651A9B414100A49999 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -224,8 +232,10 @@
 			children = (
 				A5F28F6A1A9B649A00D970A6 /* Synthesizer.cc */,
 				A5F28F6B1A9B649A00D970A6 /* Synthesizer.h */,
-				A5DE36211A9DE0A900F6A45D /* SynthVoice.cpp */,
+				A5DE36211A9DE0A900F6A45D /* SynthVoice.cc */,
 				A5DE36221A9DE0A900F6A45D /* SynthVoice.h */,
+				A5DE36241A9DE34600F6A45D /* MoogVoice.cc */,
+				A5DE36251A9DE34600F6A45D /* MoogVoice.h */,
 			);
 			name = synthesizer;
 			path = ../../src/synthesizer;
@@ -234,11 +244,6 @@
 		A5F28F6C1A9B649A00D970A6 /* synthia */ = {
 			isa = PBXGroup;
 			children = (
-				A5F28F9D1A9CE10900D970A6 /* wavetable_pulse.cc */,
-				A5F28F9E1A9CE10900D970A6 /* wavetable_ramp.cc */,
-				A5F28F9F1A9CE10900D970A6 /* wavetable_samples.h */,
-				A5F28FA01A9CE10900D970A6 /* wavetable_sine.cc */,
-				A5F28FA11A9CE10900D970A6 /* wavetable_triangle.cc */,
 				A5F28F6D1A9B649A00D970A6 /* Effect.h */,
 				A5F28F6E1A9B649A00D970A6 /* Envelope.cc */,
 				A5F28F6F1A9B649A00D970A6 /* Envelope.h */,
@@ -261,8 +266,17 @@
 				A5F28F801A9B649A00D970A6 /* SoundLoop.h */,
 				A5F28F811A9B649A00D970A6 /* SynthContext.cc */,
 				A5F28F821A9B649A00D970A6 /* SynthContext.h */,
+				A5DE36271A9DE36D00F6A45D /* Synthia.h */,
+				A5F28F9D1A9CE10900D970A6 /* wavetable_pulse.cc */,
+				A5F28F9E1A9CE10900D970A6 /* wavetable_ramp.cc */,
+				A5F28F9F1A9CE10900D970A6 /* wavetable_samples.h */,
+				A5F28FA01A9CE10900D970A6 /* wavetable_sine.cc */,
+				A5F28FA11A9CE10900D970A6 /* wavetable_triangle.cc */,
 				A5F28F831A9B649A00D970A6 /* WavetableOscillator.cc */,
 				A5F28F841A9B649A00D970A6 /* WavetableOscillator.h */,
+				A5DE36281A9DE4A700F6A45D /* Triggerable.h */,
+				A5DE36291A9DE90F00F6A45D /* SwitchableWavetableOscillator.cc */,
+				A5DE362A1A9DE90F00F6A45D /* SwitchableWavetableOscillator.h */,
 			);
 			name = synthia;
 			path = ../../src/synthia;
@@ -381,6 +395,7 @@
 				A5F28F901A9B649A00D970A6 /* WavetableOscillator.cc in Sources */,
 				A5F28F671A9B621000D970A6 /* Novocaine.m in Sources */,
 				A5F28F8C1A9B649A00D970A6 /* SObject.cc in Sources */,
+				A5DE36261A9DE34600F6A45D /* MoogVoice.cc in Sources */,
 				A5F28F8B1A9B649A00D970A6 /* SineOscillator.cc in Sources */,
 				A5F28F651A9B621000D970A6 /* AudioFileReader.mm in Sources */,
 				A5F28F8D1A9B649A00D970A6 /* SoundFile.cc in Sources */,
@@ -388,7 +403,8 @@
 				A5E578671A9B414100A49999 /* AppDelegate.mm in Sources */,
 				A5F28F661A9B621000D970A6 /* AudioFileWriter.m in Sources */,
 				A5F28FA41A9CE10900D970A6 /* wavetable_sine.cc in Sources */,
-				A5DE36231A9DE0A900F6A45D /* SynthVoice.cpp in Sources */,
+				A5DE36231A9DE0A900F6A45D /* SynthVoice.cc in Sources */,
+				A5DE362B1A9DE90F00F6A45D /* SwitchableWavetableOscillator.cc in Sources */,
 				A5F28F681A9B621000D970A6 /* RingBuffer.mm in Sources */,
 				A5F28FA21A9CE10900D970A6 /* wavetable_pulse.cc in Sources */,
 				A5F28F861A9B649A00D970A6 /* Envelope.cc in Sources */,

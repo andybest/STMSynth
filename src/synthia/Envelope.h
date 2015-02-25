@@ -5,6 +5,7 @@
 
 
 #include "Generator.h"
+#include "Triggerable.h"
 
 #ifndef __Envelope_H_
 #define __Envelope_H_

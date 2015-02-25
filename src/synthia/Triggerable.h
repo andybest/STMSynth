@@ -1,5 +1,5 @@
 //
-//  SynthVoice.h
+//  Triggerable.h
 //  TestTool
 //
 //  Created by Andy Best on 25/02/2015.
@@ -8,15 +8,11 @@
 
 #pragma once
 
-#include <stdio.h>
-
-#include "Generator.h"
-#include "Triggerable.h"
-
 namespace Synthia
 {
-    class SynthVoice : public PitchedGenerator, public Triggerable
+    class Triggerable
     {
-
+        virtual void keyOn() = 0;
+        virtual void keyOff() = 0;
     };
 }

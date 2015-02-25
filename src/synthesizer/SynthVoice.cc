@@ -7,3 +7,9 @@
 //
 
 #include "SynthVoice.h"
+
+namespace Synthia {
+    
+
+    
+}
