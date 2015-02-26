@@ -8,12 +8,15 @@
 
 #include "Lowpass.h"
 #include <math.h>
+#include <stdio.h>
 
 namespace Synthia
 {   
     void Lowpass::init(SynthContext *ctx)
     {
         this->_ctx = ctx;
+        in1 = in2 = in3 = in4 = 0.0f;
+        out1 = out2 = out3 = out4 = 0.0f;
     }
     
     void Lowpass::setCutoff(float cutoff)
@@ -24,18 +27,20 @@ namespace Synthia
             cutoff = _ctx->sampleRate();
         }
         _cutoff = cutoff;
-        calcCoefficients();
+        printf("Cutoff: %f\n", _cutoff);
+        //calcCoefficients();
     }
     
     void Lowpass::setResonance(float resonance)
     {
         if(resonance < 0) {
             resonance = 0;
-        } else if(resonance > 1) {
-            resonance = 1;
+        } else if(resonance > 4) {
+            resonance = 4;
         }
+        printf("Resonance: %f\n", _resonance);
         _resonance = resonance;
-        calcCoefficients();
+        //calcCoefficients();
     }
     
     void Lowpass::calcCoefficients()
@@ -49,14 +54,18 @@ namespace Synthia
     
     float Lowpass::tick(int channel, float input)
     {
-        input -= q * b4;                          //feedback
-        t1 = b1;  b1 = (input + b0) * p - b1 * f;
-        t2 = b2;  b2 = (b1 + t1) * p - b2 * f;
-        t1 = b3;  b3 = (b2 + t2) * p - b3 * f;
-                  b4 = (b3 + t1) * p - b4 * f;
-        b4 = b4 - b4 * b4 * b4 * 0.166667f;    //clipping
-        b0 = input;
-        
-        return b4;
+        double f = _cutoff * 1.16;
+        double fb = _resonance * (1.0 - 0.15 * f * f);
+        input -= out4 * fb;
+        input *= 0.35013 * (f*f)*(f*f);
+        out1 = input + 0.3 * in1 + (1 - f) * out1; // Pole 1
+        in1 = input;
+        out2 = out1 + 0.3 * in2 + (1 - f) * out2; // Pole 2
+        in2 = out1;
+        out3 = out2 + 0.3 * in3 + (1 - f) * out3; // Pole 3
+        in3 = out2;
+        out4 = out3 + 0.3 * in4 + (1 - f) * out4; // Pole 4
+        in4 = out3;
+        return out4;
     }
 }

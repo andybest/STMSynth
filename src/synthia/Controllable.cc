@@ -8,6 +8,7 @@
 
 #include "Controllable.h"
 
+#include <math.h>
 namespace Synthia
 {
     
@@ -53,10 +54,21 @@ namespace Synthia
                 return (value & 0x7F) / 127.0f;
                 
             case kControlTypeFloatCustomRange:
+            {
                 float normalized = (value & 0x7F) / 127.0f;
                 float difference = entry.rangeHigh - entry.rangeLow;
-                float retval =entry.rangeLow + (normalized * difference);
-                return retval;
+                return entry.rangeLow + (normalized * difference);
+            }
+                
+            case kControlTypeFloatZeroOneLogarithmic:
+                return log10f((((value & 0x7F) / 127.0f) * 9) + 1);
+                
+            case kControlTypeFloatCustomRangeLogarithmic:
+            {
+                float normalized = log10f((((value & 0x7F) / 127.0f) * 9) + 1);
+                float difference = entry.rangeHigh - entry.rangeLow;
+                return entry.rangeLow + (normalized * difference);
+            }
         }
         
         return 0.0f;

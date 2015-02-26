@@ -31,8 +31,8 @@ Synthesizer::Synthesizer(uint32_t sampleRate) : synthContext(sampleRate) {
     addVoiceCCMapping(kMoogVoiceParameter_Envelope_Sustain, 44);
     addVoiceCCMapping(kMoogVoiceParameter_Envelope_Release, 45);
     
-    addControlEntry(kSynthesizerParameter_Filter_Cutoff, "Filter Cutoff", kControlTypeFloatZeroOne);
-    addControlEntry(kSynthesizerParameter_Filter_Resonance, "Filter Resonance", kControlTypeFloatZeroOne);
+    addControlEntry(kSynthesizerParameter_Filter_Cutoff, "Filter Cutoff", kControlTypeFloatCustomRange , 0.05f, 1.0f);
+    addControlEntry(kSynthesizerParameter_Filter_Resonance, "Filter Resonance", kControlTypeFloatCustomRange, 0.0f, 4.0f);
     
     addControlEntry(kSynthesizerParameter_FilterEnvelope_Attack, "Filter Envelope Attack", kControlTypeFloatCustomRange, 0.0f, 2.0f);
     addControlEntry(kSynthesizerParameter_FilterEnvelope_Decay, "Filter Envelope Decay", kControlTypeFloatCustomRange, 0.0f, 2.0f);
@@ -42,7 +42,7 @@ Synthesizer::Synthesizer(uint32_t sampleRate) : synthContext(sampleRate) {
     _paramCCMapping[46] = kSynthesizerParameter_Filter_Cutoff;
     _paramCCMapping[47] = kSynthesizerParameter_Filter_Resonance;
     
-    _lowpassFilter.setResonance(0.5);
+    //_lowpassFilter.setResonance(0.5);
     _filterCutoffMax = 1.0f;
     _filterEnvelope.setAttackTime(0.2);
     _filterEnvelope.setDecayTime(0.0);
@@ -144,10 +144,10 @@ float Synthesizer::tick()
     }
     
     float eTick = _filterEnvelope.tick(0);
-    _lowpassFilter.setCutoff(eTick);
+    //_lowpassFilter.setCutoff(eTick);
     float filteredSamp = _lowpassFilter.tick(0, voiceSamp);
     
-    return voiceSamp;
+    return filteredSamp;
 }
 
 void Synthesizer::changeValueForControlId(ControlEntryId id, float value) {
@@ -155,8 +155,8 @@ void Synthesizer::changeValueForControlId(ControlEntryId id, float value) {
     {
             /* FILTER */
         case kSynthesizerParameter_Filter_Cutoff:
-            //_lowpassFilter.setCutoff(value);
-            _filterCutoffMax = value;
+            _lowpassFilter.setCutoff(value);
+            //_filterCutoffMax = value;
             break;
             
         case kSynthesizerParameter_Filter_Resonance:

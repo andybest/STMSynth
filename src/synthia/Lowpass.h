@@ -33,6 +33,9 @@ namespace Synthia
         float t1, t2, t3, t4;
         float b0, b1, b2, b3, b4;
         
+        float in1, in2, in3, in4;
+        float out1, out2, out3, out4;
+        
         void calcCoefficients();
     };
     

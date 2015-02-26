@@ -22,7 +22,9 @@ namespace Synthia
     typedef enum
     {
         kControlTypeFloatZeroOne,
-        kControlTypeFloatCustomRange
+        kControlTypeFloatCustomRange,
+        kControlTypeFloatZeroOneLogarithmic,
+        kControlTypeFloatCustomRangeLogarithmic
     } ControlType;
     
     typedef struct
