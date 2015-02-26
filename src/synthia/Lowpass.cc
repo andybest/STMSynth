@@ -27,7 +27,7 @@ namespace Synthia
             cutoff = _ctx->sampleRate();
         }
         _cutoff = cutoff;
-        printf("Cutoff: %f\n", _cutoff);
+        //printf("Cutoff: %f\n", _cutoff);
         //calcCoefficients();
     }
     

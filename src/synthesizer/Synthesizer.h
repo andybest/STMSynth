@@ -33,7 +33,9 @@ enum {
     kSynthesizerParameter_FilterEnvelope_Attack,
     kSynthesizerParameter_FilterEnvelope_Decay,
     kSynthesizerParameter_FilterEnvelope_Sustain,
-    kSynthesizerParameter_FilterEnvelope_Release
+    kSynthesizerParameter_FilterEnvelope_Release,
+    
+    kSynthesizerParameter_MasterVolume,
 };
 
 class Synthesizer : public Controllable {
@@ -60,6 +62,7 @@ private:
     Envelope _filterEnvelope;
     Lowpass _lowpassFilter;
     float _filterCutoffMax;
+    float _masterVolume;
     
     std::vector<uint8_t> _keyStack;
     

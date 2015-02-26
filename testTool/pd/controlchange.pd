@@ -1,0 +1,14 @@
+#N canvas 665 92 663 434 10;
+#X obj 139 224 ctlout 30;
+#X obj 133 110 knob 32 32 0 127 0 0 empty empty empty 0 -8 0 8 -262144
+-1 -1 0 1;
+#X symbolatom 105 157 15 0 0 0 - - -;
+#X obj 234 49 loadbang;
+#X obj 233 118 symbol \$2;
+#X obj 221 155 int \$1;
+#X connect 1 0 0 0;
+#X connect 3 0 4 0;
+#X connect 3 0 5 0;
+#X connect 4 0 2 0;
+#X connect 5 0 0 1;
+#X coords 0 -1 1 1 100 80 2 100 100;

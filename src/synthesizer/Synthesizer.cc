@@ -12,6 +12,8 @@ Synthesizer::Synthesizer(uint32_t sampleRate) : synthContext(sampleRate) {
     _filterEnvelope.init(&synthContext);
     _lowpassFilter.init(&synthContext);
     
+    _masterVolume = 1.0f;
+    
     addVoice(new MoogVoice());
     
     addVoiceCCMapping(kMoogVoiceParameter_OSC1_Waveform,    30);
@@ -39,8 +41,18 @@ Synthesizer::Synthesizer(uint32_t sampleRate) : synthContext(sampleRate) {
     addControlEntry(kSynthesizerParameter_FilterEnvelope_Sustain, "Filter Envelope Sustain", kControlTypeFloatZeroOne);
     addControlEntry(kSynthesizerParameter_FilterEnvelope_Release, "Filter Envelope Release", kControlTypeFloatCustomRange, 0.0f, 2.0f);
     
+    addControlEntry(kSynthesizerParameter_MasterVolume, "Master Volum", kControlTypeFloatCustomRange, 0.0f, 2.0f);
+    
     _paramCCMapping[46] = kSynthesizerParameter_Filter_Cutoff;
     _paramCCMapping[47] = kSynthesizerParameter_Filter_Resonance;
+    
+    _paramCCMapping[48] = kSynthesizerParameter_FilterEnvelope_Attack;
+    _paramCCMapping[49] = kSynthesizerParameter_FilterEnvelope_Decay;
+    _paramCCMapping[50] = kSynthesizerParameter_FilterEnvelope_Sustain;
+    _paramCCMapping[51] = kSynthesizerParameter_FilterEnvelope_Release;
+    
+    _paramCCMapping[52] = kSynthesizerParameter_MasterVolume;
+  
     
     //_lowpassFilter.setResonance(0.5);
     _filterCutoffMax = 1.0f;
@@ -144,10 +156,10 @@ float Synthesizer::tick()
     }
     
     float eTick = _filterEnvelope.tick(0);
-    //_lowpassFilter.setCutoff(eTick);
+    _lowpassFilter.setCutoff(eTick * _filterCutoffMax + 0.01);
     float filteredSamp = _lowpassFilter.tick(0, voiceSamp);
     
-    return filteredSamp;
+    return filteredSamp * _masterVolume;
 }
 
 void Synthesizer::changeValueForControlId(ControlEntryId id, float value) {
@@ -155,8 +167,8 @@ void Synthesizer::changeValueForControlId(ControlEntryId id, float value) {
     {
             /* FILTER */
         case kSynthesizerParameter_Filter_Cutoff:
-            _lowpassFilter.setCutoff(value);
-            //_filterCutoffMax = value;
+            //_lowpassFilter.setCutoff(value);
+            _filterCutoffMax = value;
             break;
             
         case kSynthesizerParameter_Filter_Resonance:
@@ -178,6 +190,10 @@ void Synthesizer::changeValueForControlId(ControlEntryId id, float value) {
             
         case kSynthesizerParameter_FilterEnvelope_Release:
             _filterEnvelope.setReleaseTime(value);
+            break;
+            
+        case kSynthesizerParameter_MasterVolume:
+            _masterVolume = value;
             break;
     }
 }
