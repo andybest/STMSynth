@@ -17,6 +17,9 @@ namespace Synthia
         entry.id = id;
         entry.name = name;
         entry.type = type;
+        entry.rangeLow = minValue;
+        entry.rangeHigh = maxValue;
+        
         
         if(_controlEntries.count(id) > 0)
         {
@@ -36,7 +39,8 @@ namespace Synthia
         
         ControlEntry entry = _controlEntries[id];
         
-        convertFromMidiCCValue(value, entry);
+        float val = convertFromMidiCCValue(value, entry);
+        changeValueForControlId(id, val);
         
         return true;
     }
@@ -51,7 +55,8 @@ namespace Synthia
             case kControlTypeFloatCustomRange:
                 float normalized = (value & 0x7F) / 127.0f;
                 float difference = entry.rangeHigh - entry.rangeLow;
-                return entry.rangeLow + (normalized * difference);
+                float retval =entry.rangeLow + (normalized * difference);
+                return retval;
         }
         
         return 0.0f;

@@ -69,6 +69,7 @@ private:
     std::vector<SynthVoice *> _playingVoices;
     
     std::map<unsigned char, ControlEntryId> _voiceCCMapping;
+    std::map<unsigned char, ControlEntryId> _paramCCMapping;
     
     KeyTransitionType_t _keyTransitionType;
 

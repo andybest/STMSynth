@@ -45,6 +45,7 @@ namespace Synthia {
         _osc2Volume = 0.66f;
         _osc3Volume = 0.66f;
         
+        setupControlEntries();
     }
     
     void MoogVoice::setupControlEntries()

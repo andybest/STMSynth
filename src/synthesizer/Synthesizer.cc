@@ -39,6 +39,9 @@ Synthesizer::Synthesizer(uint32_t sampleRate) : synthContext(sampleRate) {
     addControlEntry(kSynthesizerParameter_FilterEnvelope_Sustain, "Filter Envelope Sustain", kControlTypeFloatZeroOne);
     addControlEntry(kSynthesizerParameter_FilterEnvelope_Release, "Filter Envelope Release", kControlTypeFloatCustomRange, 0.0f, 2.0f);
     
+    _paramCCMapping[46] = kSynthesizerParameter_Filter_Cutoff;
+    _paramCCMapping[47] = kSynthesizerParameter_Filter_Resonance;
+    
     _lowpassFilter.setResonance(0.5);
     _filterCutoffMax = 1.0f;
     _filterEnvelope.setAttackTime(0.2);
@@ -68,6 +71,9 @@ void Synthesizer::addVoiceCCMapping(ControlEntryId id, unsigned char ccControlle
         return;
     
     _voiceCCMapping[ccControllerNum] = id;
+    
+    ControlEntryId savedId = _voiceCCMapping[ccControllerNum];
+    
 }
 
 void Synthesizer::processMidiMessage(MidiMessage_t *msg)
@@ -110,8 +116,13 @@ void Synthesizer::processMidiMessage(MidiMessage_t *msg)
 void Synthesizer::processControlChange(unsigned char controllerNumber, unsigned char value)
 {
     if(_voiceCCMapping.count(controllerNumber) > 0) {
-        sendControlChangeToVoices(_voiceCCMapping[controllerNumber], value);
+        ControlEntryId id = _voiceCCMapping[controllerNumber];
+        sendControlChangeToVoices(id, value);
         return;
+    }
+    
+    if(_paramCCMapping.count(controllerNumber) > 0) {
+        setControlWithMidiCCValue(_paramCCMapping[controllerNumber], value);
     }
 }
 
@@ -119,7 +130,7 @@ void Synthesizer::sendControlChangeToVoices(ControlEntryId entryId, unsigned cha
 {
     for(auto voice = _voices.begin(); voice != _voices.end(); ++voice)
     {
-        (*voice)->changeValueForControlId(entryId, value);
+        (*voice)->setControlWithMidiCCValue(entryId, value);
     }
 }
 
