@@ -83,9 +83,6 @@ void Synthesizer::addVoiceCCMapping(ControlEntryId id, unsigned char ccControlle
         return;
     
     _voiceCCMapping[ccControllerNum] = id;
-    
-    ControlEntryId savedId = _voiceCCMapping[ccControllerNum];
-    
 }
 
 void Synthesizer::processMidiMessage(MidiMessage_t *msg)
