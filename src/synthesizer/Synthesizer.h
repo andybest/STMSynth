@@ -37,6 +37,8 @@ enum {
     kSynthesizerParameter_FilterEnvelope_Release,
     
     kSynthesizerParameter_MasterVolume,
+    
+    kSynthesizerParameter_FilterEnvelope_Enable,
 };
 
 class Synthesizer : public Controllable {
@@ -63,6 +65,7 @@ private:
     Lowpass _lowpassFilter;
     float _filterCutoffMax;
     float _masterVolume;
+    bool _enableFilterEnvelope;
     
     std::vector<uint8_t> _keyStack;
     

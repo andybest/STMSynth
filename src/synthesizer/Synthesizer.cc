@@ -41,7 +41,9 @@ Synthesizer::Synthesizer(uint32_t sampleRate) : synthContext(sampleRate) {
     addControlEntry(kSynthesizerParameter_FilterEnvelope_Sustain, "Filter Envelope Sustain", kControlTypeFloatZeroOne);
     addControlEntry(kSynthesizerParameter_FilterEnvelope_Release, "Filter Envelope Release", kControlTypeFloatCustomRange, 0.0f, 2.0f);
     
-    addControlEntry(kSynthesizerParameter_MasterVolume, "Master Volum", kControlTypeFloatCustomRange, 0.0f, 2.0f);
+    addControlEntry(kSynthesizerParameter_MasterVolume, "Master Volume", kControlTypeFloatCustomRange, 0.0f, 2.0f);
+    
+    addControlEntry(kSynthesizerParameter_FilterEnvelope_Enable, "Enable Filter Envelope", kControlTypeFloatZeroOne);
     
     _paramCCMapping[46] = kSynthesizerParameter_Filter_Cutoff;
     _paramCCMapping[47] = kSynthesizerParameter_Filter_Resonance;
@@ -52,6 +54,8 @@ Synthesizer::Synthesizer(uint32_t sampleRate) : synthContext(sampleRate) {
     _paramCCMapping[51] = kSynthesizerParameter_FilterEnvelope_Release;
     
     _paramCCMapping[52] = kSynthesizerParameter_MasterVolume;
+    
+    _paramCCMapping[53] = kSynthesizerParameter_FilterEnvelope_Enable;
   
     
     //_lowpassFilter.setResonance(0.5);
@@ -147,8 +151,12 @@ float Synthesizer::tick()
         voiceSamp += voice->tick(0);
     }
     
-    float eTick = _filterEnvelope.tick(0);
-    _lowpassFilter.setCutoff(eTick * _filterCutoffMax + 0.01);
+    if(_enableFilterEnvelope) {
+        float eTick = _filterEnvelope.tick(0);
+        _lowpassFilter.setCutoff(eTick * _filterCutoffMax + 0.01);
+    } else {
+        _lowpassFilter.setCutoff(_filterCutoffMax);
+    }
     float filteredSamp = _lowpassFilter.tick(0, voiceSamp);
     
     return filteredSamp * _masterVolume;
@@ -186,6 +194,14 @@ void Synthesizer::changeValueForControlId(ControlEntryId id, float value) {
             
         case kSynthesizerParameter_MasterVolume:
             _masterVolume = value;
+            break;
+            
+        case kSynthesizerParameter_FilterEnvelope_Enable:
+            if(value >= 0.5) {
+                _enableFilterEnvelope = true;
+            } else {
+                _enableFilterEnvelope = false;
+            }
             break;
     }
 }
