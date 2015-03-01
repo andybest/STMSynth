@@ -52,6 +52,7 @@ namespace Synthia
         void keyOff();
         
         void changeValueForControlId(ControlEntryId id, float value);
+        void processPitchBend(int pitchBendValue);
         void setupControlEntries();
         
     private:
@@ -70,6 +71,8 @@ namespace Synthia
         float _osc3Volume;
         float _osc3Tune;
         float _osc3FineTune;
+        
+        int _pitchBend;
         
         Envelope _envelope;
         

@@ -54,6 +54,8 @@ public:
     void addVoiceCCMapping(ControlEntryId id, unsigned char ccControllerNum);
     void processControlChange(unsigned char controllerNumber, unsigned char value);
     void sendControlChangeToVoices(ControlEntryId entryId, unsigned char value);
+    void processPitchBend(int pitchBendValue);
+    void sendPitchBendToVoices(int pitchBendValue);
     
     void changeValueForControlId(ControlEntryId id, float value);
     
@@ -66,6 +68,7 @@ private:
     float _filterCutoffMax;
     float _masterVolume;
     bool _enableFilterEnvelope;
+    int _pitchBend;
     
     std::vector<uint8_t> _keyStack;
     

@@ -42,6 +42,7 @@ namespace Synthia
         bool addControlEntry(ControlEntryId id, string name, ControlType type, float minValue = 0, float maxValue = 1);
         bool setControlWithMidiCCValue(ControlEntryId id, unsigned char val);
         float convertFromMidiCCValue(unsigned char value, ControlEntry entry);
+        virtual void processPitchBend(int pitchBendValue) = 0;
         
         virtual void changeValueForControlId(ControlEntryId id, float value) = 0;
         

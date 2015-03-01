@@ -13,6 +13,7 @@ Synthesizer::Synthesizer(uint32_t sampleRate) : synthContext(sampleRate) {
     _lowpassFilter.init(&synthContext);
     
     _masterVolume = 1.0f;
+    _pitchBend = 0;
     
     addVoice(new MoogVoice());
     
@@ -118,6 +119,9 @@ void Synthesizer::processMidiMessage(MidiMessage_t *msg)
         }
     } else if(msg->type == MIDI_MESSAGE_CONTROL_CHANGE) {
         processControlChange(msg->ControlChange.controllerNumber, msg->ControlChange.controllerValue);
+    } else if(msg->type == MIDI_MESSAGE_PITCH_BEND) {
+        _pitchBend = msg->PitchBend.pitchBendValue;
+        sendPitchBendToVoices(_pitchBend);
     }
 }
 
@@ -139,6 +143,19 @@ void Synthesizer::sendControlChangeToVoices(ControlEntryId entryId, unsigned cha
     for(auto voice = _voices.begin(); voice != _voices.end(); ++voice)
     {
         (*voice)->setControlWithMidiCCValue(entryId, value);
+    }
+}
+
+void Synthesizer::processPitchBend(int pitchBendValue)
+{
+    
+}
+
+void Synthesizer::sendPitchBendToVoices(int pitchBendValue)
+{
+    for(auto voice = _voices.begin(); voice != _voices.end(); ++voice)
+    {
+        (*voice)->processPitchBend(pitchBendValue);
     }
 }
 

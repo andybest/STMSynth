@@ -46,6 +46,8 @@ namespace Synthia {
         _osc2Volume = 0.66f;
         _osc3Volume = 0.66f;
         
+        _pitchBend = 0;
+        
         setupControlEntries();
     }
     
@@ -153,17 +155,26 @@ namespace Synthia {
         }
     }
     
+    void MoogVoice::processPitchBend(int pitchBendValue)
+    {
+        _pitchBend = pitchBendValue;
+        calcFrequencies(_frequency);
+    }
+    
     void MoogVoice::calcFrequencies(float baseFreq)
     {
-        float osc1Freq = SynthiaUtils::tuneFrequencyBySteps(baseFreq, _osc1Tune);
+        // Pitch bend values are in steps
+        float pitchBendSteps = (_pitchBend / 8192.0f) * 2.0f;
+        
+        float osc1Freq = SynthiaUtils::tuneFrequencyBySteps(baseFreq, _osc1Tune + pitchBendSteps);
         osc1Freq = SynthiaUtils::tuneFrequencyByCents(osc1Freq, _osc1FineTune);
         _osc1.setFrequency(osc1Freq);
         
-        float osc2Freq = SynthiaUtils::tuneFrequencyBySteps(baseFreq, _osc2Tune);
+        float osc2Freq = SynthiaUtils::tuneFrequencyBySteps(baseFreq, _osc2Tune + pitchBendSteps);
         osc2Freq = SynthiaUtils::tuneFrequencyByCents(osc2Freq, _osc2FineTune);
         _osc2.setFrequency(osc2Freq);
         
-        float osc3Freq = SynthiaUtils::tuneFrequencyBySteps(baseFreq, _osc3Tune);
+        float osc3Freq = SynthiaUtils::tuneFrequencyBySteps(baseFreq, _osc3Tune + pitchBendSteps);
         osc3Freq = SynthiaUtils::tuneFrequencyByCents(osc3Freq, _osc3FineTune);
         _osc3.setFrequency(osc3Freq);
     }
