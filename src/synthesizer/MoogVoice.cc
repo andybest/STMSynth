@@ -9,6 +9,7 @@
 #include "MoogVoice.h"
 
 #include "wavetable_samples.h"
+#include <math.h>
 
 namespace Synthia {
     
@@ -52,18 +53,18 @@ namespace Synthia {
     {
         addControlEntry(kMoogVoiceParameter_OSC1_Waveform, "OSC1 Waveform", kControlTypeFloatZeroOne);
         addControlEntry(kMoogVoiceParameter_OSC1_Volume, "OSC1 Volume", kControlTypeFloatZeroOne);
-        addControlEntry(kMoogVoiceParameter_OSC1_Tune, "OSC1 Tune", kControlTypeFloatZeroOne);
-        addControlEntry(kMoogVoiceParameter_OSC1_FineTune, "OSC1 FineTune", kControlTypeFloatZeroOne);
+        addControlEntry(kMoogVoiceParameter_OSC1_Tune, "OSC1 Tune", kControlTypeFloatCustomRange, -24.0f, 24.0f);
+        addControlEntry(kMoogVoiceParameter_OSC1_FineTune, "OSC1 FineTune", kControlTypeFloatCustomRange, -100.0f, 100.0f);
         
         addControlEntry(kMoogVoiceParameter_OSC2_Waveform, "OSC2 Waveform", kControlTypeFloatZeroOne);
         addControlEntry(kMoogVoiceParameter_OSC2_Volume, "OSC2 Volume", kControlTypeFloatZeroOne);
-        addControlEntry(kMoogVoiceParameter_OSC2_Tune, "OSC2 Tune", kControlTypeFloatZeroOne);
-        addControlEntry(kMoogVoiceParameter_OSC2_FineTune, "OSC2 FineTune", kControlTypeFloatZeroOne);
+        addControlEntry(kMoogVoiceParameter_OSC2_Tune, "OSC2 Tune", kControlTypeFloatCustomRange, -24.0f, 24.0f);
+        addControlEntry(kMoogVoiceParameter_OSC2_FineTune, "OSC2 FineTune", kControlTypeFloatCustomRange, -100.0f, 100.0f);
         
         addControlEntry(kMoogVoiceParameter_OSC3_Waveform, "OSC3 Waveform", kControlTypeFloatZeroOne);
         addControlEntry(kMoogVoiceParameter_OSC3_Volume, "OSC3 Volume", kControlTypeFloatZeroOne);
-        addControlEntry(kMoogVoiceParameter_OSC3_Tune, "OSC3 Tune", kControlTypeFloatZeroOne);
-        addControlEntry(kMoogVoiceParameter_OSC3_FineTune, "OSC3 FineTune", kControlTypeFloatZeroOne);
+        addControlEntry(kMoogVoiceParameter_OSC3_Tune, "OSC3 Tune", kControlTypeFloatCustomRange, -24.0f, 24.0f);
+        addControlEntry(kMoogVoiceParameter_OSC3_FineTune, "OSC3 FineTune", kControlTypeFloatCustomRange, -100.0f, 100.0f);
         
         addControlEntry(kMoogVoiceParameter_Envelope_Attack, "Envelope Attack", kControlTypeFloatCustomRange, 0.0f, 2.0f);
         addControlEntry(kMoogVoiceParameter_Envelope_Decay, "Envelope Decay", kControlTypeFloatCustomRange, 0.0f, 2.0f);
@@ -85,11 +86,14 @@ namespace Synthia {
                 break;
                 
             case kMoogVoiceParameter_OSC1_Tune:
-                _osc1Tune = value;
+                _osc1Tune = roundf(value);
+                printf("Tune = %f\n", _osc1Tune);
+                calcFrequencies(_frequency);
                 break;
                 
             case kMoogVoiceParameter_OSC1_FineTune:
                 _osc1FineTune = value;
+                calcFrequencies(_frequency);
                 break;
                 
                 /* OSC 2 */
@@ -102,11 +106,13 @@ namespace Synthia {
                 break;
                 
             case kMoogVoiceParameter_OSC2_Tune:
-                _osc2Tune = value;
+                _osc2Tune = roundf(value);
+                calcFrequencies(_frequency);
                 break;
                 
             case kMoogVoiceParameter_OSC2_FineTune:
-                _osc2FineTune = value;
+                _osc1FineTune = value;
+                calcFrequencies(_frequency);
                 break;
                 
                 /* OSC 3 */
@@ -119,11 +125,13 @@ namespace Synthia {
                 break;
                 
             case kMoogVoiceParameter_OSC3_Tune:
-                _osc3Tune = value;
+                _osc3Tune = roundf(value);
+                calcFrequencies(_frequency);
                 break;
                 
             case kMoogVoiceParameter_OSC3_FineTune:
-                _osc3FineTune = value;
+                _osc1FineTune = value;
+                calcFrequencies(_frequency);
                 break;
         
                 /* ENVELOPE */
@@ -145,12 +153,25 @@ namespace Synthia {
         }
     }
     
+    void MoogVoice::calcFrequencies(float baseFreq)
+    {
+        float osc1Freq = SynthiaUtils::tuneFrequencyBySteps(baseFreq, _osc1Tune);
+        osc1Freq = SynthiaUtils::tuneFrequencyByCents(osc1Freq, _osc1FineTune);
+        _osc1.setFrequency(osc1Freq);
+        
+        float osc2Freq = SynthiaUtils::tuneFrequencyBySteps(baseFreq, _osc2Tune);
+        osc2Freq = SynthiaUtils::tuneFrequencyByCents(osc2Freq, _osc2FineTune);
+        _osc2.setFrequency(osc2Freq);
+        
+        float osc3Freq = SynthiaUtils::tuneFrequencyBySteps(baseFreq, _osc3Tune);
+        osc3Freq = SynthiaUtils::tuneFrequencyByCents(osc3Freq, _osc3FineTune);
+        _osc3.setFrequency(osc3Freq);
+    }
+    
     void MoogVoice::setFrequency(float freq)
     {
         _frequency = freq;
-        _osc1.setFrequency(freq);
-        _osc2.setFrequency(freq * 1.001);
-        _osc3.setFrequency(freq * 0.999);
+        calcFrequencies(_frequency);
     }
     
     void MoogVoice::keyOn()

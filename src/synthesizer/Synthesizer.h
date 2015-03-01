@@ -13,6 +13,7 @@
 
 #include "SynthContext.h"
 #include "SynthVoice.h"
+#include "SynthiaUtils.h"
 #include "WavetableOscillator.h"
 #include "Envelope.h"
 #include "wavetable_samples.h"
@@ -45,7 +46,6 @@ public:
     
     KeyTransitionType_t keyTransitionType();
     
-    float midiNoteToFrequency(uint32_t note);
     void processMidiMessage(MidiMessage_t *msg);
     float tick();
     void addVoice(SynthVoice *voice);

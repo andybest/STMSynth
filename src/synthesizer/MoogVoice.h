@@ -11,6 +11,7 @@
 #include <stdio.h>
 
 #include "Synthia.h"
+#include "SynthiaUtils.h"
 
 
 namespace Synthia
@@ -43,6 +44,7 @@ namespace Synthia
     public:
         void init(SynthContext *ctx);
         
+        void calcFrequencies(float baseFreq);
         void setFrequency(float freq);
         float tick(int channel);
         

@@ -1,4 +1,5 @@
-#N canvas 666 334 1094 507 10;
+#N canvas 158 114 1094 507 10;
+#X obj 463 229 controlchange 48 Filter_Attack;
 #X obj 28 33 controlchange 30 OSC1_Waveform;
 #X obj 128 33 controlchange 31 OSC1_Volume;
 #X obj 328 33 controlchange 33 OSC1_FineTune;
@@ -17,7 +18,6 @@
 #X obj 325 372 controlchange 45 Release;
 #X obj 463 131 controlchange 46 Cutoff;
 #X obj 563 131 controlchange 47 Resonance;
-#X obj 463 229 controlchange 48 Filter_Attack;
 #X obj 563 229 controlchange 49 Filter_Decay;
 #X obj 663 229 controlchange 50 Filter_Sustain;
 #X obj 763 229 controlchange 51 Filter_Release;

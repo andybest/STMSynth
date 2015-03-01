@@ -65,11 +65,6 @@ Synthesizer::Synthesizer(uint32_t sampleRate) : synthContext(sampleRate) {
 Synthesizer::~Synthesizer() {
 }
 
-float Synthesizer::midiNoteToFrequency(uint32_t note)
-{
-    return 440.0f * powf( 2.0f, (note - 69.0f) / 12.0f );
-}
-
 void Synthesizer::addVoice(SynthVoice *voice)
 {
     voice->init(&synthContext);
@@ -93,7 +88,7 @@ void Synthesizer::processMidiMessage(MidiMessage_t *msg)
             _filterEnvelope.keyOn();
         }
         //osc1.setFrequency(midiNoteToFrequency(msg->NoteOn.key));
-        _voices.back()->setFrequency(midiNoteToFrequency(msg->NoteOn.key));
+        _voices.back()->setFrequency(SynthiaUtils::midiNoteToHz(msg->NoteOn.key));
         _keyStack.push_back(msg->NoteOn.key);
     } else if(msg->type == MIDI_MESSAGE_NOTE_OFF) {
         int idx = -1;
@@ -113,7 +108,7 @@ void Synthesizer::processMidiMessage(MidiMessage_t *msg)
                 _filterEnvelope.keyOff();
                 _voices.back()->keyOff();
             } else {
-                _voices.back()->setFrequency(midiNoteToFrequency(_keyStack.at(_keyStack.size() - 1)));
+                _voices.back()->setFrequency(SynthiaUtils::midiNoteToHz(_keyStack.at(_keyStack.size() - 1)));
                 //osc1.setFrequency(midiNoteToFrequency(_keyStack.at(_keyStack.size() - 1)));
             }
         }
