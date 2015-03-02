@@ -2,6 +2,9 @@
 #include <stdio.h>
 #include "cmsis_os.h"
 #include "stm32f4_discovery.h"
+#include "stm32f4xx_hal.h"
+
+extern TIM_HandleTypeDef htim10;
 
 TestTask::TestTask() : Task()
 {
@@ -20,14 +23,14 @@ std::string TestTask::getName()
 
 void TestTask::init()
 {
-    BSP_LED_On(LED3);
     printf("Thread '%s' started.\r\n", getName().c_str());
 }
 
+extern uint32_t genTime;
+
 bool TestTask::run()
 {
-    BSP_LED_Toggle(LED3);
-    //printf("Thread '%s' running. %lu\r\n", getName().c_str(), osKernelSysTick());
+    printf("Time taken: %lu\r\n", genTime);
     osDelay(1000);
     return true;
 }

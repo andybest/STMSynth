@@ -193,17 +193,6 @@ namespace Synthia {
     void MoogVoice::keyOff()
     {
         _envelope.keyOff();
-    }
-    
-    float MoogVoice::tick(int channel)
-    {
-        float oscSamp = (_osc1.tick(channel) * _osc1Volume) + (_osc2.tick(channel) * _osc2Volume) + (_osc3.tick(channel) * _osc3Volume);
-        float envelopeSamp = oscSamp * _envelope.tick(channel);
-        
-        return envelopeSamp;
-    }
-    
-    
-    
+    }    
     
 }

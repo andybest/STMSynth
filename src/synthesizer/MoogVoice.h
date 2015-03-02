@@ -46,7 +46,6 @@ namespace Synthia
         
         void calcFrequencies(float baseFreq);
         void setFrequency(float freq);
-        float tick(int channel);
         
         void keyOn();
         void keyOff();
@@ -55,10 +54,22 @@ namespace Synthia
         void processPitchBend(int pitchBendValue);
         void setupControlEntries();
         
+        inline float tick(int channel)
+        {
+            float oscSamp = (_osc1.tick(channel) * _osc1Volume) + (_osc2.tick(channel) * _osc2Volume) + (_osc3.tick(channel) * _osc3Volume);
+            float envelopeSamp = oscSamp * _envelope.tick(channel);
+        
+            return envelopeSamp;
+        }
+        
     private:
         SwitchableWavetableOscillator _osc1;
         SwitchableWavetableOscillator _osc2;
         SwitchableWavetableOscillator _osc3;
+        
+        //PulseOscillator _osc1;
+        //PulseOscillator _osc2;
+        //PulseOscillator _osc3;
         
         float _osc1Volume;
         float _osc1Tune;

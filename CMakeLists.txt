@@ -78,6 +78,7 @@ add_executable(${OUTPUT_NAME}.elf
     src/tasks/TestTask.cc
     src/tasks/MidiTask.cc
     src/synthesizer/synthesizer.cc
+    src/synthesizer/MoogVoice.cc
     src/usb/usbd_conf.c
     src/usb/usbd_desc.c
     src/usb/usbd_midi.c

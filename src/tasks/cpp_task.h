@@ -12,6 +12,7 @@ public:
     void start(osPriority priority);
     static void _taskRunner(void *args);
     void _taskHandler();
+    TaskHandle_t getTaskHandle();
     
     virtual std::string getName() = 0;
     virtual void init() = 0;

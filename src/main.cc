@@ -38,6 +38,10 @@ UART_HandleTypeDef UartHandle;
 QueueHandle_t midiQueueHandle;
 QueueHandle_t synthMidiQueueHandle;
 
+xTaskHandle xIdleHandle = NULL;
+
+TIM_HandleTypeDef htim10;
+
 
 extern "C" void vLEDFlashTask(void *pvParameters)
 {
@@ -46,20 +50,8 @@ extern "C" void vLEDFlashTask(void *pvParameters)
     xLastWakeTime=xTaskGetTickCount();
     for( ;; )
     {
-        USB_MIDI_Event_Packet_TypeDef packet;
-
-    // Wait for a MIDI message.
-    if (xQueueReceive(midiQueueHandle, &packet, portMAX_DELAY)) {
-        if (packet.codeIndexNumber == 0x9) {
-            // Note On
-            printf("MIDI Note On- key: %u vel %u\r\n", (unsigned int) packet.midi1, (unsigned int) packet.midi2);
-        } else if (packet.codeIndexNumber == 0x8) {
-            // Note Off
-            printf("MIDI Note Off- key: %u vel %u\r\n", (unsigned int) packet.midi1, (unsigned int) packet.midi2);
-        }
-    }
-        //BSP_LED_Toggle(LED5);
-        //vTaskDelayUntil(&xLastWakeTime,xFrequency);
+        BSP_LED_Toggle(LED3);
+        vTaskDelayUntil(&xLastWakeTime,xFrequency);
     }
 }
 
@@ -93,6 +85,16 @@ void initHardware(void)
     BSP_ACCELERO_Init();
 
     initAudio();
+    
+    htim10.Instance = TIM10;
+    htim10.Init.Prescaler = 83;
+    htim10.Init.CounterMode = TIM_COUNTERMODE_UP;
+    htim10.Init.Period = 999;
+    htim10.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+    HAL_TIM_Base_Init(&htim10);
+    
+    //__HAL_TIM_ENABLE(htim10);
+    HAL_TIM_Base_Start(&htim10);
 }
 
 void initTasks(void)
@@ -102,6 +104,7 @@ void initTasks(void)
     
     printf("Starting tasks\r\n");
     testTask.start(osPriorityIdle);
+    xIdleHandle = (xTaskHandle)testTask.getTaskHandle();
     
     //xTaskCreate(vLEDFlashTask, "Blink", 255, NULL, tskIDLE_PRIORITY, NULL);
     
@@ -135,7 +138,7 @@ void initUART(void)
 
 void initAudio(void)
 {
-    BSP_AUDIO_OUT_Init(OUTPUT_DEVICE_AUTO, 70, 48000);
+    BSP_AUDIO_OUT_Init(OUTPUT_DEVICE_AUTO, 70, AUDIO_SAMPLE_RATE);
     BSP_AUDIO_OUT_SetVolume(60);
     BSP_AUDIO_OUT_Play((uint16_t*)&audiobuff[0], 2*BUFF_LEN);
 }
@@ -179,7 +182,7 @@ extern "C" void USBD_MIDI_GotMessageCallback(USB_MIDI_Event_Packet_TypeDef *pack
     for(i = 0; i < len; i++) {
         // Put the MIDI messages on the queue to be picked up by the MIDI
         // task.
-        //printf("Got message\r\n");
+        //printf("Got message from USB\r\n");
         xQueueSendToBackFromISR(midiQueueHandle, (const void*)&packets[i], &xHigherPriorityTaskWoken);
     }
     
@@ -188,16 +191,31 @@ extern "C" void USBD_MIDI_GotMessageCallback(USB_MIDI_Event_Packet_TypeDef *pack
     }
 }
 
+uint32_t lastPeriod = 0;
+uint32_t ticksThisSecond = 0;
+uint32_t genTime = 0;
+
 extern "C" void BSP_AUDIO_OUT_TransferComplete_CallBack(void)
 {
+    uint32_t startTime = htim10.Instance->CNT;
+    if(startTime > 500) {
+        htim10.Instance->CNT = 0;
+        startTime = 0;
+        genTime = ticksThisSecond;
+        ticksThisSecond = 0;
+        lastPeriod = startTime;
+    }
+    
+    BSP_LED_On(LED4);
+    make_sound((uint16_t *)audiobuff, BUFF_LEN_DIV2);
     BSP_LED_Off(LED4);
-    make_sound((uint16_t *)(audiobuff + BUFF_LEN_DIV2), BUFF_LEN_DIV4);
+    ticksThisSecond += htim10.Instance->CNT - startTime;
 }
 
 extern "C" void BSP_AUDIO_OUT_HalfTransfer_CallBack(void)
 {
-    BSP_LED_On(LED4);
-    make_sound((uint16_t *)audiobuff, BUFF_LEN_DIV4);
+    //BSP_LED_On(LED4);
+    //make_sound((uint16_t *)audiobuff, BUFF_LEN_DIV4);
 }
 
 extern "C" void BSP_AUDIO_OUT_Error_Callback(void)
@@ -277,7 +295,6 @@ extern "C" void vApplicationStackOverflowHook( xTaskHandle *pxTask, signed char 
     BSP_LED_On(LED6);
     for( ;; );
 }
-
 
 #ifdef USE_FULL_ASSERT
 

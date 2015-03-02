@@ -54,8 +54,8 @@ namespace Synthia
     
     float Lowpass::tick(int channel, float input)
     {
-        double f = _cutoff * 1.16;
-        double fb = _resonance * (1.0 - 0.15 * f * f);
+        float f = _cutoff * 1.16;
+        float fb = _resonance * (1.0 - 0.15 * f * f);
         input -= out4 * fb;
         input *= 0.35013 * (f*f)*(f*f);
         out1 = input + 0.3 * in1 + (1 - f) * out1; // Pole 1

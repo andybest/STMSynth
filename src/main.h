@@ -55,7 +55,7 @@ MSC_ApplicationTypeDef;
 #define RXBUFFERSIZE                      TXBUFFERSIZE
 #define COUNTOF(__BUFFER__)   (sizeof(__BUFFER__) / sizeof(*(__BUFFER__)))
 
-#define AUDIO_SAMPLE_RATE       48000
+#define AUDIO_SAMPLE_RATE       44100
 
 void Error_Handler(void);
 

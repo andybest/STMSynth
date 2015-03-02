@@ -49,7 +49,6 @@ public:
     KeyTransitionType_t keyTransitionType();
     
     void processMidiMessage(MidiMessage_t *msg);
-    float tick();
     void addVoice(SynthVoice *voice);
     void addVoiceCCMapping(ControlEntryId id, unsigned char ccControllerNum);
     void processControlChange(unsigned char controllerNumber, unsigned char value);
@@ -58,6 +57,30 @@ public:
     void sendPitchBendToVoices(int pitchBendValue);
     
     void changeValueForControlId(ControlEntryId id, float value);
+    
+    inline float tick()
+    {
+        float voiceSamp = 0.0f;
+        /*for(auto v = _voices.begin(); v != _voices.end(); ++v)
+        {
+            MoogVoice *voice = static_cast<MoogVoice *>(*v);
+            voiceSamp += voice->tick(0);
+        }*/
+    
+        //Synthia::MoogVoice *voice = (Synthia::MoogVoice*)_voices[0];
+        voiceSamp = _voices[0]->tick(0);
+    
+        if(_enableFilterEnvelope) {
+            float eTick = _filterEnvelope.tick(0);
+            _lowpassFilter.setCutoff(eTick * _filterCutoffMax + 0.01);
+        } else {
+            _lowpassFilter.setCutoff(_filterCutoffMax);
+        }
+        
+        float filteredSamp = _lowpassFilter.tick(0, voiceSamp);
+    
+        return filteredSamp * _masterVolume;
+    }
     
     
 private:

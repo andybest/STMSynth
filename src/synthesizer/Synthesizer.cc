@@ -88,6 +88,7 @@ void Synthesizer::addVoiceCCMapping(ControlEntryId id, unsigned char ccControlle
 void Synthesizer::processMidiMessage(MidiMessage_t *msg)
 {
     if(msg->type == MIDI_MESSAGE_NOTE_ON) {
+        //printf("Note on\r\n");
         if(_keyStack.size() == 0) {
             _voices.back()->keyOn();
             _filterEnvelope.keyOn();
@@ -140,9 +141,9 @@ void Synthesizer::processControlChange(unsigned char controllerNumber, unsigned 
 
 void Synthesizer::sendControlChangeToVoices(ControlEntryId entryId, unsigned char value)
 {
-    for(auto voice = _voices.begin(); voice != _voices.end(); ++voice)
+    for(int i=0; i < _voices.size(); i++)
     {
-        (*voice)->setControlWithMidiCCValue(entryId, value);
+        _voices[i]->setControlWithMidiCCValue(entryId, value);
     }
 }
 
@@ -153,30 +154,10 @@ void Synthesizer::processPitchBend(int pitchBendValue)
 
 void Synthesizer::sendPitchBendToVoices(int pitchBendValue)
 {
-    for(auto voice = _voices.begin(); voice != _voices.end(); ++voice)
+    for(int i=0; i < _voices.size(); i++)
     {
-        (*voice)->processPitchBend(pitchBendValue);
+        _voices[i]->processPitchBend(pitchBendValue);
     }
-}
-
-float Synthesizer::tick()
-{
-    float voiceSamp = 0.0f;
-    for(auto v = _voices.begin(); v != _voices.end(); ++v)
-    {
-        MoogVoice *voice = static_cast<MoogVoice *>(*v);
-        voiceSamp += voice->tick(0);
-    }
-    
-    if(_enableFilterEnvelope) {
-        float eTick = _filterEnvelope.tick(0);
-        _lowpassFilter.setCutoff(eTick * _filterCutoffMax + 0.01);
-    } else {
-        _lowpassFilter.setCutoff(_filterCutoffMax);
-    }
-    float filteredSamp = _lowpassFilter.tick(0, voiceSamp);
-    
-    return filteredSamp * _masterVolume;
 }
 
 void Synthesizer::changeValueForControlId(ControlEntryId id, float value) {

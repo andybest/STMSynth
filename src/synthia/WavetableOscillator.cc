@@ -52,7 +52,7 @@ namespace Synthia {
         doPrecalculation(isSingleCycle);
     }
     
-    void WavetableOscillator::loadWavetableFromArray(float *wtArray, int len, bool isSingleCycle)
+    void WavetableOscillator::loadWavetableFromArray(const float *wtArray, int len, bool isSingleCycle)
     {
         _sampleArray = wtArray;
         _numSamples = len;
@@ -78,39 +78,6 @@ namespace Synthia {
     void WavetableOscillator::calculatePhaseStep()
     {
         _phaseStep = (_freq / _baseFrequency) * _freqScale;
-    }
-    
-    float WavetableOscillator::tick(int channel)
-    {
-        float samp;
-        
-        float *samples = _sampleArray;
-        
-        if(_interpolationType == kWavetableInterpolationNone)
-        {
-            int sampleIdx = (int)_accumulator;
-            samp = samples[sampleIdx];
-        } else {
-            // Interpolate between the 2 nearest samples to the accumulator
-            int idxBase = (int)floor(_accumulator);
-            double idxFrac = _accumulator - idxBase;
-            
-            // Get floor and ceil values
-            float val = samples[idxBase];
-            int idx2 = idxBase + 1;
-            if(idx2 >= _numSamples)
-                idx2 = 0;
-            float val2 = samples[idx2];
-            
-            samp = val + ((val2 - val) * idxFrac);
-        }
-       
-        _accumulator += _phaseStep;
-        
-        if(_accumulator > _numSamples) {
-            _accumulator -= _numSamples;
-        }
-        return samp;
     }
     
 }

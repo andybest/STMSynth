@@ -20,7 +20,7 @@ void Task::start(osPriority priority)
     char *name = new char[taskName.length()];
     strcpy(name, taskName.c_str());
     
-    xTaskCreate(_taskRunner, name, configMINIMAL_STACK_SIZE, static_cast<void *>(this), tskIDLE_PRIORITY, &_taskHandle);
+    xTaskCreate(_taskRunner, name, configMINIMAL_STACK_SIZE, static_cast<void *>(this), tskIDLE_PRIORITY + 1, &_taskHandle);
     
     delete[] name;
 }
@@ -39,4 +39,9 @@ void Task::_taskHandler()
 
     printf("Task %s failed!\r\n", getName().c_str());
 
+}
+
+TaskHandle_t Task::getTaskHandle()
+{
+    return _taskHandle;
 }

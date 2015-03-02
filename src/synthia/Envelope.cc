@@ -47,7 +47,7 @@ namespace Synthia
         _sustainLevel = sustainLevel;
     }
 
-    float Envelope::tick(int channel) {
+    inline float Envelope::tick(int channel) {
         switch(_state)
         {
             case kEnvelopeIdle:

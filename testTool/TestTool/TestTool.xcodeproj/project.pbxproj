@@ -7,12 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A51180D41AA47FB90055D6B3 /* SynthiaUtils.cc in Sources */ = {isa = PBXBuildFile; fileRef = A51180D31AA47FB90055D6B3 /* SynthiaUtils.cc */; };
 		A59805281A9B49EB00C36C3A /* CoreMIDI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A59805271A9B49EB00C36C3A /* CoreMIDI.framework */; };
 		A5DE36231A9DE0A900F6A45D /* SynthVoice.cc in Sources */ = {isa = PBXBuildFile; fileRef = A5DE36211A9DE0A900F6A45D /* SynthVoice.cc */; };
 		A5DE36261A9DE34600F6A45D /* MoogVoice.cc in Sources */ = {isa = PBXBuildFile; fileRef = A5DE36241A9DE34600F6A45D /* MoogVoice.cc */; };
 		A5DE362B1A9DE90F00F6A45D /* SwitchableWavetableOscillator.cc in Sources */ = {isa = PBXBuildFile; fileRef = A5DE36291A9DE90F00F6A45D /* SwitchableWavetableOscillator.cc */; };
 		A5DE362E1A9DF40F00F6A45D /* Controllable.cc in Sources */ = {isa = PBXBuildFile; fileRef = A5DE362C1A9DF40F00F6A45D /* Controllable.cc */; };
-		A5E162841AA25ACF00718DDF /* SynthiaUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A5E162821AA25ACF00718DDF /* SynthiaUtils.cpp */; };
 		A5E578671A9B414100A49999 /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = A5E578661A9B414100A49999 /* AppDelegate.mm */; };
 		A5E578691A9B414100A49999 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A5E578681A9B414100A49999 /* main.m */; };
 		A5E5786B1A9B414100A49999 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A5E5786A1A9B414100A49999 /* Images.xcassets */; };
@@ -54,6 +54,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		A51180D31AA47FB90055D6B3 /* SynthiaUtils.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SynthiaUtils.cc; sourceTree = "<group>"; };
 		A59805271A9B49EB00C36C3A /* CoreMIDI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMIDI.framework; path = System/Library/Frameworks/CoreMIDI.framework; sourceTree = SDKROOT; };
 		A5DE36211A9DE0A900F6A45D /* SynthVoice.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SynthVoice.cc; sourceTree = "<group>"; };
 		A5DE36221A9DE0A900F6A45D /* SynthVoice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SynthVoice.h; sourceTree = "<group>"; };
@@ -65,7 +66,6 @@
 		A5DE362A1A9DE90F00F6A45D /* SwitchableWavetableOscillator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SwitchableWavetableOscillator.h; sourceTree = "<group>"; };
 		A5DE362C1A9DF40F00F6A45D /* Controllable.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Controllable.cc; sourceTree = "<group>"; };
 		A5DE362D1A9DF40F00F6A45D /* Controllable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Controllable.h; sourceTree = "<group>"; };
-		A5E162821AA25ACF00718DDF /* SynthiaUtils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SynthiaUtils.cpp; sourceTree = "<group>"; };
 		A5E162831AA25ACF00718DDF /* SynthiaUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SynthiaUtils.h; sourceTree = "<group>"; };
 		A5E578601A9B414100A49999 /* TestTool.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TestTool.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A5E578641A9B414100A49999 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -285,8 +285,8 @@
 				A5DE362A1A9DE90F00F6A45D /* SwitchableWavetableOscillator.h */,
 				A5DE362C1A9DF40F00F6A45D /* Controllable.cc */,
 				A5DE362D1A9DF40F00F6A45D /* Controllable.h */,
-				A5E162821AA25ACF00718DDF /* SynthiaUtils.cpp */,
 				A5E162831AA25ACF00718DDF /* SynthiaUtils.h */,
+				A51180D31AA47FB90055D6B3 /* SynthiaUtils.cc */,
 			);
 			name = synthia;
 			path = ../../src/synthia;
@@ -417,8 +417,8 @@
 				A5DE36231A9DE0A900F6A45D /* SynthVoice.cc in Sources */,
 				A5DE362B1A9DE90F00F6A45D /* SwitchableWavetableOscillator.cc in Sources */,
 				A5F28F681A9B621000D970A6 /* RingBuffer.mm in Sources */,
+				A51180D41AA47FB90055D6B3 /* SynthiaUtils.cc in Sources */,
 				A5F28FA21A9CE10900D970A6 /* wavetable_pulse.cc in Sources */,
-				A5E162841AA25ACF00718DDF /* SynthiaUtils.cpp in Sources */,
 				A5F28F861A9B649A00D970A6 /* Envelope.cc in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
