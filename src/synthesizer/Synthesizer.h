@@ -19,6 +19,7 @@
 #include "wavetable_samples.h"
 #include "midi.h"
 #include "MoogVoice.h"
+#include "main.h"
 
 using namespace Synthia;
 
@@ -39,6 +40,7 @@ enum {
     kSynthesizerParameter_MasterVolume,
     
     kSynthesizerParameter_FilterEnvelope_Enable,
+    kSynthesizerParameter_HeadphoneVolume,
 };
 
 class Synthesizer : public Controllable {

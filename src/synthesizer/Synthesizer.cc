@@ -46,6 +46,8 @@ Synthesizer::Synthesizer(uint32_t sampleRate) : synthContext(sampleRate) {
     
     addControlEntry(kSynthesizerParameter_FilterEnvelope_Enable, "Enable Filter Envelope", kControlTypeFloatZeroOne);
     
+    addControlEntry(kSynthesizerParameter_HeadphoneVolume, "Headphone Volume", kControlTypeFloatCustomRange, 0.0f, 100.0f);
+    
     _paramCCMapping[46] = kSynthesizerParameter_Filter_Cutoff;
     _paramCCMapping[47] = kSynthesizerParameter_Filter_Resonance;
     
@@ -57,6 +59,8 @@ Synthesizer::Synthesizer(uint32_t sampleRate) : synthContext(sampleRate) {
     _paramCCMapping[52] = kSynthesizerParameter_MasterVolume;
     
     _paramCCMapping[53] = kSynthesizerParameter_FilterEnvelope_Enable;
+    
+    _paramCCMapping[54] = kSynthesizerParameter_HeadphoneVolume;
   
     
     //_lowpassFilter.setResonance(0.5);
@@ -200,6 +204,10 @@ void Synthesizer::changeValueForControlId(ControlEntryId id, float value) {
             } else {
                 _enableFilterEnvelope = false;
             }
+            break;
+            
+        case kSynthesizerParameter_HeadphoneVolume:
+            setHeadphoneVolume((int)value);
             break;
     }
 }

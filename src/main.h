@@ -58,5 +58,6 @@ MSC_ApplicationTypeDef;
 #define AUDIO_SAMPLE_RATE       44100
 
 void Error_Handler(void);
+void setHeadphoneVolume(int vol);
 
 #endif /* __MAIN_H */

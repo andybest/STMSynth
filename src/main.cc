@@ -152,6 +152,11 @@ void initAudio(void)
     BSP_AUDIO_OUT_Play((uint16_t*)&audiobuff[0], 2*BUFF_LEN);
 }
 
+void setHeadphoneVolume(int vol)
+{
+    BSP_AUDIO_OUT_SetVolume(vol);
+}
+
 void make_sound(uint16_t *buf , uint16_t length)
 {
     MidiMessage_t msg;
@@ -290,6 +295,8 @@ void Error_Handler(void)
     {
     }
 }
+
+
 
 extern "C" void vApplicationStackOverflowHook( xTaskHandle *pxTask, signed char *pcTaskName )
 {
