@@ -30,7 +30,9 @@ extern uint32_t genTime;
 
 bool TestTask::run()
 {
-    printf("Time taken: %lu\r\n", genTime);
+    //printf("Time taken: %lu\r\n", genTime);
+    HAL_GPIO_WritePin(GPIOE, 15, GPIO_PIN_SET);
     osDelay(1000);
+    HAL_GPIO_WritePin(GPIOE, 15, GPIO_PIN_RESET);
     return true;
 }

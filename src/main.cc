@@ -42,6 +42,8 @@ xTaskHandle xIdleHandle = NULL;
 
 TIM_HandleTypeDef htim10;
 
+GPIO_InitTypeDef gpioPerf;
+
 
 extern "C" void vLEDFlashTask(void *pvParameters)
 {
@@ -95,6 +97,13 @@ void initHardware(void)
     
     //__HAL_TIM_ENABLE(htim10);
     HAL_TIM_Base_Start(&htim10);
+    
+    gpioPerf.Pin = GPIO_PIN_15;
+    gpioPerf.Mode = GPIO_MODE_OUTPUT_PP;
+    gpioPerf.Speed = GPIO_SPEED_HIGH;
+    gpioPerf.Pull = GPIO_NOPULL;
+    
+    HAL_GPIO_Init(GPIOE, &gpioPerf);
 }
 
 void initTasks(void)
@@ -197,25 +206,20 @@ uint32_t genTime = 0;
 
 extern "C" void BSP_AUDIO_OUT_TransferComplete_CallBack(void)
 {
-    uint32_t startTime = htim10.Instance->CNT;
-    if(startTime > 500) {
-        htim10.Instance->CNT = 0;
-        startTime = 0;
-        genTime = ticksThisSecond;
-        ticksThisSecond = 0;
-        lastPeriod = startTime;
-    }
+    //HAL_GPIO_WritePin(GPIOE, 15, GPIO_PIN_SET);
     
     BSP_LED_On(LED4);
-    make_sound((uint16_t *)audiobuff, BUFF_LEN_DIV2);
+    make_sound((uint16_t *)(audiobuff + BUFF_LEN_DIV2), BUFF_LEN_DIV4);
     BSP_LED_Off(LED4);
-    ticksThisSecond += htim10.Instance->CNT - startTime;
+    
+    //HAL_GPIO_WritePin(GPIOE, 15, GPIO_PIN_RESET);
 }
 
 extern "C" void BSP_AUDIO_OUT_HalfTransfer_CallBack(void)
 {
-    //BSP_LED_On(LED4);
-    //make_sound((uint16_t *)audiobuff, BUFF_LEN_DIV4);
+    BSP_LED_On(LED4);
+    make_sound((uint16_t *)audiobuff, BUFF_LEN_DIV4);
+    BSP_LED_Off(LED4);
 }
 
 extern "C" void BSP_AUDIO_OUT_Error_Callback(void)

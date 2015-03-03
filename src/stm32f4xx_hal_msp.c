@@ -123,7 +123,7 @@ void HAL_TIM_Base_MspInit(TIM_HandleTypeDef* htim_base)
 
   /* USER CODE END TIM10_MspInit 0 */
     /* Peripheral clock enable */
-    __TIM10_CLK_ENABLE();
+     
   /* USER CODE BEGIN TIM10_MspInit 1 */
 
   /* USER CODE END TIM10_MspInit 1 */
