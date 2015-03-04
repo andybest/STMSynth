@@ -72,8 +72,10 @@ namespace Synthia {
         
         const float *_sampleArray;
         int _numSamples;
+        float _invNumSamples;
         
         float _baseFrequency;
+        float _invBaseFrequency;
         float _freq;
         float _freqScale;
         float _phaseStep;

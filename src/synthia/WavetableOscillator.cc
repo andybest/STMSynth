@@ -23,14 +23,15 @@ namespace Synthia {
     
     void WavetableOscillator::doPrecalculation(bool isSingleCycle)
     {
-        _baseFrequency = _ctx->sampleRate() / _numSamples;
+        _baseFrequency = _ctx->sampleRate() * _invNumSamples;
+        _invBaseFrequency = 1.0f / (float)_baseFrequency;
         if(isSingleCycle)
         {
             // Is single cycle, so we don't need to scale anything
             _freqScale = 1.0f;
         }else{
             // Scale so that unpitched sound is at middle C
-            _freqScale = _baseFrequency / 261.625565f;
+            _freqScale = _baseFrequency * (1.0f / 261.625565f);
         }
         calculatePhaseStep();
     }
@@ -45,6 +46,7 @@ namespace Synthia {
         _soundFile->loadWav(filename);
         
         _numSamples = _soundFile->length();
+        _invNumSamples = 1.0f / (float)_numSamples;
         
         // Just use the left channel for now
         _sampleArray = _soundFile->samples()[0];
@@ -56,6 +58,7 @@ namespace Synthia {
     {
         _sampleArray = wtArray;
         _numSamples = len;
+        _invNumSamples = 1.0f / (float)_numSamples;
         doPrecalculation(isSingleCycle);
     }
     
@@ -77,7 +80,7 @@ namespace Synthia {
     
     void WavetableOscillator::calculatePhaseStep()
     {
-        _phaseStep = (_freq / _baseFrequency) * _freqScale;
+        _phaseStep = (_freq * _invBaseFrequency) * _freqScale;
     }
     
 }
