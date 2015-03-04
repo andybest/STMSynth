@@ -117,7 +117,7 @@ namespace Synthia
             _value = 0.0f;
         _retriggerCount = 0;
         float retriggerTarget = _attackRate * _retriggerSamples;
-        _retriggerStep = (retriggerTarget - _value) / _retriggerSamples;
+        _retriggerStep = (retriggerTarget - _value) * _invRetriggerSamples;
         _isReleasing = false;
     }
 
@@ -130,5 +130,6 @@ namespace Synthia
     {
         _retriggerTime = retriggerTime;
         _retriggerSamples = (int) (_retriggerTime / (1.0f / _ctx->sampleRate()));
+        _invRetriggerSamples = 1.0f / (float)_retriggerSamples;
     }
 }

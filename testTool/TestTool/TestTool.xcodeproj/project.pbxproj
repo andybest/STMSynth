@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		A51180D41AA47FB90055D6B3 /* SynthiaUtils.cc in Sources */ = {isa = PBXBuildFile; fileRef = A51180D31AA47FB90055D6B3 /* SynthiaUtils.cc */; };
+		A51180D71AA76FDB0055D6B3 /* Delay.cc in Sources */ = {isa = PBXBuildFile; fileRef = A51180D51AA76FDB0055D6B3 /* Delay.cc */; };
 		A59805281A9B49EB00C36C3A /* CoreMIDI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A59805271A9B49EB00C36C3A /* CoreMIDI.framework */; };
 		A5DE36231A9DE0A900F6A45D /* SynthVoice.cc in Sources */ = {isa = PBXBuildFile; fileRef = A5DE36211A9DE0A900F6A45D /* SynthVoice.cc */; };
 		A5DE36261A9DE34600F6A45D /* MoogVoice.cc in Sources */ = {isa = PBXBuildFile; fileRef = A5DE36241A9DE34600F6A45D /* MoogVoice.cc */; };
@@ -55,6 +56,8 @@
 
 /* Begin PBXFileReference section */
 		A51180D31AA47FB90055D6B3 /* SynthiaUtils.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SynthiaUtils.cc; sourceTree = "<group>"; };
+		A51180D51AA76FDB0055D6B3 /* Delay.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Delay.cc; sourceTree = "<group>"; };
+		A51180D61AA76FDB0055D6B3 /* Delay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Delay.h; sourceTree = "<group>"; };
 		A59805271A9B49EB00C36C3A /* CoreMIDI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMIDI.framework; path = System/Library/Frameworks/CoreMIDI.framework; sourceTree = SDKROOT; };
 		A5DE36211A9DE0A900F6A45D /* SynthVoice.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SynthVoice.cc; sourceTree = "<group>"; };
 		A5DE36221A9DE0A900F6A45D /* SynthVoice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SynthVoice.h; sourceTree = "<group>"; };
@@ -287,6 +290,8 @@
 				A5DE362D1A9DF40F00F6A45D /* Controllable.h */,
 				A5E162831AA25ACF00718DDF /* SynthiaUtils.h */,
 				A51180D31AA47FB90055D6B3 /* SynthiaUtils.cc */,
+				A51180D51AA76FDB0055D6B3 /* Delay.cc */,
+				A51180D61AA76FDB0055D6B3 /* Delay.h */,
 			);
 			name = synthia;
 			path = ../../src/synthia;
@@ -396,6 +401,7 @@
 				A5F28F851A9B649A00D970A6 /* Synthesizer.cc in Sources */,
 				A5F28F8A1A9B649A00D970A6 /* SError.cc in Sources */,
 				A5F28F8F1A9B649A00D970A6 /* SynthContext.cc in Sources */,
+				A51180D71AA76FDB0055D6B3 /* Delay.cc in Sources */,
 				A5F28F8E1A9B649A00D970A6 /* SoundLoop.cc in Sources */,
 				A5F28F891A9B649A00D970A6 /* PulseOscillator.cc in Sources */,
 				A5E578871A9B440400A49999 /* ABAudioManager.mm in Sources */,

@@ -48,6 +48,7 @@ namespace Synthia
         float _retriggerTime;
         int _retriggerCount;
         int _retriggerSamples;
+        float _invRetriggerSamples;
         float _retriggerStep;
         
         bool _isReleasing;
