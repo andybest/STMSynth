@@ -19,7 +19,6 @@
 #include "wavetable_samples.h"
 #include "midi.h"
 #include "MoogVoice.h"
-#include "main.h"
 
 using namespace Synthia;
 
@@ -43,6 +42,8 @@ enum {
     kSynthesizerParameter_HeadphoneVolume,
 };
 
+void setHeadphoneVolume(int vol);
+
 class Synthesizer : public Controllable {
 public:
     Synthesizer(uint32_t sampleRate);
@@ -58,19 +59,19 @@ public:
     void processPitchBend(int pitchBendValue);
     void sendPitchBendToVoices(int pitchBendValue);
     
+    void keyOn(MidiMessage_t *msg);
+    void keyOff(MidiMessage_t *msg);
+    
     void changeValueForControlId(ControlEntryId id, float value);
     
     inline float tick()
     {
         float voiceSamp = 0.0f;
-        /*for(auto v = _voices.begin(); v != _voices.end(); ++v)
+        
+        for(int i=0; i < _voices.size(); i++)
         {
-            MoogVoice *voice = static_cast<MoogVoice *>(*v);
-            voiceSamp += voice->tick(0);
-        }*/
-    
-        //Synthia::MoogVoice *voice = (Synthia::MoogVoice*)_voices[0];
-        voiceSamp = _voices[0]->tick(0);
+            voiceSamp += _voices[i]->tick(0);
+        }
     
         if(_enableFilterEnvelope) {
             float eTick = _filterEnvelope.tick(0);
@@ -80,7 +81,6 @@ public:
         }
         
         float filteredSamp = _lowpassFilter.tick(0, voiceSamp);
-    
         return filteredSamp * _masterVolume;
     }
     
@@ -100,7 +100,7 @@ private:
     std::vector<SynthVoice *> _voices;
     std::vector<SynthVoice *> _availableVoices;
     // Voices that are currently being played (keyon)
-    std::vector<SynthVoice *> _playingVoices;
+    std::map<unsigned char, SynthVoice *> _playingVoices;
     
     std::map<unsigned char, ControlEntryId> _voiceCCMapping;
     std::map<unsigned char, ControlEntryId> _paramCCMapping;

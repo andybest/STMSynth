@@ -112,11 +112,22 @@
             
         }
         
+        bool clipped = NO;
+        
         for(int i = 0; i < numFrames; i++) {
             float samp = blockSynth->tick();
-            *data++ = samp;
-            *data++ = samp;
+            
+            if(samp > 1.0f || samp < -1.0f)
+                clipped = YES;
+            float clipped = 0.5 * (fabs(samp + 1.0f) - fabs(samp - 1.0f)); // Branchless clipping
+            float shaped = 1.5 * clipped - 0.5 * clipped * clipped * clipped; // Waveshaper.
+            
+            *data++ = shaped;
+            *data++ = shaped;
         }
+        
+        if(clipped)
+            NSLog(@"Clipped!");
         
     }];
     

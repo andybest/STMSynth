@@ -16,6 +16,15 @@ Synthesizer::Synthesizer(uint32_t sampleRate) : synthContext(sampleRate) {
     _pitchBend = 0;
     
     addVoice(new MoogVoice());
+    //addVoice(new MoogVoice());
+    //addVoice(new MoogVoice());
+    //addVoice(new MoogVoice());
+    //addVoice(new MoogVoice());
+    //addVoice(new MoogVoice());
+    
+    for(int i=0; i < _voices.size(); i++) {
+        _availableVoices.push_back(_voices[i]);
+    }
     
     addVoiceCCMapping(kMoogVoiceParameter_OSC1_Waveform,    30);
     addVoiceCCMapping(kMoogVoiceParameter_OSC1_Volume,      31);
@@ -69,6 +78,8 @@ Synthesizer::Synthesizer(uint32_t sampleRate) : synthContext(sampleRate) {
     _filterEnvelope.setDecayTime(0.0);
     _filterEnvelope.setSustainLevel(1.0);
     _filterEnvelope.setReleaseTime(1.0);
+    
+    _keyTransitionType = kKeyTransitionTypeLegatoLastPlayed;
 }
 
 Synthesizer::~Synthesizer() {
@@ -93,14 +104,42 @@ void Synthesizer::processMidiMessage(MidiMessage_t *msg)
 {
     if(msg->type == MIDI_MESSAGE_NOTE_ON) {
         //printf("Note on\r\n");
+        keyOn(msg);
+    } else if(msg->type == MIDI_MESSAGE_NOTE_OFF) {
+        keyOff(msg);
+    } else if(msg->type == MIDI_MESSAGE_CONTROL_CHANGE) {
+        processControlChange(msg->ControlChange.controllerNumber, msg->ControlChange.controllerValue);
+    } else if(msg->type == MIDI_MESSAGE_PITCH_BEND) {
+        _pitchBend = msg->PitchBend.pitchBendValue;
+        sendPitchBendToVoices(_pitchBend);
+    }
+}
+
+void Synthesizer::keyOn(MidiMessage_t *msg)
+{
+    if(_keyTransitionType == kKeyTransitionTypeLegatoLastPlayed) {
         if(_keyStack.size() == 0) {
             _voices.back()->keyOn();
             _filterEnvelope.keyOn();
         }
-        //osc1.setFrequency(midiNoteToFrequency(msg->NoteOn.key));
+        
         _voices.back()->setFrequency(SynthiaUtils::midiNoteToHz(msg->NoteOn.key));
         _keyStack.push_back(msg->NoteOn.key);
-    } else if(msg->type == MIDI_MESSAGE_NOTE_OFF) {
+    } else if(_keyTransitionType == kKeyTransitionTypePolyphonic) {
+        if(_availableVoices.size() > 0) {
+            SynthVoice *voice = _availableVoices.at(0);
+            _availableVoices.erase(_availableVoices.begin());
+            _playingVoices[msg->NoteOn.key] = voice;
+            voice->setFrequency(SynthiaUtils::midiNoteToHz(msg->NoteOn.key));
+            voice->keyOn();
+        }
+        
+    }
+}
+
+void Synthesizer::keyOff(MidiMessage_t *msg)
+{
+    if(_keyTransitionType == kKeyTransitionTypeLegatoLastPlayed) {
         int idx = -1;
         for(uint32_t i = 0; i < _keyStack.size(); i++) {
             if(_keyStack.at(i) == msg->NoteOff.key) {
@@ -122,11 +161,13 @@ void Synthesizer::processMidiMessage(MidiMessage_t *msg)
                 //osc1.setFrequency(midiNoteToFrequency(_keyStack.at(_keyStack.size() - 1)));
             }
         }
-    } else if(msg->type == MIDI_MESSAGE_CONTROL_CHANGE) {
-        processControlChange(msg->ControlChange.controllerNumber, msg->ControlChange.controllerValue);
-    } else if(msg->type == MIDI_MESSAGE_PITCH_BEND) {
-        _pitchBend = msg->PitchBend.pitchBendValue;
-        sendPitchBendToVoices(_pitchBend);
+    } else if(_keyTransitionType == kKeyTransitionTypePolyphonic) {
+        if(_playingVoices.count(msg->NoteOff.key) > 0) {
+            SynthVoice *voice = _playingVoices[msg->NoteOff.key];
+            _playingVoices.erase(msg->NoteOff.key);
+            voice->keyOff();
+            _availableVoices.push_back(voice);
+        }
     }
 }
 

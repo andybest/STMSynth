@@ -8,6 +8,11 @@
 
 #import "AppDelegate.h"
 
+void setHeadphoneVolume(int vol)
+{
+    
+}
+
 @interface AppDelegate ()
 
 @property (weak) IBOutlet NSWindow *window;
