@@ -11,6 +11,7 @@
 Synthesizer::Synthesizer(uint32_t sampleRate) : synthContext(sampleRate) {
     _filterEnvelope.init(&synthContext);
     _lowpassFilter.init(&synthContext);
+    _delay.init(&synthContext);
     
     _masterVolume = 1.0f;
     _pitchBend = 0;
@@ -51,10 +52,12 @@ Synthesizer::Synthesizer(uint32_t sampleRate) : synthContext(sampleRate) {
     addControlEntry(kSynthesizerParameter_FilterEnvelope_Sustain, "Filter Envelope Sustain", kControlTypeFloatZeroOne);
     addControlEntry(kSynthesizerParameter_FilterEnvelope_Release, "Filter Envelope Release", kControlTypeFloatCustomRange, 0.0f, 2.0f);
     
+    addControlEntry(kSynthesizerParameter_Delay_Time, "Delay Time", kControlTypeFloatZeroOne);
+    addControlEntry(kSynthesizerParameter_Delay_Feedback, "Delay Feedback", kControlTypeFloatZeroOne);
+    addControlEntry(kSynthesizerParameter_Delay_Volume, "Delay Effect Level", kControlTypeFloatZeroOne);
+    
     addControlEntry(kSynthesizerParameter_MasterVolume, "Master Volume", kControlTypeFloatCustomRange, 0.0f, 2.0f);
-    
     addControlEntry(kSynthesizerParameter_FilterEnvelope_Enable, "Enable Filter Envelope", kControlTypeFloatZeroOne);
-    
     addControlEntry(kSynthesizerParameter_HeadphoneVolume, "Headphone Volume", kControlTypeFloatCustomRange, 0.0f, 100.0f);
     
     _paramCCMapping[46] = kSynthesizerParameter_Filter_Cutoff;
@@ -70,6 +73,10 @@ Synthesizer::Synthesizer(uint32_t sampleRate) : synthContext(sampleRate) {
     _paramCCMapping[53] = kSynthesizerParameter_FilterEnvelope_Enable;
     
     _paramCCMapping[54] = kSynthesizerParameter_HeadphoneVolume;
+    
+    _paramCCMapping[55] = kSynthesizerParameter_Delay_Time;
+    _paramCCMapping[56] = kSynthesizerParameter_Delay_Feedback;
+    _paramCCMapping[57] = kSynthesizerParameter_Delay_Volume;
   
     
     //_lowpassFilter.setResonance(0.5);
@@ -249,6 +256,18 @@ void Synthesizer::changeValueForControlId(ControlEntryId id, float value) {
             
         case kSynthesizerParameter_HeadphoneVolume:
             setHeadphoneVolume((int)value);
+            break;
+            
+        case kSynthesizerParameter_Delay_Time:
+            _delay.setDelayTime(value);
+            break;
+            
+        case kSynthesizerParameter_Delay_Feedback:
+            _delay.setFeedbackLevel(value);
+            break;
+            
+        case kSynthesizerParameter_Delay_Volume:
+            _delay.setDelayVolume(value);
             break;
     }
 }

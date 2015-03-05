@@ -19,6 +19,7 @@
 #include "wavetable_samples.h"
 #include "midi.h"
 #include "MoogVoice.h"
+#include "Delay.h"
 
 using namespace Synthia;
 
@@ -35,6 +36,10 @@ enum {
     kSynthesizerParameter_FilterEnvelope_Decay,
     kSynthesizerParameter_FilterEnvelope_Sustain,
     kSynthesizerParameter_FilterEnvelope_Release,
+    
+    kSynthesizerParameter_Delay_Time,
+    kSynthesizerParameter_Delay_Feedback,
+    kSynthesizerParameter_Delay_Volume,
     
     kSynthesizerParameter_MasterVolume,
     
@@ -81,7 +86,7 @@ public:
         }
         
         float filteredSamp = _lowpassFilter.tick(0, voiceSamp);
-        return filteredSamp * _masterVolume;
+        return _delay.tick(0, filteredSamp) * _masterVolume;
     }
     
     
@@ -90,6 +95,7 @@ private:
     
     Envelope _filterEnvelope;
     Lowpass _lowpassFilter;
+    Synthia::Delay _delay;
     float _filterCutoffMax;
     float _masterVolume;
     bool _enableFilterEnvelope;

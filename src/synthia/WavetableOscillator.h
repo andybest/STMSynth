@@ -49,6 +49,7 @@ namespace Synthia {
                 // Get floor and ceil values
                 float val = _sampleArray[idxBase];
                 int idx2 = idxBase + 1;
+                
                 if(idx2 >= _numSamples)
                     idx2 = 0;
                 float val2 = _sampleArray[idx2];
