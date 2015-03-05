@@ -19,8 +19,8 @@ CMAKE_FORCE_CXX_COMPILER(arm-none-eabi-g++ GNU)
 set(TOOLCHAIN_INC_DIR "/opt/gcc-arm-none-eabi/arm-none-eabi/include")
 set(TOOCHAIN_LIB_DIR "/opt/gcc-arm-none-eabi/arm-none-eabi/lib")
 
-SET(CMAKE_C_FLAGS "-mcpu=cortex-m4 -mthumb -ofast -mfloat-abi=hard -mfpu=fpv4-sp-d16 -ffunction-sections -fdata-sections -fsingle-precision-constant -flto -Wall" CACHE INTERNAL "c compiler flags")
-SET(CMAKE_CXX_FLAGS "-mcpu=cortex-m4 -mthumb -ofast -mfloat-abi=hard -mfpu=fpv4-sp-d16 -ffunction-sections -fdata-sections -fsingle-precision-constant -flto -Wall -fno-exceptions" CACHE INTERNAL "cxx compiler flags")
+SET(CMAKE_C_FLAGS "-mcpu=cortex-m4 -mthumb -o3 -mfloat-abi=hard -mfpu=fpv4-sp-d16 -ffunction-sections -fdata-sections -fsingle-precision-constant -flto -Wall" CACHE INTERNAL "c compiler flags")
+SET(CMAKE_CXX_FLAGS "-mcpu=cortex-m4 -mthumb -o3 -mfloat-abi=hard -mfpu=fpv4-sp-d16 -ffunction-sections -fdata-sections -fsingle-precision-constant -flto -Wall -fno-exceptions" CACHE INTERNAL "cxx compiler flags")
 SET(CMAKE_ASM_FLAGS "-mthumb -mcpu=cortex-m4" CACHE INTERNAL "asm compiler flags")
 
 SET(CMAKE_EXE_LINKER_FLAGS "-Wl,-Map=output.map,--gc-sections -specs=nano.specs -mthumb -mcpu=cortex-m4" CACHE INTERNAL "exe link flags")

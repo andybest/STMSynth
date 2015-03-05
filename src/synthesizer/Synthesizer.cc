@@ -17,11 +17,6 @@ Synthesizer::Synthesizer(uint32_t sampleRate) : synthContext(sampleRate) {
     _pitchBend = 0;
     
     addVoice(new MoogVoice());
-    //addVoice(new MoogVoice());
-    //addVoice(new MoogVoice());
-    //addVoice(new MoogVoice());
-    //addVoice(new MoogVoice());
-    //addVoice(new MoogVoice());
     
     for(int i=0; i < _voices.size(); i++) {
         _availableVoices.push_back(_voices[i]);

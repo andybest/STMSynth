@@ -9,8 +9,9 @@
 #pragma once
 
 #include "Effect.h"
+#include <stdlib.h>
 
-#define SYNTHIA_DELAY_LENGTH 44100
+#define SYNTHIA_DELAY_LENGTH 22050
 
 namespace Synthia
 {
@@ -24,7 +25,7 @@ namespace Synthia
         void setDelayVolume(float delayVolume);
         
         inline float tick(int channel, float input)
-        {
+        {   
             float delaySamp = _delaySamples[_delayIdx];
             float samp = (delaySamp * _volume) + input;
             _delaySamples[_delayIdx] = (input + delaySamp) * _feedback;
@@ -37,7 +38,7 @@ namespace Synthia
         }
         
     private:
-        float _delaySamples[SYNTHIA_DELAY_LENGTH];
+        float *_delaySamples;
         float _delayTime;
         unsigned int _delayLen;
         float _feedback;

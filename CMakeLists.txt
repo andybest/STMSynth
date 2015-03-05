@@ -91,9 +91,6 @@ add_executable(${OUTPUT_NAME}.elf
     ${STM32_STARTUP_SOURCE}
 )
 
-add_library(DSP STATIC ${CMAKE_SOURCE_DIR}/Drivers/CMSIS/arm_cortexM4lf_math.lib)
-
-target_link_libraries(${OUTPUT_NAME}.elf DSP)
 target_link_libraries(${OUTPUT_NAME}.elf ${STM32_LIBRARIES})
 
 add_custom_target(${OUTPUT_NAME}.hex DEPENDS ${OUTPUT_NAME}.elf COMMAND ${CMAKE_OBJCOPY} -Oihex ${OUTPUT_NAME}.elf ${OUTPUT_NAME}.hex)

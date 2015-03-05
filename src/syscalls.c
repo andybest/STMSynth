@@ -64,7 +64,7 @@ caddr_t _sbrk(int incr)
 	prev_heap_end = heap_end;
 	if (heap_end + incr > stack_ptr)
 	{
-//		write(1, "Heap and stack collision\n", 25);
+        printf(1, "Heap and stack collision\n", 25);
 //		abort();
 		errno = ENOMEM;
 		return (caddr_t) -1;
