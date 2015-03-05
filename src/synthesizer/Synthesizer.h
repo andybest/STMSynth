@@ -24,6 +24,7 @@
 using namespace Synthia;
 
 typedef enum {
+    kKeyTransitionTypeMonophonicLastPlayed,
     kKeyTransitionTypeLegatoLastPlayed,
     kKeyTransitionTypePolyphonic
 }KeyTransitionType_t;
@@ -45,6 +46,7 @@ enum {
     
     kSynthesizerParameter_FilterEnvelope_Enable,
     kSynthesizerParameter_HeadphoneVolume,
+    kSynthesizerParameter_LegatoEnable,
 };
 
 void setHeadphoneVolume(int vol);

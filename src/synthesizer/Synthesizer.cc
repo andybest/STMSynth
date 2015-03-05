@@ -60,6 +60,8 @@ Synthesizer::Synthesizer(uint32_t sampleRate) : synthContext(sampleRate) {
     addControlEntry(kSynthesizerParameter_FilterEnvelope_Enable, "Enable Filter Envelope", kControlTypeFloatZeroOne);
     addControlEntry(kSynthesizerParameter_HeadphoneVolume, "Headphone Volume", kControlTypeFloatCustomRange, 0.0f, 100.0f);
     
+    addControlEntry(kSynthesizerParameter_LegatoEnable, "Enable Legato", kControlTypeFloatZeroOne);
+    
     _paramCCMapping[46] = kSynthesizerParameter_Filter_Cutoff;
     _paramCCMapping[47] = kSynthesizerParameter_Filter_Resonance;
     
@@ -77,6 +79,8 @@ Synthesizer::Synthesizer(uint32_t sampleRate) : synthContext(sampleRate) {
     _paramCCMapping[55] = kSynthesizerParameter_Delay_Time;
     _paramCCMapping[56] = kSynthesizerParameter_Delay_Feedback;
     _paramCCMapping[57] = kSynthesizerParameter_Delay_Volume;
+    
+    _paramCCMapping[58] = kSynthesizerParameter_LegatoEnable;
   
     
     //_lowpassFilter.setResonance(0.5);
@@ -124,8 +128,8 @@ void Synthesizer::processMidiMessage(MidiMessage_t *msg)
 
 void Synthesizer::keyOn(MidiMessage_t *msg)
 {
-    if(_keyTransitionType == kKeyTransitionTypeLegatoLastPlayed) {
-        if(_keyStack.size() == 0) {
+    if(_keyTransitionType == kKeyTransitionTypeLegatoLastPlayed || _keyTransitionType == kKeyTransitionTypeMonophonicLastPlayed) {
+        if(_keyStack.size() == 0 || _keyTransitionType == kKeyTransitionTypeMonophonicLastPlayed) {
             _voices.back()->keyOn();
             _filterEnvelope.keyOn();
         }
@@ -146,7 +150,7 @@ void Synthesizer::keyOn(MidiMessage_t *msg)
 
 void Synthesizer::keyOff(MidiMessage_t *msg)
 {
-    if(_keyTransitionType == kKeyTransitionTypeLegatoLastPlayed) {
+    if(_keyTransitionType == kKeyTransitionTypeLegatoLastPlayed || _keyTransitionType == kKeyTransitionTypeMonophonicLastPlayed) {
         int idx = -1;
         for(uint32_t i = 0; i < _keyStack.size(); i++) {
             if(_keyStack.at(i) == msg->NoteOff.key) {
@@ -268,6 +272,13 @@ void Synthesizer::changeValueForControlId(ControlEntryId id, float value) {
             
         case kSynthesizerParameter_Delay_Volume:
             _delay.setDelayVolume(value);
+            break;
+            
+        case kSynthesizerParameter_LegatoEnable:
+            if(value >= 0.5f)
+                _keyTransitionType = kKeyTransitionTypeLegatoLastPlayed;
+            else
+                _keyTransitionType = kKeyTransitionTypeMonophonicLastPlayed;
             break;
     }
 }
