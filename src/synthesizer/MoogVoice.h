@@ -9,7 +9,6 @@
 #pragma once
 
 #include <stdio.h>
-
 #include "Synthia.h"
 #include "SynthiaUtils.h"
 
