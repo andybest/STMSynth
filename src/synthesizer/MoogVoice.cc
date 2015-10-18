@@ -132,7 +132,7 @@ namespace Synthia {
                 break;
                 
             case kMoogVoiceParameter_OSC3_FineTune:
-                _osc1FineTune = value;
+                _osc3FineTune = value;
                 calcFrequencies(_frequency);
                 break;
         
