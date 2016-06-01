@@ -1,4 +1,7 @@
-To Build:
+# STMSynth
+A MIDI synthesizer for the STM32F4 Discovery board
+
+## Build instructions
 
 ```
 mkdir build
